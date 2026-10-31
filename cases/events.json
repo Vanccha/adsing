@@ -1,0 +1,418 @@
+{
+  "schemaVersion": 1,
+  "events": [
+    {
+      "id": "E01",
+      "slug": "cpc-inflation",
+      "markets": [
+        "us",
+        "de",
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0.01,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.macro_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "gads.cpcMult",
+          "op": "mul",
+          "value": 1.15,
+          "durationDays": 14
+        },
+        {
+          "target": "meta.cpmMult",
+          "op": "mul",
+          "value": 1.12,
+          "durationDays": 14
+        }
+      ],
+      "i18n": {
+        "title": "events.cpc-inflation.title",
+        "text": "events.cpc-inflation.text"
+      }
+    },
+    {
+      "id": "E02",
+      "slug": "policy-warning",
+      "markets": [
+        "us",
+        "de",
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0.004,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.legal_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "account.health",
+          "op": "add",
+          "value": -0.1,
+          "durationDays": 0
+        }
+      ],
+      "i18n": {
+        "title": "events.policy-warning.title",
+        "text": "events.policy-warning.text"
+      }
+    },
+    {
+      "id": "E03",
+      "slug": "algorithm-change",
+      "markets": [
+        "us",
+        "de",
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0.006,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.macro_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "gads.smart_learning_reset",
+          "op": "set",
+          "value": 0.5,
+          "durationDays": 0
+        },
+        {
+          "target": "meta.cpmMult",
+          "op": "mul",
+          "value": 1.08,
+          "durationDays": 10
+        }
+      ],
+      "i18n": {
+        "title": "events.algorithm-change.title",
+        "text": "events.algorithm-change.text"
+      }
+    },
+    {
+      "id": "E04",
+      "slug": "measurement-loss",
+      "markets": [
+        "us",
+        "de",
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0.004,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.macro_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "measure.trackingHealth",
+          "op": "mul",
+          "value": 0.7,
+          "durationDays": 10
+        }
+      ],
+      "i18n": {
+        "title": "events.measurement-loss.title",
+        "text": "events.measurement-loss.text"
+      }
+    },
+    {
+      "id": "E05",
+      "slug": "competitor-move",
+      "markets": [
+        "us",
+        "de",
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0.008,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.macro_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "gads.cpcMult",
+          "op": "mul",
+          "value": 1.1,
+          "durationDays": 21
+        },
+        {
+          "target": "funnel.trialToPaidMult",
+          "op": "mul",
+          "value": 0.95,
+          "durationDays": 21
+        }
+      ],
+      "i18n": {
+        "title": "events.competitor-move.title",
+        "text": "events.competitor-move.text"
+      }
+    },
+    {
+      "id": "E06",
+      "slug": "review-crisis",
+      "markets": [
+        "us",
+        "de",
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0.004,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.legal_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "reputation",
+          "op": "add",
+          "value": -0.1,
+          "durationDays": 30
+        },
+        {
+          "target": "event.negative_review_active",
+          "op": "set",
+          "value": 1,
+          "durationDays": 30
+        }
+      ],
+      "i18n": {
+        "title": "events.review-crisis.title",
+        "text": "events.review-crisis.text"
+      }
+    },
+    {
+      "id": "E07",
+      "slug": "viral-share",
+      "markets": [
+        "us",
+        "de",
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0.003,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.macro_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "funnel.organicLeadsMult",
+          "op": "mul",
+          "value": 1.6,
+          "durationDays": 7
+        },
+        {
+          "target": "reputation",
+          "op": "add",
+          "value": 0.05,
+          "durationDays": 0
+        }
+      ],
+      "i18n": {
+        "title": "events.viral-share.title",
+        "text": "events.viral-share.text"
+      }
+    },
+    {
+      "id": "E08",
+      "slug": "fx-shock",
+      "markets": [
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0.006,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.macro_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "fx.tryPerUsdMult",
+          "op": "mul",
+          "value": 1.08,
+          "durationDays": 0
+        },
+        {
+          "target": "cost.usdDenominatedMult",
+          "op": "mul",
+          "value": 1.08,
+          "durationDays": 30
+        }
+      ],
+      "i18n": {
+        "title": "events.fx-shock.title",
+        "text": "events.fx-shock.text"
+      }
+    },
+    {
+      "id": "E09",
+      "slug": "abmahnung",
+      "markets": [
+        "de"
+      ],
+      "baseDailyProbability": {
+        "value": 0.003,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.legal_rate_mult",
+      "conditions": [
+        {
+          "metric": "legal.cold_outreach_active",
+          "op": ">=",
+          "value": 1
+        }
+      ],
+      "effects": [
+        {
+          "target": "cash.balance",
+          "op": "add",
+          "value": -3000,
+          "durationDays": 0
+        },
+        {
+          "target": "reputation",
+          "op": "add",
+          "value": -0.05,
+          "durationDays": 0
+        }
+      ],
+      "i18n": {
+        "title": "events.abmahnung.title",
+        "text": "events.abmahnung.text"
+      }
+    },
+    {
+      "id": "E10",
+      "slug": "tcpa-complaint",
+      "markets": [
+        "us"
+      ],
+      "baseDailyProbability": {
+        "value": 0.002,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.legal_rate_mult",
+      "conditions": [
+        {
+          "metric": "legal.cold_outreach_active",
+          "op": ">=",
+          "value": 1
+        }
+      ],
+      "effects": [
+        {
+          "target": "cash.balance",
+          "op": "add",
+          "value": -1500,
+          "durationDays": 0
+        },
+        {
+          "target": "reputation",
+          "op": "add",
+          "value": -0.05,
+          "durationDays": 0
+        }
+      ],
+      "i18n": {
+        "title": "events.tcpa-complaint.title",
+        "text": "events.tcpa-complaint.text"
+      }
+    },
+    {
+      "id": "E11",
+      "slug": "einvoice-deadline",
+      "markets": [
+        "tr",
+        "de"
+      ],
+      "baseDailyProbability": {
+        "value": 0,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.macro_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "finance.invoiceComplianceWork",
+          "op": "set",
+          "value": 1,
+          "durationDays": 30
+        },
+        {
+          "target": "funnel.saasBuyingMult",
+          "op": "mul",
+          "value": 1.15,
+          "durationDays": 30
+        }
+      ],
+      "i18n": {
+        "title": "events.einvoice-deadline.title",
+        "text": "events.einvoice-deadline.text"
+      },
+      "calendar": {
+        "source": "market.meta.holidays",
+        "match": {
+          "kind": "regulatory"
+        }
+      },
+      "note": "Takvime bağlı; baseDailyProbability kullanılmaz, tarih eşleşince tetiklenir."
+    },
+    {
+      "id": "E12",
+      "slug": "holiday-density",
+      "markets": [
+        "us",
+        "de",
+        "tr"
+      ],
+      "baseDailyProbability": {
+        "value": 0,
+        "layer": "assumption",
+        "note": "Varsayım; rastgele olay sıklığı."
+      },
+      "rateScale": "events.macro_rate_mult",
+      "conditions": [],
+      "effects": [
+        {
+          "target": "market.seasonal_index",
+          "op": "mul",
+          "value": "holiday.effects.salonDemand",
+          "durationDays": "holiday.span"
+        }
+      ],
+      "i18n": {
+        "title": "events.holiday-density.title",
+        "text": "events.holiday-density.text"
+      },
+      "calendar": {
+        "source": "market.meta.holidays",
+        "match": {
+          "closedOrKind": [
+            "public",
+            "religious",
+            "commercial"
+          ]
+        }
+      },
+      "note": "Takvime bağlı; baseDailyProbability kullanılmaz, tarih eşleşince tetiklenir."
+    }
+  ]
+}

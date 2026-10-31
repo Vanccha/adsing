@@ -1,0 +1,93 @@
+{
+  "id": "C12",
+  "slug": "negative-review-crisis",
+  "stage": "retention",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "event.negative_review_active",
+        "op": ">=",
+        "value": 1
+      },
+      {
+        "metric": "reputation",
+        "op": "<",
+        "value": 0.6
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 45
+  },
+  "marketOverrides": {
+    "de": {
+      "effects": [
+        {
+          "target": "reputation",
+          "op": "add",
+          "value": -0.15,
+          "durationDays": 30
+        }
+      ]
+    }
+  },
+  "effects": [
+    {
+      "target": "reputation",
+      "op": "add",
+      "value": -0.12,
+      "durationDays": 30
+    },
+    {
+      "target": "funnel.trialStartMult",
+      "op": "mul",
+      "value": 0.9,
+      "durationDays": 30
+    }
+  ],
+  "symptoms": [
+    "reputation",
+    "funnel.trial_start_rate",
+    "support.tickets_7d",
+    "review.avg_rating"
+  ],
+  "correctResponses": [
+    {
+      "action": "reputation.respondToReview",
+      "outcome": "case.C12.correct.outcome"
+    },
+    {
+      "action": "reputation.requestReviewsOrganic",
+      "outcome": "case.C12.correct.outcome"
+    },
+    {
+      "action": "product.fixRootCause",
+      "outcome": "case.C12.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "reputation.argueInPublic",
+      "outcome": "case.C12.wrong.outcome"
+    },
+    {
+      "action": "reputation.fakeReviews",
+      "outcome": "case.C12.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C12.hint",
+  "i18n": {
+    "title": "case.C12.title",
+    "summary": "case.C12.summary",
+    "symptoms": "case.C12.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

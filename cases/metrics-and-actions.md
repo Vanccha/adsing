@@ -1,0 +1,159 @@
+# Metrik, etki hedefi ve aksiyon kimlikleri
+
+Motor ajanı bunları uygulayacak. Oranlar 0-1 (ratio). `derived.*` başvuruları motorun türettiği değerlerdir (ör. `derived.max_marginal_cac` = LTV eşiğine karşılık gelen CAC, `derived.tax_due_estimate` = yaklaşan vergi tutarı tahmini). `{param: "..."}` değerleri data/markets parametre kimliğidir.
+
+## Metrikler (71) - trigger ve symptoms'ta kullanılır
+- `account.health`: Reklam hesabı sağlığı, 0-1.
+- `cash.avg_cac`: Ortalama CAC (pazar para birimi).
+- `cash.balance`: Nakit bakiyesi.
+- `cash.collection_vs_mrr`: Tahsilat / MRR oranı.
+- `cash.ltv_cac`: LTV/CAC oranı.
+- `cash.marginal_cac`: Son eklenen harcamanın marjinal CAC'si.
+- `cash.payment_failure_rate`: Başarısız ödeme oranı (ratio).
+- `cash.runway_months`: Kalan runway (ay).
+- `cash.tax_reserve`: Ayrılmış vergi karşılığı.
+- `competitor.brand_search_trend`: Rakip marka arama hacmi trendi (7g, oransal değişim).
+- `competitor.price_index`: Rakip fiyatı / bizim fiyat.
+- `day`: Oyun günü sayacı (1'den başlar).
+- `event.competitor_price_cut_active`: Rakip fiyat kırma olayı aktif mi (0/1).
+- `event.negative_review_active`: Olumsuz yorum olayı aktif mi (0/1).
+- `event.site_update_recent`: Son günlerde site/LP güncellemesi oldu mu (0/1).
+- `event.tax_due_soon`: Yakın vergi/ödeme tarihi var mı (0/1).
+- `funnel.activation_rate`: Denemeden aktivasyona geçiş oranı.
+- `funnel.email_deliverability`: E-posta teslim edilebilirliği, 0-1.
+- `funnel.lead_response_hours`: Lead'e ortalama ilk yanıt süresi (saat).
+- `funnel.lead_to_trial`: Lead → deneme oranı.
+- `funnel.leads_7d`: Son 7 gün lead sayısı.
+- `funnel.price_objection_rate`: Fiyat itirazı oranı.
+- `funnel.trial_start_rate`: Deneme başlangıç oranı.
+- `funnel.trial_to_paid`: Deneme → ücretli oranı.
+- `funnel.unreachable_leads_7d`: Son 7 gün ulaşılamayan lead sayısı.
+- `gads.brand_query_share`: Kampanyadaki marka sorgusu payı, 0-1.
+- `gads.budget_jump_ratio_7d`: Son 7g bütçe / önceki 7g bütçe.
+- `gads.clicks_7d`: Son 7g tıklama.
+- `gads.cpa_observed`: Google Ads gözlenen CPA.
+- `gads.cpc_observed`: Gözlenen ortalama CPC.
+- `gads.impressions_7d`: Son 7g gösterim.
+- `gads.lead_quality`: Google lead kalitesi (nitelikli oranı), 0-1.
+- `gads.match_broad_share`: Broad eşlemenin harcamadaki payı, 0-1.
+- `gads.negative_keywords_count`: Negatif kelime sayısı.
+- `gads.pmax_enabled`: PMax açık mı (0/1).
+- `gads.policy_risk_claims`: Politika riskli iddia sayısı (reklam/LP).
+- `gads.policy_status`: Politika durumu (ok|warning|restricted|suspended).
+- `gads.share_irrelevant_queries_7d`: Alakasız+bilgi sorgularının tıklama payı (7g), 0-1.
+- `gads.smart_bidding_enabled`: Akıllı teklif açık mı (0/1).
+- `gads.smart_state`: Akıllı teklif durumu (learning|stable|limited).
+- `gads.spend_7d`: Son 7g Google harcaması.
+- `legal.cold_outreach_active`: Soğuk iletişim kampanyası açık mı (0/1).
+- `legal.complaints_30d`: Son 30g şikâyet sayısı.
+- `legal.compliant_list`: İzinli/uyumlu liste kullanılıyor mu (0/1).
+- `market.seasonal_index`: Mevsim talep çarpanı (1 = normal).
+- `measure.consent_banner_changed`: Onay bandı yeni/değişti mi (0/1).
+- `measure.consent_loss`: Onay kaynaklı kayıp oranı, 0-1.
+- `measure.crm_completeness`: CRM kayıt tamlığı, 0-1.
+- `measure.crm_leads_7d`: CRM'deki 7g lead.
+- `measure.crm_paid_customers_30d`: CRM'deki 30g ücretli müşteri.
+- `measure.modeling_enabled`: Onay modellemesi/sunucu tarafı kurulu mu (0/1).
+- `measure.observed_conversions_7d`: Platformda gözlenen 7g dönüşüm.
+- `measure.paid_customers_30d`: Gerçek 30g ücretli müşteri.
+- `measure.platform_vs_crm_ratio`: Platformların raporladığı dönüşüm toplamı / CRM.
+- `measure.tracking_health`: Takip sağlığı, 0-1.
+- `meta.adset_count`: Aktif reklam seti sayısı.
+- `meta.adsets_learning_limited_share`: Öğrenme sınırlı setlerin payı.
+- `meta.audience_size`: Kitle büyüklüğü.
+- `meta.cpa_observed`: Meta gözlenen CPA.
+- `meta.cpm`: Meta CPM.
+- `meta.ctr`: Meta CTR.
+- `meta.days_since_creative_refresh`: Son yaratıcı yenilemesinden beri gün.
+- `meta.edits_7d`: Son 7g önemli düzenleme sayısı.
+- `meta.events_per_adset_per_window`: Set başına öğrenme penceresindeki optimizasyon olayı.
+- `meta.frequency`: Ortalama frekans.
+- `reputation`: Marka/yorum itibarı, 0-1.
+- `retention.early_churn_rate`: Erken (ilk 3 ay) aylık churn.
+- `retention.onboarding_quality`: Onboarding kalitesi, 0-1.
+- `retention.usage_rate`: Aktif kullanım oranı.
+- `review.avg_rating`: Ortalama yorum puanı (1-5).
+- `support.tickets_7d`: Son 7g destek talebi.
+
+## Etki hedefleri (19) - effects[].target
+- `account.health`: Hesap sağlığına eklenir/çarpılır (0-1).
+- `cash.balance`: Nakda tek seferlik ekleme (negatif=gider). Dize değer 'derived.x' parametre başvurusudur, başındaki '-' işaret çevirir.
+- `cost.usdDenominatedMult`: USD bazlı maliyet çarpanı (TR).
+- `event.negative_review_active`: Olay bayrağı.
+- `finance.invoiceComplianceWork`: Fatura uyumu iş yükü bayrağı.
+- `funnel.emailDeliverabilityMult`: E-posta teslim çarpanı.
+- `funnel.organicLeadsMult`: Organik lead çarpanı.
+- `funnel.saasBuyingMult`: Salon SaaS satın alma isteği çarpanı.
+- `funnel.trialStartMult`: Deneme başlangıç çarpanı.
+- `funnel.trialToPaidMult`: Deneme→ücretli çarpanı.
+- `fx.tryPerUsdMult`: TRY/USD kur çarpanı (kalıcı).
+- `gads.cpcMult`: Google CPC çarpanı.
+- `gads.delivery`: Teslimat (0 = durmuş).
+- `gads.smart_learning_reset`: Akıllı teklif öğrenmeyi kısmen sıfırlama oranı.
+- `market.seasonal_index`: Mevsim çarpanı (tatil olayı).
+- `measure.consentLoss`: Onay kayıp oranı (ek).
+- `measure.trackingHealth`: Takip sağlığı çarpanı.
+- `meta.cpmMult`: Meta CPM çarpanı.
+- `reputation`: İtibar ekleme.
+
+## Aksiyonlar (60) - correctResponses / wrongResponses
+- `account.createWorkaroundAccount`: Kısıtı dolanmak için yeni hesap aç (kötü).
+- `account.fixAndAppeal`: Reddi oku, içeriği düzelt, itiraz et.
+- `account.prepareBackupChannel`: Yedek kanal/organik hazırla.
+- `core.blameSeason`: Sorunu sezona yorarak müdahale etme.
+- `core.ignore`: Sorunu görmezden gel.
+- `core.overhire`: Geçici talep için kalıcı işe alım/harcama.
+- `core.wait`: Hiçbir şey yapma / bekle.
+- `finance.cashForecast`: Nakit tahmini çıkar.
+- `finance.diversifyChannels`: Harcamayı kanallara dağıt.
+- `finance.reserveTax`: Vergi karşılığı ayır.
+- `finance.setupDunning`: Ödeme hatası tahsilat akışı kur.
+- `finance.trackMarginalCac`: Marjinal CAC izle.
+- `funnel.prioritizeLeads`: Lead'leri önceliklendir.
+- `funnel.scheduleResponseSlots`: Yanıt vardiya/slotları.
+- `funnel.setupAutoReply`: Otomatik ilk yanıt.
+- `gads.addNegativeKeywords`: Negatif kelime ekle.
+- `gads.editBidsBudgetManually`: Teklif/bütçeyi elle sık değiştir.
+- `gads.excludeBrand`: Markayı PMax'ten dışla / ayrı marka kampanyası.
+- `gads.gradualBudgetIncrease`: Bütçeyi kademeli artır.
+- `gads.pauseCampaign`: Kampanyayı durdur.
+- `gads.raiseBudget`: Bütçeyi artır.
+- `gads.resubmitSameAd`: Reddedilen reklamı aynen yeniden gönder.
+- `gads.reviewSearchTerms`: Arama terimleri raporunu incele (kurucu saati).
+- `gads.shiftToPhraseExact`: Eşlemeyi phrase/exact'e kaydır.
+- `legal.addOptOut`: Opt-out mekanizması ekle.
+- `legal.buildPermissionList`: İzinli liste kur.
+- `legal.buyList`: Satın alınmış liste kullan (kötü).
+- `legal.checkMarketRules`: Pazar kurallarını kontrol et.
+- `legal.scaleColdOutreach`: Soğuk iletişim hacmini artır (kötü).
+- `measure.fixTag`: Takip etiketini düzelt.
+- `measure.importOfflineConversions`: CRM/offline dönüşüm içe aktar.
+- `measure.removeConsentBanner`: Onay bandını kaldır (kötü, yasa riski).
+- `measure.runHoldoutTest`: Holdout/geo testi.
+- `measure.separateBrandTraffic`: Marka trafiğini ayır.
+- `measure.setupAlerts`: Ölçüm uyarıları kur.
+- `measure.setupServerSideTracking`: Sunucu tarafı takip.
+- `measure.useCrmAsReference`: CRM'i referans metrik yap.
+- `meta.addCreativeVariants`: Yeni yaratıcı varyantları ekle.
+- `meta.broadenAudience`: Kitleyi genişlet.
+- `meta.editFrequently`: Sık düzenle (öğrenmeyi sıfırlar).
+- `meta.mergeAdsets`: Reklam setlerini birleştir.
+- `meta.narrowAudience`: Kitleyi daralt.
+- `meta.optimizeUpperFunnelEvent`: Üst huni olayına (lead) optimize et.
+- `meta.raiseBudget`: Meta bütçesini artır.
+- `meta.reduceEdits`: Düzenlemeyi azalt.
+- `meta.splitAdsets`: Daha çok sete böl.
+- `onboarding.defineActivation`: Aktivasyon olayını tanımla.
+- `onboarding.firstWeekCall`: İlk hafta çağrısı.
+- `onboarding.shortTraining`: Kısa eğitim/şablon.
+- `planning.adjustForSeasonality`: Beklenti ve bütçeyi mevsime göre düzelt.
+- `product.differentiatePositioning`: Konumlandırmayı farklılaştır.
+- `product.fixRootCause`: Kök nedeni düzelt.
+- `product.matchCompetitorDiscount`: Rakibin indirimini aynen yap (kötü).
+- `product.repackagePricing`: Paketleme/fiyat yeniden yapılandır.
+- `product.retainExistingCustomers`: Mevcut müşteriyi koru.
+- `reputation.argueInPublic`: Herkese açık tartış (kötü).
+- `reputation.fakeReviews`: Sahte/teşvikli yorum (kötü).
+- `reputation.requestReviewsOrganic`: Gerçek müşteriden yorum iste.
+- `reputation.respondToReview`: Yoruma yanıt ver.
+- `retention.focusOnRetentionInLowSeason`: Düşük sezonda elde tutmaya odaklan.

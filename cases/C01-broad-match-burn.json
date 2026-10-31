@@ -1,0 +1,131 @@
+{
+  "id": "C01",
+  "slug": "broad-match-burn",
+  "stage": "click",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "gads.share_irrelevant_queries_7d",
+        "op": ">",
+        "value": 0.3
+      },
+      {
+        "metric": "gads.match_broad_share",
+        "op": ">",
+        "value": 0.5
+      },
+      {
+        "metric": "gads.negative_keywords_count",
+        "op": "<",
+        "value": 10
+      },
+      {
+        "metric": "day",
+        "op": ">=",
+        "value": 7
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 30
+  },
+  "marketOverrides": {
+    "de": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "gads.share_irrelevant_queries_7d",
+            "op": ">",
+            "value": 0.25
+          },
+          {
+            "metric": "gads.match_broad_share",
+            "op": ">",
+            "value": 0.5
+          },
+          {
+            "metric": "day",
+            "op": ">=",
+            "value": 7
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 30
+      }
+    },
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "gads.share_irrelevant_queries_7d",
+            "op": ">",
+            "value": 0.35
+          },
+          {
+            "metric": "gads.match_broad_share",
+            "op": ">",
+            "value": 0.5
+          },
+          {
+            "metric": "day",
+            "op": ">=",
+            "value": 7
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 30
+      }
+    }
+  },
+  "effects": [],
+  "symptoms": [
+    "gads.share_irrelevant_queries_7d",
+    "gads.cpa_observed",
+    "gads.lead_quality",
+    "gads.spend_7d",
+    "gads.negative_keywords_count"
+  ],
+  "correctResponses": [
+    {
+      "action": "gads.reviewSearchTerms",
+      "outcome": "case.C01.correct.outcome"
+    },
+    {
+      "action": "gads.addNegativeKeywords",
+      "outcome": "case.C01.correct.outcome"
+    },
+    {
+      "action": "gads.shiftToPhraseExact",
+      "outcome": "case.C01.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.raiseBudget",
+      "outcome": "case.C01.wrong.outcome"
+    },
+    {
+      "action": "core.wait",
+      "outcome": "case.C01.wrong.outcome"
+    },
+    {
+      "action": "gads.pauseCampaign",
+      "outcome": "case.C01.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C01.hint",
+  "i18n": {
+    "title": "case.C01.title",
+    "summary": "case.C01.summary",
+    "symptoms": "case.C01.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

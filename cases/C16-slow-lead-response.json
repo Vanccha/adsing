@@ -1,0 +1,124 @@
+{
+  "id": "C16",
+  "slug": "slow-lead-response",
+  "stage": "lead",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "funnel.lead_response_hours",
+        "op": ">",
+        "value": 24
+      },
+      {
+        "metric": "funnel.leads_7d",
+        "op": ">=",
+        "value": 10
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 21
+  },
+  "marketOverrides": {
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "funnel.lead_response_hours",
+            "op": ">",
+            "value": 6
+          },
+          {
+            "metric": "funnel.leads_7d",
+            "op": ">=",
+            "value": 10
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 21
+      }
+    },
+    "us": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "funnel.lead_response_hours",
+            "op": ">",
+            "value": 4
+          },
+          {
+            "metric": "funnel.leads_7d",
+            "op": ">=",
+            "value": 10
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 21
+      }
+    },
+    "de": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "funnel.lead_response_hours",
+            "op": ">",
+            "value": 24
+          },
+          {
+            "metric": "funnel.leads_7d",
+            "op": ">=",
+            "value": 10
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 21
+      }
+    }
+  },
+  "effects": [],
+  "symptoms": [
+    "funnel.lead_response_hours",
+    "funnel.lead_to_trial",
+    "funnel.leads_7d",
+    "funnel.unreachable_leads_7d"
+  ],
+  "correctResponses": [
+    {
+      "action": "funnel.setupAutoReply",
+      "outcome": "case.C16.correct.outcome"
+    },
+    {
+      "action": "funnel.scheduleResponseSlots",
+      "outcome": "case.C16.correct.outcome"
+    },
+    {
+      "action": "funnel.prioritizeLeads",
+      "outcome": "case.C16.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.raiseBudget",
+      "outcome": "case.C16.wrong.outcome"
+    },
+    {
+      "action": "meta.raiseBudget",
+      "outcome": "case.C16.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C16.hint",
+  "i18n": {
+    "title": "case.C16.title",
+    "summary": "case.C16.summary",
+    "symptoms": "case.C16.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

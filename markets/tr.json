@@ -1,0 +1,1387 @@
+{
+  "schemaVersion": 1,
+  "market": "tr",
+  "params": [
+    {
+      "id": "gads.search.cpc",
+      "value": 15,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 8,
+        "max": 35
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "B2B salon yazılımı anahtar kelimeleri TBM 8-35 TL (varsayım). Kaynaklı tüm sektör ort. 5,20 TL (Bravery Technology, 11.04.2026; ikincil, orijinal veri belirsiz, düşük güven).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.ctr",
+      "value": 0.045,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.03,
+        "max": 0.06
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Arama TO %3-6 (varsayım); Bravery ort. %3,8 (ikincil, düşük).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.cvr_lead",
+      "value": 0.06,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.03,
+        "max": 0.08
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "LP→demo/deneme formu %3-8 (varsayım); Bravery ort. dönüşüm %3,4.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.competition",
+      "value": 0.4,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.25,
+        "max": 0.6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Salon yazılımı kelimelerinde rekabet düşük-orta (Salon Randevu baskın).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.cpm",
+      "value": 70,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 40,
+        "max": 110
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "B2B hedefli Meta CPM 40-110 TL (varsayım). Ham Instagram aralığı 15-120 TL (Bravery 10.04.2026, ikincil). 1 Tem 2026’dan itibaren Meta %5 konum ücreti ayrıca (tax.meta_location_fee).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.ctr",
+      "value": 0.012,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.008,
+        "max": 0.02
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Link TO %0,8-2,0 (varsayım); TR’ye özgü kaynaklı CTR bulunamadı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.cpc",
+      "value": 5.83,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "derived",
+      "range": {
+        "min": 3,
+        "max": 12
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "CPC = CPM / (1000 × CTR) ≈ 5,83 TL; varsayım aralığı TBM 3-12 TL ile tutarlı (Bravery IG CPC 1,5-50 TL).",
+      "formula": "meta.cpm / (1000 * meta.ctr)",
+      "inputs": [
+        "meta.cpm",
+        "meta.ctr"
+      ]
+    },
+    {
+      "id": "meta.cvr_lead",
+      "value": 0.035,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.02,
+        "max": 0.06
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Tıklama→lead %2-6 (varsayım; merak tıklaması çok).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "tax.meta_location_fee",
+      "value": 0.05,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.webtekno.com/meta-turkiye-reklamlar-konum-ucreti-alacak-h218926.html",
+        "name": "Webtekno: Meta Türkiye reklam konum ücreti (ikincil)",
+        "published": "2026-07-01",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "1 Tem 2026’dan itibaren Meta TR reklam harcamasına %5 konum ücreti (Webtekno/ShiftDelete özetleri, bu turda doğrulanamadı; KDV’li mi belirsiz). Etkin nakit maliyet nominalin ~1,05-1,26 katı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "tax.dhv_rate",
+      "value": 0.05,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "sourced",
+      "range": {
+        "min": 0.025,
+        "max": 0.05
+      },
+      "source": {
+        "url": "https://bianet.org/haber/dijital-hizmet-vergisinde-indirim-314919",
+        "name": "Bianet: Dijital Hizmet Vergisinde indirim (ikincil)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "Dijital Hizmet Vergisi 2026: %5; 1 Oca 2027’den %2,5 (Cumhurbaşkanı Kararı; Bianet/Bloomberg HT ikincil). Platformlar öder; fiyatlara yansıma olayı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.consent_rate",
+      "value": 0.85,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.75,
+        "max": 0.95
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "KVKK uygulaması gevşek; yasal ölçüm kaybı düşük. Asıl kayıp davranışsal (WhatsApp/telefon) ve measure.offline_share ile modellenir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.offline_share",
+      "value": 0.55,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.35,
+        "max": 0.75
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Lead’in web formu yerine telefon/WhatsApp/DM ile gelip platformda görünmeyen payı. Haritalar’da salonların %16’sında web sitesi (Scrap.io, satıcı verisi).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.platform_overreport",
+      "value": 1.5,
+      "unit": "multiplier",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 1.2,
+        "max": 2
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Platform raporu / gerçek: çağrı izleme ve WhatsApp tıklama etkinlikleri kurulmadıkça bozuk atıf ve şişkinlik.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.ios_att_optin",
+      "value": 0.3,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.2,
+        "max": 0.45
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "TR ATT opt-in; kaynak bulunamadı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.lp_to_lead",
+      "value": 0.04,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.02,
+        "max": 0.07
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Karma trafik LP→lead.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.lead_qualified",
+      "value": 0.55,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.35,
+        "max": 0.7
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Lead→nitelikli.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.trial_start",
+      "value": 0.7,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.45,
+        "max": 0.85
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Nitelikli lead→deneme (WhatsApp ile hızlı takip artırır).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.trial_to_paid",
+      "value": 0.14,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.08,
+        "max": 0.2
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Deneme→ücretli %8-20 (varsayım; ücretsiz paket ve ücretsiz platform baskısı).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.06,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.04,
+        "max": 0.09
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Yapısal tavan: salon kapanışı ~%0,4/ay (377/91.100, Scrap.io) + fiyat duyarlılığı + ücretsiz rakipler. Plan: SMB %3-7.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.price_hike_shock",
+      "value": 0.02,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.01,
+        "max": 0.03
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Tek seferde %15-25 fiyat artışında o ay ek churn +%1-3 puan (varsayım).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "macro.cpi_yoy",
+      "value": 0.2973,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.gazeteoksijen.com/ekonomi/eylulde-enflasyon-yillik-yuzde-29-73-aylik-yuzde-1-84-oldu-291680",
+        "name": "Gazete Oksijen (TÜİK Eylül 2026 TÜFE aktarımı)",
+        "published": "2026-10-05",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "TÜFE yıllık %29,73 (Eylül 2026, TÜİK açıklaması; birincil TÜİK sayfasına ulaşılamadı, birden çok haber sitesi tutarlı). Ekim verisi 3 Kasım’da açıklanır.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "macro.cpi_mom",
+      "value": 0.0184,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.gazeteoksijen.com/ekonomi/eylulde-enflasyon-yillik-yuzde-29-73-aylik-yuzde-1-84-oldu-291680",
+        "name": "Gazete Oksijen (TÜİK Eylül 2026 TÜFE aktarımı)",
+        "published": "2026-10-05",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "TÜFE aylık %1,84 (Eylül 2026).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "macro.fx_depr_monthly",
+      "value": 0.017,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.01,
+        "max": 0.03
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "TRY aylık değer kaybı ≈ %1,5-2 (iki nokta: 14→27 Ekim 49,38→49,79 serbest piyasa; TCMB 30.10: 49,82).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "macro.price_update_interval_months",
+      "value": 4,
+      "unit": "count",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 3,
+        "max": 6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Önerilen fiyat güncelleme aralığı 3-6 ay (kademeli).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.salonrandevu.silver_incl_vat",
+      "value": 779,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "sourced",
+      "source": {
+        "url": "https://salonrandevu.com/randevu-takip-programi-fiyatlari",
+        "name": "Salon Randevu fiyatları",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Salon Randevu Silver 779 ₺/ay, 3 personel; sayfaya göre fiyatlar KDV dahil. Resmî sayfa okundu 2026-10-31 (plan dosyasında \"KDV belirsiz\" idi, güncellendi).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.fresha.team_per_seat",
+      "value": 275,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.fresha.com/pricing",
+        "name": "Fresha Pricing (TR IP: TRY)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Fresha TR sayfası Team 275 TRY/üye/ay (Independent 415 TRY); KDV durumu belirtilmemiş, hariç varsayıldı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.mean",
+      "value": 737.1,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "derived",
+      "source": null,
+      "confidence": "medium",
+      "note": "3 koltuklu salon için rakip net aylık ortalaması: mean(Salon Randevu Silver ÷ 1,2 (KDV hariç), Fresha 3×275). Salonist ($59 ≈ 2.940 TRY) aykırı değer olarak dışarıda bırakıldı.",
+      "formula": "mean(price.anchor.salonrandevu.silver_incl_vat / (1 + tax.vat_rate), 3 * price.anchor.fresha.team_per_seat)",
+      "inputs": [
+        "price.anchor.salonrandevu.silver_incl_vat",
+        "tax.vat_rate",
+        "price.anchor.fresha.team_per_seat"
+      ]
+    },
+    {
+      "id": "price.monthly",
+      "value": 700,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "derived",
+      "range": {
+        "min": 500,
+        "max": 1800
+      },
+      "source": null,
+      "confidence": "medium",
+      "note": "Varsayılan ürün aylık ücret, KDV hariç: rakip ortalamasının %5 altı, 10 TL’ye yuvarlı. Plan ARPA varsayımı 500-1.800 TL.",
+      "formula": "round(price.anchor.mean * 0.95, 10)",
+      "inputs": [
+        "price.anchor.mean"
+      ]
+    },
+    {
+      "id": "pay.fee_pct",
+      "value": 0.0279,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.0219,
+        "max": 0.035
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Sanal POS: PayTR yeni üye iş yeri %2,19’dan başlar (resmî sayfa okundu: \"2.19%\"), iyzico %2,79 + 0,25 TL’den (ikincil; iyzico resmî sayfası komisyon vermiyor). Taksit ek oran. Efektif %2,2-3,5.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "pay.fee_fixed",
+      "value": 0.25,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0,
+        "max": 0.5
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İşlem başı sabit 0,25 TL (iyzico ikincil).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "tax.vat_rate",
+      "value": 0.2,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "sourced",
+      "source": {
+        "url": "https://trykintsugi.com/sales-tax-guides/middle-east/turkey",
+        "name": "Kintsugi Turkey VAT Guide (Temmuz 2026 itibarıyla güncel denmiş)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "Genel KDV %20 (Temmuz 2023’ten beri); SaaS aboneliği dahil. Kintsugi rehberi okundu (Temmuz 2026 güncel denmiş); birincil GİB sayfası açılamadı. Google/Meta reklamında alıcı KDV’yi sorumlu sıfatıyla beyan eder.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "fx.to_usd",
+      "value": 0.020072,
+      "unit": "USD",
+      "market": "tr",
+      "layer": "derived",
+      "source": null,
+      "confidence": "high",
+      "note": "TRY→USD = 1 / USDTRY (TCMB 30.10.2026 alış-satış ortalaması 49,8196).",
+      "formula": "1 / fx.tcmb.usdtry",
+      "inputs": [
+        "fx.tcmb.usdtry"
+      ]
+    },
+    {
+      "id": "legal.cold_email",
+      "value": "restricted",
+      "unit": "enum",
+      "market": "tr",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "medium",
+      "note": "Ticari İletişim Yönetmeliği: esnaf/tacire onaysız ileti mümkün ama ret hakkı kullananlara gönderilemez; İYS kaydı/ret kontrolü şart. iletiMerkezi rehberi \"B2B muaf değildir\" der (çelişki). Güvenli yorum: ret listesi + İYS kontrolü. Ceza 2.859-14.309 TL/ihlal (2026, ikincil). Hukuki danışmanlık değildir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "legal.cold_call",
+      "value": "restricted",
+      "unit": "enum",
+      "market": "tr",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "Otomatik sesli arama onaya tabi; insan operatör B2B araması için net sınır doğrulanamadı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "legal.sms",
+      "value": "restricted",
+      "unit": "enum",
+      "market": "tr",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "medium",
+      "note": "B2B soğuk SMS: onay şartı yok ama İYS ret kontrolü; B2C kampanya SMS onay + İYS gerektirir. Hatırlatma/OTP ticari ileti sayılmaz.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "events.legal_rate_mult",
+      "value": 1.1,
+      "unit": "multiplier",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.7,
+        "max": 1.6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Hukuki olay sıklığı: ceza küçük ama sık şikâyet/İYS olayları; KVKK/VERBİS; e-fatura.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "events.macro_rate_mult",
+      "value": 2,
+      "unit": "multiplier",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 1.3,
+        "max": 3
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Makro olay sıklığı (kur şoku, TÜFE açıklaması aylık, PPK) ABD’nin ~3 katı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.gbp_effect",
+      "value": 0.55,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.35,
+        "max": 0.75
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "GBP etkisi: Haritalar’da ~91 bin salon ama WhatsApp/telefon rezervasyon baskın.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.referral_rate",
+      "value": 0.06,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.02,
+        "max": 0.1
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Salon sahipleri birbirini tanır; referans güçlü.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.field_sales_close",
+      "value": 0.15,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.08,
+        "max": 0.25
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Saha/telefon + WhatsApp takip kapanış oranı (en yüksek kaldıraç).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.salon_count",
+      "value": 91100,
+      "unit": "count",
+      "market": "tr",
+      "layer": "sourced",
+      "range": {
+        "min": 60000,
+        "max": 130000
+      },
+      "source": {
+        "url": "https://scrap.io/tr/turkiye-kuafor-listesi",
+        "name": "Scrap.io Türkiye kuaför listesi (Ağustos 2026; satıcı verisi)",
+        "published": "2026-08-01",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "Google Haritalar’da kuaför 45.634 + güzellik salonu 45.467 ≈ 91.100 (Scrap.io, Ağustos 2026; satıcı verisi, mükerrer olabilir). Çalışma havuzu 90-130 bin; TÜİK NACE 96.02 doğrulanamadı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.software_adoption",
+      "value": 0.15,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.1,
+        "max": 0.2
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Şu an yazılım kullanan salon payı %10-20 (kaynak yok).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.web_site_share",
+      "value": 0.16,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "sourced",
+      "source": {
+        "url": "https://scrap.io/tr/turkiye-kuafor-listesi",
+        "name": "Scrap.io Türkiye kuaför listesi (Ağustos 2026; satıcı verisi)",
+        "published": "2026-08-01",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "Haritalar’daki salonların %16’sında web sitesi, %3,3’ünde e-posta (Scrap.io, satıcı verisi).",
+      "formula": null,
+      "inputs": []
+    }
+  ],
+  "meta": {
+    "currency": "TRY",
+    "locale": "tr-TR",
+    "fxToUSD": 0.020072,
+    "format": {
+      "date": "DD.MM.YYYY",
+      "time": "24h",
+      "weekStart": 1,
+      "units": "metric",
+      "phone": "+90 5XX XXX XX XX",
+      "pricesExcludeTax": false,
+      "note": "B2C fiyat KDV dahil gösterilir; B2B SaaS çoğu zaman +KDV. 1.234,56 ₺"
+    },
+    "holidays": [
+      {
+        "date": "2026-11-11",
+        "endDate": "2026-11-11",
+        "name": "11.11 Bekâr Günü kampanyaları",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1,
+          "saasBuying": 0.9
+        },
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.milligazete.com.tr/kasim-indirimleri-2026-hangi-tarihte-efsane-cuma-1111-ve-cyber-monday-takvimi",
+          "name": "Milli Gazete: Kasım indirimleri 2026",
+          "published": "2026-10-01",
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2026-11-27",
+        "endDate": "2026-11-30",
+        "name": "Efsane Cuma (Black Friday)",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1,
+          "saasBuying": 0.85
+        },
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.milligazete.com.tr/kasim-indirimleri-2026-hangi-tarihte-efsane-cuma-1111-ve-cyber-monday-takvimi",
+          "name": "Milli Gazete: Kasım indirimleri 2026",
+          "published": "2026-10-01",
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Siber Pazartesi 30.11.2026. Q4 Meta/Google maliyeti +%20-30 (ikincil, düşük güven)."
+      },
+      {
+        "date": "2027-01-01",
+        "endDate": "2027-01-01",
+        "name": "Yılbaşı",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.cnnturk.com/guncel/2026da-hangi-gunler-resmi-tatil-liste-liste-resmi-tatil-gunleri-2026-2362840",
+          "name": "CNN Türk resmî tatil listesi (sabit tarihler; 2027 için genel kural)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-01-01",
+        "endDate": "2027-01-01",
+        "name": "e-Arşiv/e-Fatura tam geçiş (kâğıt fatura sonu)",
+        "kind": "regulatory",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1,
+          "saasBuying": 1.15
+        },
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.parasut.com/blog/kagit-fatura-devri-2026-sonunda-bitiyor",
+          "name": "Paraşüt: Kâğıt fatura devri 2026 sonunda bitiyor (ikincil)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Basit usul/işletme hesabı mükellefleri için 1 yıl ötelenmişti; ikincil kaynak. Salonlar için satış fırsatı; DHV %2,5’a düşer (bkz. market.notes)."
+      },
+      {
+        "date": "2027-02-08",
+        "endDate": "2027-02-08",
+        "name": "Ramazan başlangıcı (yaklaşık)",
+        "kind": "religious",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.9
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.dunya.com/gundem/2027-bayram-tarihleri-ramazan-bayrami-ve-kurban-bayrami-ne-zaman-kutlanacak-haberi-840413",
+          "name": "Dünya: 2027 Bayram Tarihleri",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Bayramdan 29-30 gün geri sayım; Diyanet takvimi doğrulanmadı."
+      },
+      {
+        "date": "2027-03-08",
+        "endDate": "2027-03-08",
+        "name": "Ramazan Bayramı arefesi (yarım gün)",
+        "kind": "religious",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1.6,
+          "saasBuying": 0.5
+        },
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.dunya.com/gundem/2027-bayram-tarihleri-ramazan-bayrami-ve-kurban-bayrami-ne-zaman-kutlanacak-haberi-840413",
+          "name": "Dünya: 2027 Bayram Tarihleri",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true,
+        "note": "Bayram öncesi 7-10 gün kuaför yoğunluğu +%30-80 (varsayım, sayısal kaynak yok)."
+      },
+      {
+        "date": "2027-03-09",
+        "endDate": "2027-03-11",
+        "name": "Ramazan Bayramı",
+        "kind": "religious",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.2,
+          "saasBuying": 0.2
+        },
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.dunya.com/gundem/2027-bayram-tarihleri-ramazan-bayrami-ve-kurban-bayrami-ne-zaman-kutlanacak-haberi-840413",
+          "name": "Dünya: 2027 Bayram Tarihleri",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true,
+        "note": "Salonlar 3-5 gün kapanır (varsayım). Uzatma (9 gün) kararı 2027 için doğrulanamadı."
+      },
+      {
+        "date": "2027-04-23",
+        "endDate": "2027-04-23",
+        "name": "Ulusal Egemenlik ve Çocuk Bayramı",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.cnnturk.com/guncel/2026da-hangi-gunler-resmi-tatil-liste-liste-resmi-tatil-gunleri-2026-2362840",
+          "name": "CNN Türk resmî tatil listesi (sabit tarihler; 2027 için genel kural)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-05-01",
+        "endDate": "2027-05-01",
+        "name": "Emek ve Dayanışma Günü",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.cnnturk.com/guncel/2026da-hangi-gunler-resmi-tatil-liste-liste-resmi-tatil-gunleri-2026-2362840",
+          "name": "CNN Türk resmî tatil listesi (sabit tarihler; 2027 için genel kural)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-05-15",
+        "endDate": "2027-05-15",
+        "name": "Kurban Bayramı arefesi (yarım gün)",
+        "kind": "religious",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1.5,
+          "saasBuying": 0.5
+        },
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.dunya.com/gundem/2027-bayram-tarihleri-ramazan-bayrami-ve-kurban-bayrami-ne-zaman-kutlanacak-haberi-840413",
+          "name": "Dünya: 2027 Bayram Tarihleri",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true,
+        "note": null
+      },
+      {
+        "date": "2027-05-16",
+        "endDate": "2027-05-19",
+        "name": "Kurban Bayramı",
+        "kind": "religious",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.2,
+          "saasBuying": 0.2
+        },
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.dunya.com/gundem/2027-bayram-tarihleri-ramazan-bayrami-ve-kurban-bayrami-ne-zaman-kutlanacak-haberi-840413",
+          "name": "Dünya: 2027 Bayram Tarihleri",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true,
+        "note": null
+      },
+      {
+        "date": "2027-05-19",
+        "endDate": "2027-05-19",
+        "name": "Atatürk’ü Anma, Gençlik ve Spor Bayramı",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.cnnturk.com/guncel/2026da-hangi-gunler-resmi-tatil-liste-liste-resmi-tatil-gunleri-2026-2362840",
+          "name": "CNN Türk resmî tatil listesi (sabit tarihler; 2027 için genel kural)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-07-15",
+        "endDate": "2027-07-15",
+        "name": "Demokrasi ve Millî Birlik Günü",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.cnnturk.com/guncel/2026da-hangi-gunler-resmi-tatil-liste-liste-resmi-tatil-gunleri-2026-2362840",
+          "name": "CNN Türk resmî tatil listesi (sabit tarihler; 2027 için genel kural)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-08-30",
+        "endDate": "2027-08-30",
+        "name": "Zafer Bayramı",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.cnnturk.com/guncel/2026da-hangi-gunler-resmi-tatil-liste-liste-resmi-tatil-gunleri-2026-2362840",
+          "name": "CNN Türk resmî tatil listesi (sabit tarihler; 2027 için genel kural)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-10-29",
+        "endDate": "2027-10-29",
+        "name": "Cumhuriyet Bayramı",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "sourced",
+        "source": {
+          "url": "https://www.cnnturk.com/guncel/2026da-hangi-gunler-resmi-tatil-liste-liste-resmi-tatil-gunleri-2026-2362840",
+          "name": "CNN Türk resmî tatil listesi (sabit tarihler; 2027 için genel kural)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "28 Ekim öğleden sonra yarım gün."
+      },
+      {
+        "date": "2027-11-26",
+        "endDate": "2027-11-26",
+        "name": "Efsane Cuma (Black Friday) 2027 (tahmini)",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1,
+          "saasBuying": 0.85
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.dunya.com/gundem/2027-bayram-tarihleri-ramazan-bayrami-ve-kurban-bayrami-ne-zaman-kutlanacak-haberi-840413",
+          "name": "Dünya: 2027 Bayram Tarihleri",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Kasım’ın dördüncü Cuma günü kuralından hesap; resmî duyuru yok."
+      }
+    ],
+    "seasonality": {
+      "note": "Çarpanlar VARSAYIM (düşük güven). Kaynaklı yalnızca: Q4 maliyet +%20-30, Q1/yaz -%10-15 (Bravery 10.04.2026, ikincil, düşük) ve bayram tarihleri. Bayram öncesi 7-10 gün salon talebi +%30-80 ve bayramda 3-5 gün kapanış sayısal kaynaksız varsayım. Düğün sezonu Mayıs-Ekim.",
+      "layer": "assumption",
+      "confidence": "low",
+      "adCost": {
+        "10": 1.05,
+        "11": 1.25,
+        "12": 1.2,
+        "01": 0.88,
+        "02": 0.9,
+        "03": 0.95,
+        "04": 0.95,
+        "05": 0.97,
+        "06": 0.9,
+        "07": 0.9,
+        "08": 0.92,
+        "09": 1
+      },
+      "salonDemand": {
+        "10": 1.05,
+        "11": 0.95,
+        "12": 1.1,
+        "01": 0.85,
+        "02": 0.9,
+        "03": 1.15,
+        "04": 1,
+        "05": 1.15,
+        "06": 1.15,
+        "07": 1.15,
+        "08": 1.15,
+        "09": 1.1
+      },
+      "saasBuying": {
+        "10": 1,
+        "11": 0.9,
+        "12": 1.1,
+        "01": 1.1,
+        "02": 1,
+        "03": 0.8,
+        "04": 0.95,
+        "05": 0.85,
+        "06": 1,
+        "07": 0.95,
+        "08": 0.95,
+        "09": 1.05
+      },
+      "derivedMonths": {}
+    },
+    "dominantChannels": [
+      "whatsapp",
+      "phone",
+      "field_sales",
+      "instagram"
+    ],
+    "channels": {
+      "google_search": {
+        "access": "open",
+        "relative": 0.4,
+        "layer": "assumption"
+      },
+      "meta_ads": {
+        "access": "open",
+        "relative": 0.45,
+        "layer": "assumption",
+        "note": "CPM düşük, nitelikli lead oranı düşük; %5 konum ücreti."
+      },
+      "geo": {
+        "access": "open",
+        "relative": 0.1,
+        "layer": "assumption"
+      },
+      "gbp": {
+        "access": "open",
+        "relative": 0.6,
+        "layer": "assumption"
+      },
+      "reviews": {
+        "access": "open",
+        "relative": 0.5,
+        "layer": "assumption"
+      },
+      "organic_social": {
+        "access": "open",
+        "relative": 0.7,
+        "layer": "assumption",
+        "note": "Instagram organik güçlü."
+      },
+      "referral": {
+        "access": "open",
+        "relative": 0.85,
+        "layer": "assumption"
+      },
+      "reseller": {
+        "access": "open",
+        "relative": 0.5,
+        "layer": "assumption",
+        "note": "Esnaf odaları, bayiler."
+      },
+      "field_sales": {
+        "access": "open",
+        "relative": 0.9,
+        "layer": "assumption"
+      },
+      "cold_email": {
+        "access": "restricted",
+        "relative": 0.1,
+        "layer": "assumption",
+        "note": "Salonların %3,3’ünde e-posta var."
+      },
+      "cold_call": {
+        "access": "restricted",
+        "relative": 0.7,
+        "layer": "assumption"
+      },
+      "sms": {
+        "access": "restricted",
+        "relative": 0.5,
+        "layer": "assumption"
+      },
+      "whatsapp": {
+        "access": "open",
+        "relative": 1,
+        "layer": "assumption",
+        "note": "İnternet kullananların %90’ı (TÜİK 2026 HBT, ikincil haber)."
+      },
+      "marketplace": {
+        "access": "open",
+        "relative": 0.3,
+        "layer": "assumption"
+      }
+    },
+    "legal": {
+      "disclaimer": "Oyun yorumu; hukuki danışmanlık değildir.",
+      "consentRegime": "KVKK açık rıza + 6563/İYS ticari ileti onayı; esnaf/tacir istisnası ve ret listesi",
+      "coldEmail": {
+        "status": "restricted",
+        "rule": "B2B esnaf/tacire onay aranmaz, ret listesi + İYS kontrolü şart (kaynaklar çelişkili)",
+        "maxPenalty": {
+          "value": 14309,
+          "unit": "TRY",
+          "per": "ihlal (2026; alt sınır 2.859)",
+          "source": {
+            "url": "https://www.erdem-erdem.av.tr/bilgi-bankasi/elektronik-ticaret-kanunu-kapsaminda-idari-para-cezalari-2026-yili-icin-guncellendi",
+            "name": "Erdem & Erdem: 6563 idari para cezaları 2026 (ikincil)",
+            "published": null,
+            "accessed": "2026-10-31"
+          },
+          "confidence": "medium"
+        }
+      },
+      "coldCall": {
+        "status": "restricted",
+        "rule": "Otomatik arama onaya tabi; insan operatör B2B sınırı doğrulanamadı",
+        "maxPenalty": null
+      },
+      "sms": {
+        "status": "restricted",
+        "rule": "B2B ret kontrolü; B2C kampanya SMS’i onay + İYS; bilgilendirme mesajları muaf",
+        "maxPenalty": {
+          "value": 14309,
+          "unit": "TRY",
+          "per": "ihlal (2026)",
+          "source": {
+            "url": "https://www.erdem-erdem.av.tr/bilgi-bankasi/elektronik-ticaret-kanunu-kapsaminda-idari-para-cezalari-2026-yili-icin-guncellendi",
+            "name": "Erdem & Erdem: 6563 idari para cezaları 2026 (ikincil)",
+            "published": null,
+            "accessed": "2026-10-31"
+          },
+          "confidence": "medium"
+        }
+      },
+      "privacy": {
+        "law": "KVKK 6698 / VERBİS",
+        "maxPenalty": {
+          "value": 17092242,
+          "unit": "TRY",
+          "per": "ihlal üst sınırı (2026; veri güvenliği/VERBİS)",
+          "source": {
+            "url": "https://www.kazimceylan.av.tr/kvkk-idari-para-cezasi-hesaplama",
+            "name": "Kazım Ceylan Hukuk: KVKK idari para cezası 2026 (ikincil)",
+            "published": null,
+            "accessed": "2026-10-31"
+          },
+          "confidence": "medium"
+        },
+        "note": "Salon veri sorumlusu, biz veri işleyen; yurt dışı bulut aktarımı ek yükümlülük."
+      },
+      "tax": {
+        "vat": "%20 (Kintsugi 2026)",
+        "dhv": "2026 %5, 1 Oca 2027’den %2,5",
+        "eInvoice": "1 Oca 2027 tam e-belge zorunluluğu (basit usul/işletme hesabı; ikincil)"
+      }
+    },
+    "competitors": [
+      {
+        "id": "salon-randevu",
+        "name": "Salon Randevu",
+        "pricing": [
+          {
+            "plan": "Silver (3 personel, 50 randevu kredisi)",
+            "price": 779,
+            "unit": "TRY",
+            "period": "month (KDV dahil)"
+          },
+          {
+            "plan": "Gold (5 personel)",
+            "price": 1590,
+            "unit": "TRY",
+            "period": "month (KDV dahil)"
+          },
+          {
+            "plan": "Platinum (7 personel)",
+            "price": 2400,
+            "unit": "TRY",
+            "period": "month (KDV dahil)"
+          },
+          {
+            "plan": "Diamond (10 personel)",
+            "price": 3480,
+            "unit": "TRY",
+            "period": "month (KDV dahil)"
+          },
+          {
+            "plan": "Ek personel / WhatsApp / online randevu sitesi",
+            "price": 225,
+            "unit": "TRY",
+            "period": "month (her biri)"
+          }
+        ],
+        "positioning": "TR baskın; ücretsiz paket ve ücretsiz işletme listeleme; deneme kart istemez.",
+        "trialDays": null,
+        "source": {
+          "url": "https://salonrandevu.com/randevu-takip-programi-fiyatlari",
+          "name": "Salon Randevu fiyatları",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true
+      },
+      {
+        "id": "fresha-tr",
+        "name": "Fresha (TR)",
+        "pricing": [
+          {
+            "plan": "Independent",
+            "price": 415,
+            "unit": "TRY",
+            "period": "month"
+          },
+          {
+            "plan": "Team (üye başı)",
+            "price": 275,
+            "unit": "TRY",
+            "period": "month"
+          },
+          {
+            "plan": "WhatsApp mesajı",
+            "price": 1.3,
+            "unit": "TRY",
+            "period": "message (1,30-2,40)"
+          }
+        ],
+        "positioning": "7 gün deneme; pazaryeri 25M+ potansiyel müşteri; mesaj ücretli (20 ücretsiz/ay).",
+        "trialDays": 7,
+        "source": {
+          "url": "https://www.fresha.com/pricing",
+          "name": "Fresha Pricing (TR IP: TRY)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true
+      },
+      {
+        "id": "salonist",
+        "name": "Salonist",
+        "pricing": [
+          {
+            "plan": "Marketplace (ücretsiz, 50 randevu/ay)",
+            "price": 0,
+            "unit": "USD",
+            "period": "month"
+          },
+          {
+            "plan": "Essential",
+            "price": 59,
+            "unit": "USD",
+            "period": "month"
+          },
+          {
+            "plan": "Advance",
+            "price": 109,
+            "unit": "USD",
+            "period": "month"
+          },
+          {
+            "plan": "Expert",
+            "price": 179,
+            "unit": "USD",
+            "period": "month"
+          },
+          {
+            "plan": "Pazaryeri komisyonu (ilk ziyaret)",
+            "price": 0.15,
+            "unit": "ratio",
+            "period": "per booking"
+          }
+        ],
+        "positioning": "Sınırsız personel, yerel faturalama para birimi notu; 7 gün deneme; kurulum/sözleşme yok.",
+        "trialDays": 7,
+        "source": {
+          "url": "https://salonist.io/tr/pricing",
+          "name": "Salonist Pricing (TR)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true
+      },
+      {
+        "id": "booksy-tr",
+        "name": "Booksy (TR)",
+        "pricing": [],
+        "positioning": "TR’de aktif taban ve resmî TR fiyat sayfası doğrulanamadı (biz.booksy.com/tr-tr/pricing 404).",
+        "trialDays": null,
+        "source": {
+          "url": "https://biz.booksy.com/tr-tr/pricing",
+          "name": "Booksy TR (404)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false
+      }
+    ],
+    "notes": [
+      "Bilinçli global bırakılanlar: gads.match.*, meta.learn.*, meta.fatigue.*, gads.smart.*, funnel.lead_decay_tau_hours, founder.hours_per_week.",
+      "Salon Randevu fiyatları KDV dahil; price.monthly KDV hariç türetildi. Oyun içi gösterimde pricesExcludeTax=false: B2C tarzı KDV dahil gösterim için ×1,2.",
+      "TCMB kuru kullanıldı (plan dosyasında serbest piyasa kuru vardı).",
+      "Booksy TR, Kuaförüm Yanımda, Randevu345 vb. doğrulanamadı; listeye alınmadı."
+    ]
+  }
+}

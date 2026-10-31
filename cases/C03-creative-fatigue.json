@@ -1,0 +1,89 @@
+{
+  "id": "C03",
+  "slug": "creative-fatigue",
+  "stage": "attention",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "meta.frequency",
+        "op": ">",
+        "value": {
+          "param": "meta.fatigue.f0"
+        }
+      },
+      {
+        "metric": "meta.days_since_creative_refresh",
+        "op": ">=",
+        "value": 21
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 21
+  },
+  "marketOverrides": {
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "meta.frequency",
+            "op": ">",
+            "value": {
+              "param": "meta.fatigue.f0"
+            }
+          },
+          {
+            "metric": "meta.days_since_creative_refresh",
+            "op": ">=",
+            "value": 14
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 21
+      }
+    }
+  },
+  "effects": [],
+  "symptoms": [
+    "meta.frequency",
+    "meta.ctr",
+    "meta.cpm",
+    "meta.cpa_observed",
+    "meta.audience_size"
+  ],
+  "correctResponses": [
+    {
+      "action": "meta.addCreativeVariants",
+      "outcome": "case.C03.correct.outcome"
+    },
+    {
+      "action": "meta.broadenAudience",
+      "outcome": "case.C03.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "meta.raiseBudget",
+      "outcome": "case.C03.wrong.outcome"
+    },
+    {
+      "action": "meta.narrowAudience",
+      "outcome": "case.C03.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C03.hint",
+  "i18n": {
+    "title": "case.C03.title",
+    "summary": "case.C03.summary",
+    "symptoms": "case.C03.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

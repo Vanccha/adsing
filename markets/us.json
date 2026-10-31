@@ -1,0 +1,1494 @@
+{
+  "schemaVersion": 1,
+  "market": "us",
+  "params": [
+    {
+      "id": "gads.search.cpc",
+      "value": 5.5,
+      "unit": "USD",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 3,
+        "max": 12
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "B2B salon yazılımı anahtar kelimeleri için merkez. Çıpalar: WordStream tüm sektör ort. TBM $5,42 (orta güven, sayfa 403, arama özeti), Personal Services $7,17 (düşük). Plan varsayımı $3-12.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.ctr",
+      "value": 0.0664,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "sourced",
+      "range": {
+        "min": 0.03,
+        "max": 0.08
+      },
+      "source": {
+        "url": "https://www.wordstream.com/blog/2026-google-ads-benchmarks",
+        "name": "WordStream Google Ads Benchmarks 2026 (13.000+ kampanya, Nis 2025-Mar 2026)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "WordStream 2026 tüm sektör ort. TO %6,64. WordStream sayfası 403 verdi; değer birden çok arama özetinde tutarlı çıktı (orta güven). Niş B2B anahtar kelimelerde düşük olabilir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.cvr_lead",
+      "value": 0.08,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.03,
+        "max": 0.12
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Tıklama→lead (deneme/demo talebi). WordStream tüm sektör dönüşüm %8,18 (platform tanımlı) ile uyumlu; SaaS kayıt zorunluluğu nedeniyle aralığın alt-orta kısmı seçildi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.competition",
+      "value": 0.75,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.6,
+        "max": 0.9
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Rekabet yoğunluğu endeksi (0-1). Vagaro/Booksy/GlossGenius/Square marka dışı kelimelerde teklif veriyor (nitel).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.cpm",
+      "value": 30,
+      "unit": "USD",
+      "market": "us",
+      "layer": "sourced",
+      "range": {
+        "min": 26,
+        "max": 40
+      },
+      "source": {
+        "url": "https://affectgroup.com/blog/meta-ads-cpm-in-the-united-states-benchmarks-for-facebook-and-instagram/",
+        "name": "Affect Group: US Meta Ads CPM Benchmarks 1Q 2026",
+        "published": "2026-03-26",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "Affect Group 1Q 2026 (sayfa okundu): ABD lead generation CPM $26-40. Genel ort. $22,20 (2025; ikincil). Salon sahibi B2B hedeflemesi lead formu hedefine yakın alındı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.ctr",
+      "value": 0.015,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.008,
+        "max": 0.026
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Link tıklama oranı, B2B salon sahibi kitlesi. İkincil: WordStream lead gen %2,59, trafik %1,71, tüm formatlar %1,49 (arama özeti). Soğuk B2B kitlede alt-orta seçildi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.cpc",
+      "value": 2,
+      "unit": "USD",
+      "market": "us",
+      "layer": "derived",
+      "range": {
+        "min": 1.2,
+        "max": 4.6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "CPC = CPM / (1000 × CTR). İkincil karşılaştırma: lead kampanyası CPC ~$1,92 (arama özeti); tutarlı.",
+      "formula": "meta.cpm / (1000 * meta.ctr)",
+      "inputs": [
+        "meta.cpm",
+        "meta.ctr"
+      ]
+    },
+    {
+      "id": "meta.cvr_lead",
+      "value": 0.04,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.02,
+        "max": 0.07
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Tıklama→lead formu. Plan varsayımı %2-7.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.consent_rate",
+      "value": 0.88,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.8,
+        "max": 0.95
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Ölçülebilir kullanıcı oranı: ABD çoğunlukla opt-out; güvenilir ABD verisi yok. DE planındaki karşılaştırma: ABD >%80 (ikincil).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.platform_overreport",
+      "value": 1.35,
+      "unit": "multiplier",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 1.15,
+        "max": 1.8
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Platform raporlanan dönüşüm / gerçek (atıf şişmesi, view-through, çoklu kanal talebi). Meta için ABD’de yüksek; Google daha güvenilir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.ios_att_optin",
+      "value": 0.25,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.15,
+        "max": 0.35
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Güncel ABD iOS ATT opt-in. TAZELİK UYARISI: tek kaynaklı veri %4 (Flurry, Mayıs 2021, >12 ay). 2025’te FR %51, DE %47 (ikincil). Güncel ABD oranı doğrulanamadı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.lp_to_lead",
+      "value": 0.05,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.02,
+        "max": 0.09
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Karma trafik için LP ziyaretçisi→lead baz oranı (kanala özel oranlar gads/meta cvr_lead).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.lead_qualified",
+      "value": 0.65,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.45,
+        "max": 0.8
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Lead→nitelikli lead (ICP: salon sahibi, uygun boyut).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.trial_start",
+      "value": 0.75,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.5,
+        "max": 0.9
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Nitelikli lead→deneme başlangıcı (hızlı yanıt ile artar).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.trial_to_paid",
+      "value": 0.18,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.08,
+        "max": 0.25
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Deneme→ücretli. ChartMogul Oca 2026 (ikincil, birincil sayfa açılmadı): serbest deneme medyanı %8, kartsız tipik %10-20; B2B SaaS medyan %18,5 (ikincil). Yerel hizmet SaaS’ında satış destekli deneme ile üst-orta seçildi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.05,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "sourced",
+      "range": {
+        "min": 0.03,
+        "max": 0.07
+      },
+      "source": {
+        "url": "https://kalungi.com/blog/saas-churn-rate-benchmarks",
+        "name": "Kalungi SaaS churn benchmarks (ikincil)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "SMB SaaS aylık logo churn ort. %3-7 (Kalungi vb. ikincil; yayın tarihi belirtilmemiş; bu turda yeniden doğrulanamadı).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.vagaro.base",
+      "value": 30,
+      "unit": "USD",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.vagaro.com/pro/pricing",
+        "name": "Vagaro Pricing (US)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Vagaro normal fiyat $30/ay (ilk 6 ay tanıtım $23,99). Resmî sayfa açıldı 2026-10-31.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.vagaro.seat",
+      "value": 10,
+      "unit": "USD",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.vagaro.com/pro/pricing",
+        "name": "Vagaro Pricing (US)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Vagaro ek takvim lisansı $10/ay (7’ye kadar, sonrası ücretsiz).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.booksy.base",
+      "value": 29.99,
+      "unit": "USD",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://biz.booksy.com/en-us/pricing",
+        "name": "Booksy Biz Pricing (US)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Booksy ilk kullanıcı $29,99/ay + vergi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.booksy.seat",
+      "value": 20,
+      "unit": "USD",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://biz.booksy.com/en-us/pricing",
+        "name": "Booksy Biz Pricing (US)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Booksy ek personel $20/ay.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.glossgenius.gold",
+      "value": 48,
+      "unit": "USD",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.glossgenius.com/pricing",
+        "name": "GlossGenius Pricing",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "GlossGenius Gold $48/ay (yıllık faturalama; 9 personele kadar). Sayfa fiyatı yıllık faturalamaya göre.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.3seat.mean",
+      "value": 56,
+      "unit": "USD",
+      "market": "us",
+      "layer": "derived",
+      "source": null,
+      "confidence": "high",
+      "note": "3 koltuklu salon için rakip aylık fiyat ortalaması: mean(Vagaro 30+2×10, Booksy 29,99+2×20, GlossGenius Gold 48).",
+      "formula": "mean(price.anchor.vagaro.base + 2*price.anchor.vagaro.seat, price.anchor.booksy.base + 2*price.anchor.booksy.seat, price.anchor.glossgenius.gold)",
+      "inputs": [
+        "price.anchor.vagaro.base",
+        "price.anchor.vagaro.seat",
+        "price.anchor.booksy.base",
+        "price.anchor.booksy.seat",
+        "price.anchor.glossgenius.gold"
+      ]
+    },
+    {
+      "id": "price.monthly",
+      "value": 50,
+      "unit": "USD",
+      "market": "us",
+      "layer": "derived",
+      "range": {
+        "min": 30,
+        "max": 70
+      },
+      "source": null,
+      "confidence": "medium",
+      "note": "Varsayılan ürün (salon-saas) aylık ücret, vergi hariç: rakip 3-koltuk ortalamasının %10 altı (pazara giriş konumlandırması). Senaryo dosyası geçersiz kılabilir.",
+      "formula": "round(price.anchor.3seat.mean * 0.9)",
+      "inputs": [
+        "price.anchor.3seat.mean"
+      ]
+    },
+    {
+      "id": "pay.fee_pct",
+      "value": 0.029,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://stripe.com/pricing",
+        "name": "Stripe Pricing (US)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Stripe ABD yurtiçi kart %2,9 + 30¢ (uluslararası +%1,5, kur +%1). Resmî sayfa okundu 2026-10-31.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "pay.fee_fixed",
+      "value": 0.3,
+      "unit": "USD",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://stripe.com/pricing",
+        "name": "Stripe Pricing (US)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Stripe ABD işlem başı sabit ücret 30¢.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "tax.vat_rate",
+      "value": 0,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "sourced",
+      "range": {
+        "min": 0,
+        "max": 0.1
+      },
+      "source": {
+        "url": "https://taxcloud.com/blog/saas-sales-tax-by-state/",
+        "name": "TaxCloud: SaaS sales tax by state (Ekim 2026)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "ABD’de federal KDV yok; SaaS satış vergisi eyalet bazlı: bkz. tax.saas_taxable_share. Fiyatlar vergi hariç gösterilir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "tax.saas_taxing_states",
+      "value": 24,
+      "unit": "count",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://taxcloud.com/blog/saas-sales-tax-by-state/",
+        "name": "TaxCloud: SaaS sales tax by state (Ekim 2026)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "Ekim 2026 itibarıyla 24 eyalet + DC SaaS’ı vergilendiriyor (TaxCloud; plan dosyasında 22 idi, güncellendi). California ve Colorado 1 Oca 2027’de başlıyor (SB 122).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "tax.saas_taxable_share",
+      "value": 0.45,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.3,
+        "max": 0.6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Müşteri havuzunun vergili eyaletlerde olan payı; CA/CO 2027 başında dahil olunca artar (olay). Ekonomik nexus eşikleri doğrulanmadı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "tax.saas_avg_rate",
+      "value": 0.07,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.04,
+        "max": 0.1
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Vergili eyaletlerde ortalama eyalet+yerel satış vergisi oranı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "fx.to_usd",
+      "value": 1,
+      "unit": "USD",
+      "market": "us",
+      "layer": "derived",
+      "source": null,
+      "confidence": "high",
+      "note": "Temel para birimi.",
+      "formula": "1",
+      "inputs": []
+    },
+    {
+      "id": "legal.cold_email",
+      "value": "allowed",
+      "unit": "enum",
+      "market": "us",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "medium",
+      "note": "CAN-SPAM: opt-in şart değil (opt-out, fiziksel adres, 10 iş günü). Ceza: ihlal başına $53.088 (ikincil özet; FTC sayfası açılmadı). Hukuki danışmanlık değildir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "legal.cold_call",
+      "value": "restricted",
+      "unit": "enum",
+      "market": "us",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "Do-Not-Call listesi; B2B kısmen muaf (bu turda doğrulanmadı).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "legal.sms",
+      "value": "banned",
+      "unit": "enum",
+      "market": "us",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "medium",
+      "note": "TCPA: pazarlama SMS’i için önceden açık yazılı onay; $500/mesaj, kasıtlı $1.500 (ikincil). 10DLC kaydı zorunlu (operatör bloklaması). Oyunda soğuk SMS = yasak; yalnızca onaylı listeye.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "events.legal_rate_mult",
+      "value": 1,
+      "unit": "multiplier",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.5,
+        "max": 1.5
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Hukuki olay sıklığı çarpanı (referans pazar = 1). TCPA/10DLC/nexus: nadir ama ağır.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "events.macro_rate_mult",
+      "value": 0.6,
+      "unit": "multiplier",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.3,
+        "max": 1
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Makro şok olay sıklığı (kur/enflasyon) ABD’de düşük.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.gbp_effect",
+      "value": 0.65,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.4,
+        "max": 0.85
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "GBP optimizasyonunun yerel keşif/lead hacmine azami göreli etkisi (0-1).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.referral_rate",
+      "value": 0.03,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.01,
+        "max": 0.06
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Aylık, aktif müşteri başına yeni referans lead oranı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.field_sales_close",
+      "value": 0.08,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.04,
+        "max": 0.15
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Saha/telefon görüşmesi→ücretli kapanış oranı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.salon_count",
+      "value": 91500,
+      "unit": "count",
+      "market": "us",
+      "layer": "sourced",
+      "range": {
+        "min": 85000,
+        "max": 300000
+      },
+      "source": {
+        "url": "https://startbusinessbystate.com/salon-industry-statistics/",
+        "name": "startbusinessbystate.com (Census CBP 2023 ikincil aktarım)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "İşverenli berber+salon: 84.176 (NAICS 812112) + 7.363 (812111) = 91.539 (Census CBP 2023, ikincil aktarım). Nonemployer dahil toplam girişim ~270-300 bin.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.payment_processing_rev_share",
+      "value": 0.5,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.2,
+        "max": 0.7
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Müşterilerin Stripe ile tahsilat yapma payı (işleme geliri mekaniği için). Rakipler işlemeden kazanıyor (Booksy %2,49+$0,10 vb.).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.secondary.ccpa_fine",
+      "value": 2663,
+      "unit": "USD",
+      "market": "us",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.cppa.ca.gov/regulations/cpi_adjustment.html",
+        "name": "California Privacy Protection Agency: CCPA CPI adjustment 2025",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "CCPA/CPRA idari ceza ihlal başına $2.663 (kasıtlı $7.988); eşik: yıllık gelir $26,625M. Resmî CPPA sayfası okundu.",
+      "formula": null,
+      "inputs": []
+    }
+  ],
+  "meta": {
+    "currency": "USD",
+    "locale": "en-US",
+    "fxToUSD": 1,
+    "format": {
+      "date": "MM/DD/YYYY",
+      "time": "12h",
+      "weekStart": 0,
+      "units": "imperial",
+      "phone": "+1 (XXX) XXX-XXXX",
+      "pricesExcludeTax": true
+    },
+    "holidays": [
+      {
+        "date": "2026-11-11",
+        "endDate": "2026-11-11",
+        "name": "Veterans Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2026-11-26",
+        "endDate": "2026-11-26",
+        "name": "Thanksgiving",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.2,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2026-11-27",
+        "endDate": "2026-11-27",
+        "name": "Black Friday",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1.1,
+          "saasBuying": 0.8
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Q4 reklam maliyet zirvesi; salon sahibi meşgul."
+      },
+      {
+        "date": "2026-11-30",
+        "endDate": "2026-11-30",
+        "name": "Cyber Monday",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1,
+          "saasBuying": 0.85
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2026-12-25",
+        "endDate": "2026-12-25",
+        "name": "Christmas Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.2,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-01-01",
+        "endDate": "2027-01-01",
+        "name": "New Year’s Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-01-18",
+        "endDate": "2027-01-18",
+        "name": "Martin Luther King Jr. Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-02-14",
+        "endDate": "2027-02-14",
+        "name": "Valentine’s Day",
+        "kind": "seasonal",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1.25,
+          "saasBuying": 0.9
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-02-15",
+        "endDate": "2027-02-15",
+        "name": "Presidents Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-05-09",
+        "endDate": "2027-05-09",
+        "name": "Mother’s Day",
+        "kind": "seasonal",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1.2,
+          "saasBuying": 0.9
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-05-31",
+        "endDate": "2027-05-31",
+        "name": "Memorial Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-06-19",
+        "endDate": "2027-06-19",
+        "name": "Juneteenth",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Hafta sonuna denk; federal gözlem günü 2027-06-18."
+      },
+      {
+        "date": "2027-07-04",
+        "endDate": "2027-07-04",
+        "name": "Independence Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Hafta sonuna denk; federal gözlem günü 2027-07-05."
+      },
+      {
+        "date": "2027-09-06",
+        "endDate": "2027-09-06",
+        "name": "Labor Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-10-11",
+        "endDate": "2027-10-11",
+        "name": "Columbus / Indigenous Peoples’ Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-11-11",
+        "endDate": "2027-11-11",
+        "name": "Veterans Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.9,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-11-25",
+        "endDate": "2027-11-25",
+        "name": "Thanksgiving",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.2,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-11-26",
+        "endDate": "2027-11-26",
+        "name": "Black Friday",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1.1,
+          "saasBuying": 0.8
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Q4 reklam maliyet zirvesi; salon sahibi meşgul."
+      },
+      {
+        "date": "2027-11-29",
+        "endDate": "2027-11-29",
+        "name": "Cyber Monday",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1,
+          "saasBuying": 0.85
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-12-25",
+        "endDate": "2027-12-25",
+        "name": "Christmas Day",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": {
+          "salonDemand": 0.2,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.law.cornell.edu/uscode/text/5/6103",
+          "name": "5 U.S.C. §6103 federal tatil kuralları (kural-tabanlı hesap; sayfa bu turda açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Hafta sonuna denk; federal gözlem günü 2027-12-24."
+      }
+    ],
+    "seasonality": {
+      "note": "Aylık çarpanlar (1 = yıl ortalaması). adCost: Kasım ve Ocak ABD Meta CPM verisinden türetildi (28,09/22,20 ve 17,12/22,20; ikincil); diğer aylar VARSAYIM. salonDemand ve saasBuying tamamen VARSAYIM (nitel kaynaklar: Skipcalls, Booksy blog; düşük güven).",
+      "layer": "assumption",
+      "confidence": "low",
+      "adCost": {
+        "10": 1.1,
+        "11": 1.27,
+        "12": 1.15,
+        "01": 0.77,
+        "02": 0.85,
+        "03": 0.9,
+        "04": 0.92,
+        "05": 0.95,
+        "06": 0.95,
+        "07": 0.92,
+        "08": 0.95,
+        "09": 1
+      },
+      "salonDemand": {
+        "10": 1,
+        "11": 1.15,
+        "12": 1.25,
+        "01": 0.85,
+        "02": 0.85,
+        "03": 0.95,
+        "04": 1.1,
+        "05": 1.1,
+        "06": 1.1,
+        "07": 1.1,
+        "08": 1.05,
+        "09": 1
+      },
+      "saasBuying": {
+        "10": 1,
+        "11": 0.85,
+        "12": 0.75,
+        "01": 1.15,
+        "02": 1.1,
+        "03": 1,
+        "04": 0.95,
+        "05": 0.9,
+        "06": 0.9,
+        "07": 0.95,
+        "08": 1.1,
+        "09": 1.05
+      },
+      "derivedMonths": {
+        "adCost": [
+          "01",
+          "11"
+        ]
+      }
+    },
+    "dominantChannels": [
+      "sms",
+      "phone",
+      "google_search",
+      "email"
+    ],
+    "channels": {
+      "google_search": {
+        "access": "open",
+        "relative": 0.8,
+        "layer": "assumption"
+      },
+      "meta_ads": {
+        "access": "open",
+        "relative": 0.5,
+        "layer": "assumption"
+      },
+      "geo": {
+        "access": "open",
+        "relative": 0.3,
+        "layer": "assumption"
+      },
+      "gbp": {
+        "access": "open",
+        "relative": 0.8,
+        "layer": "assumption"
+      },
+      "reviews": {
+        "access": "open",
+        "relative": 0.7,
+        "layer": "assumption"
+      },
+      "organic_social": {
+        "access": "open",
+        "relative": 0.4,
+        "layer": "assumption"
+      },
+      "referral": {
+        "access": "open",
+        "relative": 0.6,
+        "layer": "assumption"
+      },
+      "reseller": {
+        "access": "open",
+        "relative": 0.3,
+        "layer": "assumption"
+      },
+      "field_sales": {
+        "access": "open",
+        "relative": 0.3,
+        "layer": "assumption"
+      },
+      "cold_email": {
+        "access": "open",
+        "relative": 0.5,
+        "layer": "assumption"
+      },
+      "cold_call": {
+        "access": "restricted",
+        "relative": 0.5,
+        "layer": "assumption"
+      },
+      "sms": {
+        "access": "blocked",
+        "relative": 0.1,
+        "layer": "assumption"
+      },
+      "whatsapp": {
+        "access": "open",
+        "relative": 0.1,
+        "layer": "assumption",
+        "note": "ABD yetişkinlerinin %32’si WhatsApp kullanıyor (Pew 2025); genel kanal değil, etnik/bölgesel niş."
+      },
+      "marketplace": {
+        "access": "open",
+        "relative": 0.5,
+        "layer": "assumption",
+        "note": "Booksy Boost/Vagaro marketplace gibi rakip pazaryerleri; komisyon %30 (Booksy)."
+      }
+    },
+    "legal": {
+      "disclaimer": "Oyun yorumu; hukuki danışmanlık değildir.",
+      "consentRegime": "opt-out (çerez banner’ı federal olarak zorunlu değil; CA’da Do Not Sell/Share + GPC)",
+      "coldEmail": {
+        "status": "allowed",
+        "rule": "CAN-SPAM: gerçek gönderici, fiziksel adres, opt-out 10 iş günü, yanıltıcı konu yasak",
+        "maxPenalty": {
+          "value": 53088,
+          "unit": "USD",
+          "per": "e-posta",
+          "source": {
+            "url": "https://www.legalmatch.com/",
+            "name": "LegalMatch/Tomba CAN-SPAM $53.088 özeti (FTC sayfası açılmadı)",
+            "published": null,
+            "accessed": "2026-10-31"
+          },
+          "confidence": "medium"
+        }
+      },
+      "coldCall": {
+        "status": "restricted",
+        "rule": "Do-Not-Call; otomatik arama için TCPA onayı; B2B muafiyeti bu turda doğrulanmadı",
+        "maxPenalty": {
+          "value": 1500,
+          "unit": "USD",
+          "per": "ihlal (kasıtlı)",
+          "source": {
+            "url": "https://www.jdsupra.com/",
+            "name": "JD Supra/Mondaq TCPA $500/$1.500 özetleri (ikincil)",
+            "published": null,
+            "accessed": "2026-10-31"
+          },
+          "confidence": "medium"
+        }
+      },
+      "sms": {
+        "status": "banned",
+        "rule": "TCPA önceden açık yazılı onay; 10DLC marka+kampanya kaydı zorunlu (1 Şub 2025)",
+        "maxPenalty": {
+          "value": 1500,
+          "unit": "USD",
+          "per": "mesaj (kasıtlı; olağan $500)",
+          "source": {
+            "url": "https://www.jdsupra.com/",
+            "name": "JD Supra/Mondaq TCPA $500/$1.500 özetleri (ikincil)",
+            "published": null,
+            "accessed": "2026-10-31"
+          },
+          "confidence": "medium"
+        }
+      },
+      "privacy": {
+        "law": "CCPA/CPRA + çok eyaletli yama çorbası",
+        "maxPenalty": {
+          "value": 2663,
+          "unit": "USD",
+          "per": "ihlal ($7.988 kasıtlı)",
+          "source": {
+            "url": "https://www.cppa.ca.gov/regulations/cpi_adjustment.html",
+            "name": "California Privacy Protection Agency: CCPA CPI adjustment 2025",
+            "published": null,
+            "accessed": "2026-10-31"
+          },
+          "confidence": "high"
+        },
+        "note": "Eşik: yıllık gelir $26,625M veya 100k tüketici; küçük startup eşiğe girmeyebilir, ancak veri işleyen sorumluluğu devredilir."
+      },
+      "tax": {
+        "saas": "24 eyalet + DC SaaS’ı vergilendiriyor; CA ve CO 1 Oca 2027’de başlıyor",
+        "source": {
+          "url": "https://taxcloud.com/blog/saas-sales-tax-by-state/",
+          "name": "TaxCloud: SaaS sales tax by state (Ekim 2026)",
+          "published": null,
+          "accessed": "2026-10-31"
+        }
+      }
+    },
+    "competitors": [
+      {
+        "id": "vagaro",
+        "name": "Vagaro",
+        "pricing": [
+          {
+            "plan": "Tek takvim (ilk 6 ay tanıtım)",
+            "price": 23.99,
+            "unit": "USD",
+            "period": "month"
+          },
+          {
+            "plan": "Tek takvim (normal)",
+            "price": 30,
+            "unit": "USD",
+            "period": "month"
+          },
+          {
+            "plan": "Ek takvim lisansı",
+            "price": 10,
+            "unit": "USD",
+            "period": "month"
+          }
+        ],
+        "positioning": "30 gün deneme; 7 lisansa kadar ek ücret, sonrası ücretsiz. Pazaryeri + yazılım.",
+        "trialDays": 30,
+        "source": {
+          "url": "https://www.vagaro.com/pro/pricing",
+          "name": "Vagaro Pricing (US)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true
+      },
+      {
+        "id": "booksy",
+        "name": "Booksy",
+        "pricing": [
+          {
+            "plan": "İlk kullanıcı",
+            "price": 29.99,
+            "unit": "USD",
+            "period": "month"
+          },
+          {
+            "plan": "Ek personel",
+            "price": 20,
+            "unit": "USD",
+            "period": "month"
+          }
+        ],
+        "positioning": "14 gün deneme, kart yok. Kart işleme %2,49+$0,10 (okuyucu), %2,69+$0,30 (keyed). Boost: yeni müşteri ilk ziyaret %30 (maks $100).",
+        "trialDays": 14,
+        "source": {
+          "url": "https://biz.booksy.com/en-us/pricing",
+          "name": "Booksy Biz Pricing (US)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true
+      },
+      {
+        "id": "glossgenius",
+        "name": "GlossGenius",
+        "pricing": [
+          {
+            "plan": "Standard",
+            "price": 24,
+            "unit": "USD",
+            "period": "month (yıllık faturalama)"
+          },
+          {
+            "plan": "Gold",
+            "price": 48,
+            "unit": "USD",
+            "period": "month (yıllık faturalama)"
+          },
+          {
+            "plan": "Platinum",
+            "price": 148,
+            "unit": "USD",
+            "period": "month (yıllık faturalama)"
+          }
+        ],
+        "positioning": "Güzellik & wellness; işleme yüz yüze %2,4+$0,15, online %2,9+$0,30.",
+        "trialDays": null,
+        "source": {
+          "url": "https://www.glossgenius.com/pricing",
+          "name": "GlossGenius Pricing",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true
+      },
+      {
+        "id": "square-appointments",
+        "name": "Square Appointments",
+        "pricing": [],
+        "positioning": "Free / Plus / Premium kademeleri var; dolar fiyatları resmî sayfada okunamadı (doğrulanamadı). İkincil kaynaklar tutarsız, kullanılmadı.",
+        "trialDays": null,
+        "source": {
+          "url": "https://squareup.com/us/en/appointments/pricing",
+          "name": "Square Appointments Pricing (fiyatlar sayfada yok)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false
+      },
+      {
+        "id": "fresha-us",
+        "name": "Fresha (ABD)",
+        "pricing": [],
+        "positioning": "ABD fiyatı doğrulanamadı; sayfa konuma göre başka para birimi gösterdi. Kullanılmamalı.",
+        "trialDays": null,
+        "source": {
+          "url": "https://www.fresha.com/pricing",
+          "name": "Fresha Pricing (geolocation nedeniyle güvenilmez)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false
+      },
+      {
+        "id": "boulevard",
+        "name": "Boulevard",
+        "pricing": [],
+        "positioning": "Araştırılmadı / doğrulanamadı.",
+        "trialDays": null,
+        "source": {
+          "url": "https://www.joinblvd.com/",
+          "name": "Boulevard (açılmadı)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false
+      }
+    ],
+    "notes": [
+      "Bilinçli global bırakılanlar: gads.match.*.leak, funnel.lead_decay_tau_hours, meta.learn.*, meta.fatigue.*, gads.smart.*, founder.hours_per_week.",
+      "Fiyatlar vergi hariç. Rakip fiyat sayfaları canlıdır; \"2026-10-31 itibarıyla\" gösterilmeli.",
+      "ATT ve WhatsApp 100M MAU verileri tazelik uyarısı taşır (>12 ay)."
+    ]
+  }
+}

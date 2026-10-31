@@ -1,0 +1,117 @@
+{
+  "id": "C04",
+  "slug": "platform-overreport",
+  "stage": "measurement",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "measure.platform_vs_crm_ratio",
+        "op": ">",
+        "value": 1.5
+      },
+      {
+        "metric": "measure.paid_customers_30d",
+        "op": ">=",
+        "value": 1
+      },
+      {
+        "metric": "day",
+        "op": ">=",
+        "value": 30
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 45
+  },
+  "marketOverrides": {
+    "de": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "measure.platform_vs_crm_ratio",
+            "op": ">",
+            "value": 1.4
+          },
+          {
+            "metric": "day",
+            "op": ">=",
+            "value": 30
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 45
+      }
+    },
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "measure.platform_vs_crm_ratio",
+            "op": ">",
+            "value": 1.5
+          },
+          {
+            "metric": "measure.crm_completeness",
+            "op": "<",
+            "value": 0.8
+          },
+          {
+            "metric": "day",
+            "op": ">=",
+            "value": 30
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 45
+      }
+    }
+  },
+  "effects": [],
+  "symptoms": [
+    "measure.platform_vs_crm_ratio",
+    "gads.cpa_observed",
+    "meta.cpa_observed",
+    "measure.crm_paid_customers_30d",
+    "gads.brand_query_share"
+  ],
+  "correctResponses": [
+    {
+      "action": "measure.useCrmAsReference",
+      "outcome": "case.C04.correct.outcome"
+    },
+    {
+      "action": "measure.runHoldoutTest",
+      "outcome": "case.C04.correct.outcome"
+    },
+    {
+      "action": "measure.separateBrandTraffic",
+      "outcome": "case.C04.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.raiseBudget",
+      "outcome": "case.C04.wrong.outcome"
+    },
+    {
+      "action": "meta.raiseBudget",
+      "outcome": "case.C04.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C04.hint",
+  "i18n": {
+    "title": "case.C04.title",
+    "summary": "case.C04.summary",
+    "symptoms": "case.C04.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

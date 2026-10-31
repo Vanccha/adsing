@@ -1,0 +1,100 @@
+{
+  "id": "C13",
+  "slug": "payment-tax-surprise",
+  "stage": "finance",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "event.tax_due_soon",
+        "op": ">=",
+        "value": 1
+      },
+      {
+        "metric": "cash.tax_reserve",
+        "op": "<",
+        "value": {
+          "param": "derived.tax_due_estimate"
+        }
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 60
+  },
+  "marketOverrides": {
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "event.tax_due_soon",
+            "op": ">=",
+            "value": 1
+          },
+          {
+            "metric": "cash.tax_reserve",
+            "op": "<",
+            "value": {
+              "param": "derived.tax_due_estimate"
+            }
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 45
+      }
+    }
+  },
+  "effects": [
+    {
+      "target": "cash.balance",
+      "op": "add",
+      "value": "-derived.tax_due_estimate",
+      "durationDays": 0
+    }
+  ],
+  "symptoms": [
+    "cash.balance",
+    "cash.tax_reserve",
+    "cash.collection_vs_mrr",
+    "cash.payment_failure_rate",
+    "cash.runway_months"
+  ],
+  "correctResponses": [
+    {
+      "action": "finance.reserveTax",
+      "outcome": "case.C13.correct.outcome"
+    },
+    {
+      "action": "finance.setupDunning",
+      "outcome": "case.C13.correct.outcome"
+    },
+    {
+      "action": "finance.cashForecast",
+      "outcome": "case.C13.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "core.ignore",
+      "outcome": "case.C13.wrong.outcome"
+    },
+    {
+      "action": "gads.raiseBudget",
+      "outcome": "case.C13.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C13.hint",
+  "i18n": {
+    "title": "case.C13.title",
+    "summary": "case.C13.summary",
+    "symptoms": "case.C13.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "id": "subscription-box",
+  "status": "skeleton",
+  "name": {
+    "tr": "Abonelik Kutusu (fiziksel ürün)",
+    "en": "Subscription Box"
+  },
+  "description": "Aylık gönderilen fiziksel ürün aboneliği, tüketiciye yönelik (iskelet).",
+  "market": "global",
+  "params": [
+    {
+      "id": "price.monthly",
+      "value": 39,
+      "unit": "USD",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 23.4,
+        "max": 62.400000000000006
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: fiyat varsayımı (rakip fiyatlarından türetilmedi).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.1,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.06,
+        "max": 0.16000000000000003
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık churn varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.fixed_costs_monthly",
+      "value": 1000,
+      "unit": "USD",
+      "market": "us",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık sabit gider varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.start_cash.normal",
+      "value": 40000,
+      "unit": "USD",
+      "market": "us",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: normal zorluk başlangıç nakdi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.monthly",
+      "value": 35,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 21,
+        "max": 56
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: fiyat varsayımı (rakip fiyatlarından türetilmedi).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.09,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.054,
+        "max": 0.144
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık churn varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.fixed_costs_monthly",
+      "value": 900,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık sabit gider varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.start_cash.normal",
+      "value": 36000,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: normal zorluk başlangıç nakdi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.monthly",
+      "value": 900,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 540,
+        "max": 1440
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: fiyat varsayımı (rakip fiyatlarından türetilmedi).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.12,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.072,
+        "max": 0.192
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık churn varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.fixed_costs_monthly",
+      "value": 20000,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık sabit gider varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.start_cash.normal",
+      "value": 2000000,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: normal zorluk başlangıç nakdi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.gross_margin",
+      "value": 0.38,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.28,
+        "max": 0.48
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: brüt marj varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.trial_days",
+      "value": 0,
+      "unit": "days",
+      "market": "global",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: deneme süresi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.goal.12m.target_customers",
+      "value": 1500,
+      "unit": "count",
+      "market": "global",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: 12 ay müşteri hedefi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.goal.12m.ltv_cac_min",
+      "value": 3,
+      "unit": "multiplier",
+      "market": "global",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: LTV:CAC ≥ 3.",
+      "formula": null,
+      "inputs": []
+    }
+  ],
+  "meta": {
+    "notes": [
+      "İSKELET senaryo: yalnızca temel alanlar, tüm değerler varsayım (düşük güven). Funnel, hukuk ve vergi parametreleri markets/* ve data/global.json’dan devralınır; gerçek ürün için huni oranlarının (funnel.*, gads.search.cvr_lead) geçersiz kılınması gerekir.",
+      "Rakip/benchmark doğrulaması yapılmadı."
+    ],
+    "todo": [
+      "Stok/tedarik ve kargo maliyeti modeli (motorda yok)",
+      "B2C huni (lead->sipariş doğrudan, deneme yok; ilk kutu indirimi)",
+      "Iade/sipariş hatası olayları",
+      "KDV/ithalat ve satış vergisi detayı"
+    ]
+  }
+}

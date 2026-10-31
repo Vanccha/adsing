@@ -1,0 +1,101 @@
+{
+  "id": "C06",
+  "slug": "policy-violation-restriction",
+  "stage": "account",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "gads.policy_risk_claims",
+        "op": ">=",
+        "value": 1
+      },
+      {
+        "metric": "account.health",
+        "op": "<",
+        "value": 0.7
+      }
+    ],
+    "chance": 0.5,
+    "cooldownDays": 60
+  },
+  "marketOverrides": {
+    "de": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "gads.policy_risk_claims",
+            "op": ">=",
+            "value": 1
+          },
+          {
+            "metric": "account.health",
+            "op": "<",
+            "value": 0.75
+          }
+        ],
+        "chance": 0.6,
+        "cooldownDays": 60
+      }
+    }
+  },
+  "effects": [
+    {
+      "target": "gads.delivery",
+      "op": "set",
+      "value": 0,
+      "durationDays": 5
+    },
+    {
+      "target": "account.health",
+      "op": "add",
+      "value": -0.2,
+      "durationDays": 0
+    }
+  ],
+  "symptoms": [
+    "gads.policy_status",
+    "account.health",
+    "gads.spend_7d",
+    "gads.impressions_7d"
+  ],
+  "correctResponses": [
+    {
+      "action": "account.fixAndAppeal",
+      "outcome": "case.C06.correct.outcome"
+    },
+    {
+      "action": "account.prepareBackupChannel",
+      "outcome": "case.C06.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.resubmitSameAd",
+      "outcome": "case.C06.wrong.outcome"
+    },
+    {
+      "action": "account.createWorkaroundAccount",
+      "outcome": "case.C06.wrong.outcome"
+    },
+    {
+      "action": "core.ignore",
+      "outcome": "case.C06.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C06.hint",
+  "i18n": {
+    "title": "case.C06.title",
+    "summary": "case.C06.summary",
+    "symptoms": "case.C06.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

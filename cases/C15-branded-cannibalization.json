@@ -1,0 +1,84 @@
+{
+  "id": "C15",
+  "slug": "branded-cannibalization",
+  "stage": "measurement",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "gads.pmax_enabled",
+        "op": ">=",
+        "value": 1
+      },
+      {
+        "metric": "gads.brand_query_share",
+        "op": ">",
+        "value": 0.4
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 45
+  },
+  "marketOverrides": {
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "gads.pmax_enabled",
+            "op": ">=",
+            "value": 1
+          },
+          {
+            "metric": "gads.brand_query_share",
+            "op": ">",
+            "value": 0.3
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 45
+      }
+    }
+  },
+  "effects": [],
+  "symptoms": [
+    "gads.cpa_observed",
+    "gads.brand_query_share",
+    "measure.crm_paid_customers_30d",
+    "measure.platform_vs_crm_ratio"
+  ],
+  "correctResponses": [
+    {
+      "action": "gads.excludeBrand",
+      "outcome": "case.C15.correct.outcome"
+    },
+    {
+      "action": "measure.runHoldoutTest",
+      "outcome": "case.C15.correct.outcome"
+    },
+    {
+      "action": "measure.useCrmAsReference",
+      "outcome": "case.C15.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.raiseBudget",
+      "outcome": "case.C15.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C15.hint",
+  "i18n": {
+    "title": "case.C15.title",
+    "summary": "case.C15.summary",
+    "symptoms": "case.C15.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

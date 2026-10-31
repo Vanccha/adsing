@@ -1,0 +1,109 @@
+{
+  "id": "C08",
+  "slug": "competitor-price-cut",
+  "stage": "trial",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "event.competitor_price_cut_active",
+        "op": ">=",
+        "value": 1
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 60
+  },
+  "marketOverrides": {
+    "tr": {
+      "effects": [
+        {
+          "target": "funnel.trialToPaidMult",
+          "op": "mul",
+          "value": 0.8,
+          "durationDays": 45
+        }
+      ]
+    },
+    "us": {
+      "effects": [
+        {
+          "target": "funnel.trialToPaidMult",
+          "op": "mul",
+          "value": 0.88,
+          "durationDays": 45
+        }
+      ]
+    },
+    "de": {
+      "effects": [
+        {
+          "target": "funnel.trialToPaidMult",
+          "op": "mul",
+          "value": 0.92,
+          "durationDays": 45
+        }
+      ]
+    }
+  },
+  "effects": [
+    {
+      "target": "funnel.trialToPaidMult",
+      "op": "mul",
+      "value": 0.85,
+      "durationDays": 45
+    },
+    {
+      "target": "gads.cpcMult",
+      "op": "mul",
+      "value": 1.1,
+      "durationDays": 30
+    }
+  ],
+  "symptoms": [
+    "funnel.trial_to_paid",
+    "competitor.price_index",
+    "competitor.brand_search_trend",
+    "gads.cpc_observed",
+    "funnel.price_objection_rate"
+  ],
+  "correctResponses": [
+    {
+      "action": "product.differentiatePositioning",
+      "outcome": "case.C08.correct.outcome"
+    },
+    {
+      "action": "product.retainExistingCustomers",
+      "outcome": "case.C08.correct.outcome"
+    },
+    {
+      "action": "product.repackagePricing",
+      "outcome": "case.C08.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "product.matchCompetitorDiscount",
+      "outcome": "case.C08.wrong.outcome"
+    },
+    {
+      "action": "gads.raiseBudget",
+      "outcome": "case.C08.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C08.hint",
+  "i18n": {
+    "title": "case.C08.title",
+    "summary": "case.C08.summary",
+    "symptoms": "case.C08.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

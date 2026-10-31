@@ -1,0 +1,130 @@
+{
+  "id": "C02",
+  "slug": "learning-limited-adset",
+  "stage": "click",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "meta.adset_count",
+        "op": ">=",
+        "value": 4
+      },
+      {
+        "metric": "meta.events_per_adset_per_window",
+        "op": "<",
+        "value": {
+          "param": "meta.learn.events"
+        }
+      },
+      {
+        "metric": "meta.edits_7d",
+        "op": ">=",
+        "value": 3
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 21
+  },
+  "marketOverrides": {
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "meta.adset_count",
+            "op": ">=",
+            "value": 3
+          },
+          {
+            "metric": "meta.events_per_adset_per_window",
+            "op": "<",
+            "value": {
+              "param": "meta.learn.events"
+            }
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 21
+      }
+    },
+    "de": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "meta.adset_count",
+            "op": ">=",
+            "value": 4
+          },
+          {
+            "metric": "meta.events_per_adset_per_window",
+            "op": "<",
+            "value": {
+              "param": "meta.learn.events"
+            }
+          },
+          {
+            "metric": "measure.consent_loss",
+            "op": ">",
+            "value": 0.3
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 21
+      }
+    }
+  },
+  "effects": [
+    {
+      "target": "meta.cpmMult",
+      "op": "mul",
+      "value": 1.2,
+      "durationDays": 14
+    }
+  ],
+  "symptoms": [
+    "meta.adsets_learning_limited_share",
+    "meta.cpm",
+    "meta.cpa_observed",
+    "meta.edits_7d",
+    "meta.adset_count"
+  ],
+  "correctResponses": [
+    {
+      "action": "meta.mergeAdsets",
+      "outcome": "case.C02.correct.outcome"
+    },
+    {
+      "action": "meta.reduceEdits",
+      "outcome": "case.C02.correct.outcome"
+    },
+    {
+      "action": "meta.optimizeUpperFunnelEvent",
+      "outcome": "case.C02.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "meta.splitAdsets",
+      "outcome": "case.C02.wrong.outcome"
+    },
+    {
+      "action": "meta.editFrequently",
+      "outcome": "case.C02.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C02.hint",
+  "i18n": {
+    "title": "case.C02.title",
+    "summary": "case.C02.summary",
+    "symptoms": "case.C02.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

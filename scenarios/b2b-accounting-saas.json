@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "id": "b2b-accounting-saas",
+  "status": "skeleton",
+  "name": {
+    "tr": "B2B Muhasebe/Ön Muhasebe SaaS",
+    "en": "B2B Accounting SaaS"
+  },
+  "description": "KOBİ ve serbest meslek erbabına ön muhasebe/fatura yazılımı (iskelet).",
+  "market": "global",
+  "params": [
+    {
+      "id": "price.monthly",
+      "value": 99,
+      "unit": "USD",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 59.4,
+        "max": 158.4
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: fiyat varsayımı (rakip fiyatlarından türetilmedi).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.02,
+      "unit": "ratio",
+      "market": "us",
+      "layer": "assumption",
+      "range": {
+        "min": 0.012,
+        "max": 0.032
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık churn varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.fixed_costs_monthly",
+      "value": 1500,
+      "unit": "USD",
+      "market": "us",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık sabit gider varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.start_cash.normal",
+      "value": 60000,
+      "unit": "USD",
+      "market": "us",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: normal zorluk başlangıç nakdi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.monthly",
+      "value": 79,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 47.4,
+        "max": 126.4
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: fiyat varsayımı (rakip fiyatlarından türetilmedi).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.018,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.010799999999999999,
+        "max": 0.0288
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık churn varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.fixed_costs_monthly",
+      "value": 1400,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık sabit gider varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.start_cash.normal",
+      "value": 55000,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: normal zorluk başlangıç nakdi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.monthly",
+      "value": 1500,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 900,
+        "max": 2400
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: fiyat varsayımı (rakip fiyatlarından türetilmedi).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.03,
+      "unit": "ratio",
+      "market": "tr",
+      "layer": "assumption",
+      "range": {
+        "min": 0.018,
+        "max": 0.048
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık churn varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.fixed_costs_monthly",
+      "value": 30000,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: aylık sabit gider varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.start_cash.normal",
+      "value": 3000000,
+      "unit": "TRY",
+      "market": "tr",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: normal zorluk başlangıç nakdi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.gross_margin",
+      "value": 0.85,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.75,
+        "max": 0.95
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: brüt marj varsayımı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.trial_days",
+      "value": 14,
+      "unit": "days",
+      "market": "global",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: deneme süresi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.goal.12m.target_customers",
+      "value": 120,
+      "unit": "count",
+      "market": "global",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: 12 ay müşteri hedefi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "scn.goal.12m.ltv_cac_min",
+      "value": 3,
+      "unit": "multiplier",
+      "market": "global",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "İSKELET: LTV:CAC ≥ 3.",
+      "formula": null,
+      "inputs": []
+    }
+  ],
+  "meta": {
+    "notes": [
+      "İSKELET senaryo: yalnızca temel alanlar, tüm değerler varsayım (düşük güven). Funnel, hukuk ve vergi parametreleri markets/* ve data/global.json’dan devralınır; gerçek ürün için huni oranlarının (funnel.*, gads.search.cvr_lead) geçersiz kılınması gerekir.",
+      "Rakip/benchmark doğrulaması yapılmadı."
+    ],
+    "todo": [
+      "Pazara özel yasal parametreler (e-Rechnung DE, e-Fatura TR) fiyat/dönüşüme bağlanmalı",
+      "Satış döngüsü uzunluğu (lead->paid gecikme) parametresi",
+      "Rakip fiyat doğrulaması (QuickBooks, Lexware, Paraşüt vb. araştırılmadı)"
+    ]
+  }
+}

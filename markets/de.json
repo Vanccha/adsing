@@ -1,0 +1,1465 @@
+{
+  "schemaVersion": 1,
+  "market": "de",
+  "params": [
+    {
+      "id": "gads.search.cpc",
+      "value": 4,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 2.5,
+        "max": 6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "B2B salon yazılımı arama TBM. Plan varsayımı 2,50-6,00 €. Kaynaklı yerel Friseur müşteri kelimeleri 0,40-1,20 € (selbststaendigkeit.de, 13.08.2026, orta) B2B kelimeler için geçerli değil.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.ctr",
+      "value": 0.045,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.03,
+        "max": 0.06
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "B2B SaaS arama TO %3-6 (varsayım). Güzellik medyanı %1,61 (triplewhale, ABD ağırlıklı) farklı kapsam.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.cvr_lead",
+      "value": 0.07,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.03,
+        "max": 0.09
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "LP deneme formu dönüşümü %3-8 (varsayım).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.search.competition",
+      "value": 0.6,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.45,
+        "max": 0.8
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Treatwell/Fresha/Salonized marka dışı kelimelere teklif veriyor (nitel).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.cpm",
+      "value": 10,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 8,
+        "max": 18
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "DE Meta CPM (B2B-SMB lead formu). Plan varsayımı 8-18 €; kaynaklı DE CPM bulunamadı. İkincil: DE CPC ~$0,80 (influee.co/de, 16.07.2026, orta-düşük).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.ctr",
+      "value": 0.01,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.007,
+        "max": 0.015
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Link TO %0,7-1,5 (varsayım). Güzellik global %2,27 (influee) e-ticaret kitlesi için.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.cpc",
+      "value": 1,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "derived",
+      "range": {
+        "min": 0.5,
+        "max": 2.6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "CPC = CPM / (1000 × CTR). Kaynaklı DE CPC (~0,70-0,75 €, e-ticaret kitlesi) ile aynı büyüklük sırası; B2B hedefleme daha pahalı.",
+      "formula": "meta.cpm / (1000 * meta.ctr)",
+      "inputs": [
+        "meta.cpm",
+        "meta.ctr"
+      ]
+    },
+    {
+      "id": "meta.cvr_lead",
+      "value": 0.04,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.02,
+        "max": 0.07
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Tıklama→lead. Lead başına maliyet 15-60 € aralığıyla tutarlı olacak şekilde seçildi (CPC 1,0 € / 0,04 = 25 €).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.consent_rate",
+      "value": 0.36,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "sourced",
+      "range": {
+        "min": 0.3,
+        "max": 0.54
+      },
+      "source": {
+        "url": "https://statistiken-aktuell.de/cookieless-consent-statistiken-2026/",
+        "name": "statistiken-aktuell.de Cookieless/Consent Statistiken 2026 (ikincil derleme)",
+        "published": "2026-05-01",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "Almanya pazarlama çerezi opt-in ~%36 (AB ort. %46, ABD >%80). statistiken-aktuell.de Mayıs 2026 derlemesi; ikincil, bu turda yeniden doğrulanamadı. Afiş tasarımına göre %40-54 aralığı (düşük).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.platform_overreport",
+      "value": 1.3,
+      "unit": "multiplier",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 1.1,
+        "max": 1.7
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Platform / gerçek. Consent kaybı gözlenen değeri düşürür; bu parametre onay sonrası kalan görünür dönüşümün atıf şişmesidir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.small_account_visibility",
+      "value": 0.5,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.4,
+        "max": 0.65
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Küçük hesapta (günlük <20 tıklama) platform raporunun gerçeğin gördüğü payı: %40-65 (DE planı varsayımı).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.ios_att_optin",
+      "value": 0.47,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "sourced",
+      "range": {
+        "min": 0.35,
+        "max": 0.55
+      },
+      "source": {
+        "url": "https://www.emarketer.com/",
+        "name": "eMarketer ATT opt-in 2025 (ikincil özet)",
+        "published": "2025-04-01",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "Almanya ATT opt-in %47 (Nisan 2025, emarketer arama özeti; sayfa 403, bu turda doğrulanamadı).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.lp_to_lead",
+      "value": 0.045,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.02,
+        "max": 0.08
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Karma trafik LP→lead baz oranı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.lead_qualified",
+      "value": 0.6,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.5,
+        "max": 0.7
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Niteliksiz lead payı %30-50 (çalışan, öğrenci, rakip araştırması) → nitelikli ~%60.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.trial_start",
+      "value": 0.75,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.5,
+        "max": 0.9
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Nitelikli lead→deneme.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.trial_to_paid",
+      "value": 0.16,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.08,
+        "max": 0.22
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Deneme→ücretli. B2B SaaS medyan %18,5 (ikincil, ABD/global) ve DE kasa/TSE geçiş sürtünmesi nedeniyle biraz düşük.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "churn.monthly_base",
+      "value": 0.04,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.03,
+        "max": 0.05
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Salon SaaS aylık churn DE %3-5 (varsayım); global SMB %3-7 (ikincil).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.treatwell.starter",
+      "value": 39,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.treatwell.de/partners/preise/",
+        "name": "Treatwell Connect Preise (DE)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Treatwell Connect Starter 39 €/ay (resmî sayfa okundu 2026-10-31; KDV durumu belirtilmemiş, net varsayıldı).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.treatwell.advanced",
+      "value": 49,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.treatwell.de/partners/preise/",
+        "name": "Treatwell Connect Preise (DE)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Treatwell Connect Advanced 49 €/ay + 7,50 € TSE.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "price.anchor.mean",
+      "value": 44,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "derived",
+      "source": null,
+      "confidence": "medium",
+      "note": "Rakip abonelik fiyat ortalaması. Salonized plan fiyatları resmî sayfadan alınamadığı için dahil edilmedi (ikincil 52,50 € düşük güven).",
+      "formula": "mean(price.anchor.treatwell.starter, price.anchor.treatwell.advanced)",
+      "inputs": [
+        "price.anchor.treatwell.starter",
+        "price.anchor.treatwell.advanced"
+      ]
+    },
+    {
+      "id": "price.monthly",
+      "value": 40,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "derived",
+      "range": {
+        "min": 29,
+        "max": 69
+      },
+      "source": null,
+      "confidence": "medium",
+      "note": "Varsayılan ürün aylık ücret, net (KDV hariç): rakip ortalamasının %10 altı. Plan varsayımı 29-69 €.",
+      "formula": "round(price.anchor.mean * 0.9)",
+      "inputs": [
+        "price.anchor.mean"
+      ]
+    },
+    {
+      "id": "pay.fee_pct",
+      "value": 0.015,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "sourced",
+      "range": {
+        "min": 0.015,
+        "max": 0.028
+      },
+      "source": {
+        "url": "https://stripe.com/de/pricing",
+        "name": "Stripe Preise (DE)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Stripe DE AWR standart kart %1,5 + 0,25 € (premium %2,8; İngiltere %2,5; uluslararası %3,15). SEPA Lastschrift 0,35 € sabit. Uyuşmazlık 20 €. Resmî sayfa okundu.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "pay.fee_fixed",
+      "value": 0.25,
+      "unit": "EUR",
+      "market": "de",
+      "layer": "sourced",
+      "range": {
+        "min": 0.25,
+        "max": 0.35
+      },
+      "source": {
+        "url": "https://stripe.com/de/pricing",
+        "name": "Stripe Preise (DE)",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Stripe DE kart işlemi başı 0,25 € (SEPA için 0,35 € sabit, yüzdesiz).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "tax.vat_rate",
+      "value": 0.19,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.ihk.de/stuttgart/fuer-unternehmen/recht-und-steuern/steuerrecht/umsatzsteuer-national/mehrwertsteuersatz-684840",
+        "name": "IHK Region Stuttgart: 7 oder 19 Prozent Umsatzsteuer",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Almanya MwSt standart oran %19 (yazılım hizmeti; indirimli %7 geçerli değil). IHK Stuttgart okundu. Kleinunternehmer (≤25.000 €) KDV’siz: fiyat duyarlılığı olayı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "fx.to_usd",
+      "value": 1.1193,
+      "unit": "USD",
+      "market": "de",
+      "layer": "derived",
+      "source": null,
+      "confidence": "high",
+      "note": "EUR→USD çapraz kur (TCMB 30.10.2026 EURTRY/USDTRY).",
+      "formula": "fx.eurusd",
+      "inputs": [
+        "fx.eurusd"
+      ]
+    },
+    {
+      "id": "legal.cold_email",
+      "value": "banned",
+      "unit": "enum",
+      "market": "de",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "medium",
+      "note": "UWG §7: B2B soğuk e-posta için ön açık izin; kaynaklar çelişiyor (IHK München özeti \"mutmaßliche Einwilligung\" derken Händlerbund/abmahnung.org yasak sayıyor). Güvenli (sıkı) yorum: yasak. Hukuki danışmanlık değildir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "legal.cold_call",
+      "value": "restricted",
+      "unit": "enum",
+      "market": "de",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "medium",
+      "note": "B2B telefon: somut dayanakla \"mutmaßliche Einwilligung\"; B2C’de açık izin şart. Telefon pazarlama ihlali idari para cezası üst sınırı 300.000 € (birincil doğrulanmadı).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "legal.sms",
+      "value": "banned",
+      "unit": "enum",
+      "market": "de",
+      "layer": "assumption",
+      "source": null,
+      "confidence": "low",
+      "note": "Soğuk SMS: UWG §7 izin şartı e-posta gibi (güvenli yorum).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "events.legal_rate_mult",
+      "value": 1.4,
+      "unit": "multiplier",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 1,
+        "max": 2
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Abmahnung, DSGVO/çerez afişi şikayeti, E-Rechnung/TSE: ABD’den daha sık, düşük-orta şiddet.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "events.macro_rate_mult",
+      "value": 0.5,
+      "unit": "multiplier",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.3,
+        "max": 0.8
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Makro şok sıklığı düşük.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.gbp_effect",
+      "value": 0.65,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.4,
+        "max": 0.85
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "GBP + yorumlar DE’de en güçlü ücretsiz kanallardan.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.referral_rate",
+      "value": 0.04,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.01,
+        "max": 0.07
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Innung ve çevre ağlarıyla referans.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "local.field_sales_close",
+      "value": 0.1,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.05,
+        "max": 0.18
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Saha satışı (Fachmesse, Innung, bayi iş birlikleri) kapanış oranı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.salon_count",
+      "value": 80118,
+      "unit": "count",
+      "market": "de",
+      "layer": "sourced",
+      "range": {
+        "min": 51000,
+        "max": 80500
+      },
+      "source": {
+        "url": "https://friseurhandwerk.de/wp-content/uploads/2026/06/PM2026_06_Wirtschaftliche-Lage-im-Friseurhandwerk.pdf",
+        "name": "ZV Friseurhandwerk PM 2026_06 (PDF metni okunamadı; arama özeti)",
+        "published": "2026-06-01",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "Handwerksrolle’de kayıtlı Friseursalon (2025 sonu) 80.118 (ZV Friseurhandwerk PM 06/2026). PDF metni bu turda okunamadı; değer arama özetinden. KDV mükellefi sayısı 51.482 (2020) farklı kapsam.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.software_adoption",
+      "value": 0.6,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.55,
+        "max": 0.7
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Dijital randevu yazılımı kullanan salon payı (%55-70).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.kleinunternehmer_share",
+      "value": 0.35,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.2,
+        "max": 0.5
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "KDV’den muaf (§19 UStG) salon payı; yazılım fiyatı onlar için fiilen %19 pahalı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "market.abmahnung_prob_per_cold_email_batch",
+      "value": 0.0125,
+      "unit": "ratio",
+      "market": "de",
+      "layer": "assumption",
+      "range": {
+        "min": 0.005,
+        "max": 0.02
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Soğuk e-posta hacmi başına ihtar olasılığı %0,5-2; maliyet 1.000-3.000 € (avukat + sözleşme cezası).",
+      "formula": null,
+      "inputs": []
+    }
+  ],
+  "meta": {
+    "currency": "EUR",
+    "locale": "de-DE",
+    "fxToUSD": 1.1193,
+    "format": {
+      "date": "DD.MM.YYYY",
+      "time": "24h",
+      "weekStart": 1,
+      "units": "metric",
+      "phone": "+49",
+      "pricesExcludeTax": true,
+      "note": "Sie hitabı; EUR 1.234,56 €"
+    },
+    "holidays": [
+      {
+        "date": "2026-11-01",
+        "endDate": "2026-11-01",
+        "name": "Allerheiligen",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "BW",
+          "BY",
+          "NW",
+          "RP",
+          "SL"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2026-11-18",
+        "endDate": "2026-11-18",
+        "name": "Buß- und Bettag",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "SN"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Totensonntag (22.11.) öncesi Çarşamba."
+      },
+      {
+        "date": "2026-11-27",
+        "endDate": "2026-11-27",
+        "name": "Black Friday",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1,
+          "saasBuying": 0.85
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "CPM +%20-40 varsayımı (genel e-ticaret yoğunluğu)."
+      },
+      {
+        "date": "2026-12-25",
+        "endDate": "2026-12-25",
+        "name": "1. Weihnachtstag",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2026-12-26",
+        "endDate": "2026-12-26",
+        "name": "2. Weihnachtstag",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2026-12-31",
+        "endDate": "2026-12-31",
+        "name": "Silvester",
+        "kind": "seasonal",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1.25,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-01-01",
+        "endDate": "2027-01-01",
+        "name": "Neujahr",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-01-06",
+        "endDate": "2027-01-06",
+        "name": "Heilige Drei Könige",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "BW",
+          "BY",
+          "ST"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-02-08",
+        "endDate": "2027-02-08",
+        "name": "Rosenmontag (Karneval)",
+        "kind": "seasonal",
+        "scope": "regional",
+        "regions": [
+          "NW",
+          "RP",
+          "HE"
+        ],
+        "closed": false,
+        "effects": {
+          "salonDemand": 0.4,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Karneval öncesi yoğunluk; Rosenmontag günü çoğu salon kapalı (varsayım)."
+      },
+      {
+        "date": "2027-03-08",
+        "endDate": "2027-03-08",
+        "name": "Internationaler Frauentag",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "BE",
+          "MV"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-03-26",
+        "endDate": "2027-03-26",
+        "name": "Karfreitag",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-03-28",
+        "endDate": "2027-03-28",
+        "name": "Ostersonntag",
+        "kind": "seasonal",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Resmî tatil değil ama pazar günü."
+      },
+      {
+        "date": "2027-03-29",
+        "endDate": "2027-03-29",
+        "name": "Ostermontag",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-05-01",
+        "endDate": "2027-05-01",
+        "name": "Tag der Arbeit",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-05-06",
+        "endDate": "2027-05-06",
+        "name": "Christi Himmelfahrt",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-05-17",
+        "endDate": "2027-05-17",
+        "name": "Pfingstmontag",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-05-27",
+        "endDate": "2027-05-27",
+        "name": "Fronleichnam",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "BW",
+          "BY",
+          "HE",
+          "NW",
+          "RP",
+          "SL"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-08-15",
+        "endDate": "2027-08-15",
+        "name": "Mariä Himmelfahrt",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "SL",
+          "BY"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "Bayern: yalnızca ağırlıklı Katolik belediyeler. 2027’de Pazar."
+      },
+      {
+        "date": "2027-09-20",
+        "endDate": "2027-09-20",
+        "name": "Weltkindertag",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "TH"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-10-03",
+        "endDate": "2027-10-03",
+        "name": "Tag der Deutschen Einheit",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "2027’de Pazar."
+      },
+      {
+        "date": "2027-10-31",
+        "endDate": "2027-10-31",
+        "name": "Reformationstag",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "BB",
+          "HB",
+          "HH",
+          "MV",
+          "NI",
+          "SN",
+          "ST",
+          "SH",
+          "TH"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": "2027’de Pazar."
+      },
+      {
+        "date": "2027-11-01",
+        "endDate": "2027-11-01",
+        "name": "Allerheiligen",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "BW",
+          "BY",
+          "NW",
+          "RP",
+          "SL"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-11-17",
+        "endDate": "2027-11-17",
+        "name": "Buß- und Bettag",
+        "kind": "public",
+        "scope": "regional",
+        "regions": [
+          "SN"
+        ],
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-11-26",
+        "endDate": "2027-11-26",
+        "name": "Black Friday",
+        "kind": "commercial",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1,
+          "saasBuying": 0.85
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-12-25",
+        "endDate": "2027-12-25",
+        "name": "1. Weihnachtstag",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-12-26",
+        "endDate": "2027-12-26",
+        "name": "2. Weihnachtstag",
+        "kind": "public",
+        "scope": "national",
+        "regions": null,
+        "closed": true,
+        "effects": null,
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      },
+      {
+        "date": "2027-12-31",
+        "endDate": "2027-12-31",
+        "name": "Silvester",
+        "kind": "seasonal",
+        "scope": "national",
+        "regions": null,
+        "closed": false,
+        "effects": {
+          "salonDemand": 1.25,
+          "saasBuying": 0.5
+        },
+        "layer": "derived",
+        "source": {
+          "url": "https://www.kalenderpedia.de/feiertage/feiertage-2027.html",
+          "name": "Kalenderpedia Feiertage 2027 (okundu) + Gauss Paskalya hesabı",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false,
+        "note": null
+      }
+    ],
+    "seasonality": {
+      "note": "Çarpanlar VARSAYIM (düşük güven): Aralık ilk 3 hafta +%15-25 salon doluluğu, Ocak-Şubat -%10-15, Temmuz-Ağustos eyalet tatillerine göre -%5-15. Yazılım değiştirme penceresi Ocak ve Ağustos. Black Friday CPM +%20-40 (genel e-ticaret). adCost kaynaklı DE verisi yok.",
+      "layer": "assumption",
+      "confidence": "low",
+      "adCost": {
+        "10": 1.05,
+        "11": 1.25,
+        "12": 1.15,
+        "01": 0.9,
+        "02": 0.92,
+        "03": 0.95,
+        "04": 0.95,
+        "05": 0.97,
+        "06": 0.95,
+        "07": 0.9,
+        "08": 0.9,
+        "09": 1
+      },
+      "salonDemand": {
+        "10": 1.02,
+        "11": 1.05,
+        "12": 1.2,
+        "01": 0.88,
+        "02": 0.88,
+        "03": 0.98,
+        "04": 1.1,
+        "05": 1.05,
+        "06": 1.05,
+        "07": 0.95,
+        "08": 0.92,
+        "09": 1
+      },
+      "saasBuying": {
+        "10": 1,
+        "11": 0.9,
+        "12": 0.7,
+        "01": 1.2,
+        "02": 1.1,
+        "03": 1,
+        "04": 0.95,
+        "05": 0.95,
+        "06": 0.95,
+        "07": 0.9,
+        "08": 1.1,
+        "09": 1
+      },
+      "derivedMonths": {}
+    },
+    "dominantChannels": [
+      "phone",
+      "field_sales",
+      "google_search",
+      "whatsapp"
+    ],
+    "channels": {
+      "google_search": {
+        "access": "open",
+        "relative": 0.8,
+        "layer": "assumption"
+      },
+      "meta_ads": {
+        "access": "open",
+        "relative": 0.4,
+        "layer": "assumption",
+        "note": "B2B hedefleme zayıf."
+      },
+      "geo": {
+        "access": "open",
+        "relative": 0.3,
+        "layer": "assumption"
+      },
+      "gbp": {
+        "access": "open",
+        "relative": 0.85,
+        "layer": "assumption"
+      },
+      "reviews": {
+        "access": "open",
+        "relative": 0.7,
+        "layer": "assumption"
+      },
+      "organic_social": {
+        "access": "open",
+        "relative": 0.35,
+        "layer": "assumption"
+      },
+      "referral": {
+        "access": "open",
+        "relative": 0.6,
+        "layer": "assumption"
+      },
+      "reseller": {
+        "access": "open",
+        "relative": 0.6,
+        "layer": "assumption",
+        "note": "Friseurbedarf/Großhandel, Innung iş birlikleri."
+      },
+      "field_sales": {
+        "access": "open",
+        "relative": 0.7,
+        "layer": "assumption",
+        "note": "HAIRNEXT, Top Hair, Intercoiffure (tarihler doğrulanmadı)."
+      },
+      "cold_email": {
+        "access": "blocked",
+        "relative": 0.05,
+        "layer": "assumption",
+        "note": "Yalnızca izinli liste / double opt-in lead magnet."
+      },
+      "cold_call": {
+        "access": "restricted",
+        "relative": 0.4,
+        "layer": "assumption"
+      },
+      "sms": {
+        "access": "blocked",
+        "relative": 0.05,
+        "layer": "assumption"
+      },
+      "whatsapp": {
+        "access": "restricted",
+        "relative": 0.4,
+        "layer": "assumption",
+        "note": "Müşteri tarafı hatırlatmalar için; salon sahibine ilk temas için izin gerekir."
+      },
+      "marketplace": {
+        "access": "open",
+        "relative": 0.4,
+        "layer": "assumption",
+        "note": "Treatwell %35 komisyon."
+      }
+    },
+    "legal": {
+      "disclaimer": "Oyun yorumu; hukuki danışmanlık değildir.",
+      "consentRegime": "opt-in (DSGVO + TDDDG §25); Consent Mode v2 fiilen zorunlu",
+      "coldEmail": {
+        "status": "banned",
+        "rule": "UWG §7 Abs.2 Nr.3: ön açık izin; B2B yorum çelişkili (güvenli varsayım: yasak)",
+        "maxPenalty": {
+          "value": 3000,
+          "unit": "EUR",
+          "per": "Abmahnung (avukat+sözleşme cezası, varsayım)",
+          "source": null,
+          "confidence": "low"
+        }
+      },
+      "coldCall": {
+        "status": "restricted",
+        "rule": "B2B: somut dayanakla mutmaßliche Einwilligung; B2C: açık izin",
+        "maxPenalty": {
+          "value": 300000,
+          "unit": "EUR",
+          "per": "idari para cezası üst sınırı (birincil doğrulanmadı)",
+          "source": {
+            "url": "https://www.haendlerbund.de/de/news/aktuelles/wissenssnack/kaltakquise-b2b",
+            "name": "Händlerbund: Kaltakquise B2B",
+            "published": null,
+            "accessed": "2026-10-31"
+          },
+          "confidence": "low"
+        }
+      },
+      "sms": {
+        "status": "banned",
+        "rule": "Ön izin gerekli",
+        "maxPenalty": null
+      },
+      "privacy": {
+        "law": "DSGVO / TDDDG",
+        "note": "E-Rechnung: alma 2025’ten, düzenleme 2027 (>800k € ciro) / 2028; Kassensicherungsverordnung/TSE kasa uyumu satış argümanı."
+      },
+      "tax": {
+        "vat": "%19 (IHK Stuttgart)",
+        "kleinunternehmer": "§19 UStG: önceki yıl ≤25.000 €, cari yıl ≤100.000 € (IHK Nordwestfalen/selbststaendigkeit.de, orta)"
+      }
+    },
+    "competitors": [
+      {
+        "id": "treatwell",
+        "name": "Treatwell (Connect)",
+        "pricing": [
+          {
+            "plan": "Starter",
+            "price": 39,
+            "unit": "EUR",
+            "period": "month"
+          },
+          {
+            "plan": "Advanced (+7,50 € TSE)",
+            "price": 49,
+            "unit": "EUR",
+            "period": "month"
+          },
+          {
+            "plan": "Yeni müşteri ilk rezervasyon komisyonu",
+            "price": 0.35,
+            "unit": "ratio",
+            "period": "per booking"
+          },
+          {
+            "plan": "Tekrar rezervasyon komisyonu",
+            "price": 0,
+            "unit": "ratio",
+            "period": "per booking"
+          },
+          {
+            "plan": "Online ön ödeme ücreti (+KDV)",
+            "price": 0.02,
+            "unit": "ratio",
+            "period": "per payment"
+          }
+        ],
+        "positioning": "Pazar yeri + yazılım; yeni müşteride %35 komisyon (konuma göre değişir); aylık/yıllık sözleşme. Komisyonsuz konumlandırma DE’de rezonans yapar.",
+        "trialDays": null,
+        "source": {
+          "url": "https://www.treatwell.de/partners/preise/",
+          "name": "Treatwell Connect Preise (DE)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": true
+      },
+      {
+        "id": "salonized",
+        "name": "Salonized",
+        "pricing": [],
+        "positioning": "14 gün ücretsiz deneme (kart/sözleşme yok); SMS kredisi 0,15 €→0,11 € (hacme göre); Salonized Pay terminal 199 € + %1,0; KassenSichV/TSE 12 €/ay. Abonelik katman fiyatları sayfada alınamadı (ikincil 52,50 € iddiası düşük güven, kullanılmadı).",
+        "trialDays": 14,
+        "source": {
+          "url": "https://www.salonized.com/de/preise",
+          "name": "Salonized Preise (DE)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false
+      },
+      {
+        "id": "fresha-de",
+        "name": "Fresha (DE)",
+        "pricing": [],
+        "positioning": "Almanya EUR planı doğrulanamadı (sayfa TRY gösterdi). Önceki iddia \"415 EUR/ay\" kullanılmamalı.",
+        "trialDays": null,
+        "source": {
+          "url": "https://www.fresha.com/de/pricing",
+          "name": "Fresha DE pricing (geolocation: TRY)",
+          "published": null,
+          "accessed": "2026-10-31"
+        },
+        "verified": false
+      }
+    ],
+    "notes": [
+      "Bilinçli global bırakılanlar: gads.match.*, meta.learn.*, meta.fatigue.*, gads.smart.*, funnel.lead_decay_tau_hours, founder.hours_per_week.",
+      "Shore, Planity, Studiobookr, Phorest bu turda doğrulanamadı; listeye alınmadı.",
+      "Karneval ve bölgesel tatiller eyalete göre; oyunda bölge seçimi yoksa ulusal tatiller kullanılmalı."
+    ]
+  }
+}

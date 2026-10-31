@@ -1,0 +1,99 @@
+{
+  "id": "C10",
+  "slug": "onboarding-failure-churn",
+  "stage": "retention",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "retention.onboarding_quality",
+        "op": "<",
+        "value": 0.4
+      },
+      {
+        "metric": "retention.early_churn_rate",
+        "op": ">",
+        "value": 0.12
+      },
+      {
+        "metric": "day",
+        "op": ">=",
+        "value": 60
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 60
+  },
+  "marketOverrides": {
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "retention.onboarding_quality",
+            "op": "<",
+            "value": 0.45
+          },
+          {
+            "metric": "retention.early_churn_rate",
+            "op": ">",
+            "value": 0.12
+          },
+          {
+            "metric": "day",
+            "op": ">=",
+            "value": 60
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 60
+      }
+    }
+  },
+  "effects": [],
+  "symptoms": [
+    "retention.early_churn_rate",
+    "retention.usage_rate",
+    "funnel.activation_rate",
+    "funnel.trial_to_paid",
+    "support.tickets_7d"
+  ],
+  "correctResponses": [
+    {
+      "action": "onboarding.defineActivation",
+      "outcome": "case.C10.correct.outcome"
+    },
+    {
+      "action": "onboarding.firstWeekCall",
+      "outcome": "case.C10.correct.outcome"
+    },
+    {
+      "action": "onboarding.shortTraining",
+      "outcome": "case.C10.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.raiseBudget",
+      "outcome": "case.C10.wrong.outcome"
+    },
+    {
+      "action": "core.blameSeason",
+      "outcome": "case.C10.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C10.hint",
+  "i18n": {
+    "title": "case.C10.title",
+    "summary": "case.C10.summary",
+    "symptoms": "case.C10.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "C09",
+  "slug": "seasonal-swing",
+  "stage": "lead",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "market.seasonal_index",
+        "op": "<",
+        "value": 0.85
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 60
+  },
+  "marketOverrides": {
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "market.seasonal_index",
+            "op": "<",
+            "value": 0.9
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 60
+      }
+    }
+  },
+  "effects": [],
+  "symptoms": [
+    "market.seasonal_index",
+    "funnel.leads_7d",
+    "gads.cpc_observed",
+    "retention.usage_rate"
+  ],
+  "correctResponses": [
+    {
+      "action": "planning.adjustForSeasonality",
+      "outcome": "case.C09.correct.outcome"
+    },
+    {
+      "action": "retention.focusOnRetentionInLowSeason",
+      "outcome": "case.C09.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.editBidsBudgetManually",
+      "outcome": "case.C09.wrong.outcome"
+    },
+    {
+      "action": "core.overhire",
+      "outcome": "case.C09.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C09.hint",
+  "i18n": {
+    "title": "case.C09.title",
+    "summary": "case.C09.summary",
+    "symptoms": "case.C09.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

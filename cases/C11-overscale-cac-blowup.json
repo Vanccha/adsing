@@ -1,0 +1,97 @@
+{
+  "id": "C11",
+  "slug": "overscale-cac-blowup",
+  "stage": "finance",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "cash.marginal_cac",
+        "op": ">",
+        "value": {
+          "param": "derived.max_marginal_cac"
+        }
+      },
+      {
+        "metric": "gads.budget_jump_ratio_7d",
+        "op": ">=",
+        "value": 1.5
+      }
+    ],
+    "chance": 1,
+    "cooldownDays": 30
+  },
+  "marketOverrides": {
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "cash.marginal_cac",
+            "op": ">",
+            "value": {
+              "param": "derived.max_marginal_cac"
+            }
+          },
+          {
+            "metric": "gads.budget_jump_ratio_7d",
+            "op": ">=",
+            "value": 1.3
+          }
+        ],
+        "chance": 1,
+        "cooldownDays": 30
+      }
+    }
+  },
+  "effects": [],
+  "symptoms": [
+    "cash.marginal_cac",
+    "cash.avg_cac",
+    "cash.ltv_cac",
+    "meta.frequency",
+    "cash.runway_months"
+  ],
+  "correctResponses": [
+    {
+      "action": "finance.trackMarginalCac",
+      "outcome": "case.C11.correct.outcome"
+    },
+    {
+      "action": "gads.gradualBudgetIncrease",
+      "outcome": "case.C11.correct.outcome"
+    },
+    {
+      "action": "finance.diversifyChannels",
+      "outcome": "case.C11.correct.outcome"
+    },
+    {
+      "action": "measure.runHoldoutTest",
+      "outcome": "case.C11.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.raiseBudget",
+      "outcome": "case.C11.wrong.outcome"
+    },
+    {
+      "action": "meta.raiseBudget",
+      "outcome": "case.C11.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C11.hint",
+  "i18n": {
+    "title": "case.C11.title",
+    "summary": "case.C11.summary",
+    "symptoms": "case.C11.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

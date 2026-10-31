@@ -1,0 +1,152 @@
+{
+  "id": "C14",
+  "slug": "cold-outreach-legal",
+  "stage": "legal",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "legal.cold_outreach_active",
+        "op": ">=",
+        "value": 1
+      },
+      {
+        "metric": "legal.compliant_list",
+        "op": "==",
+        "value": 0
+      }
+    ],
+    "chance": 0.2,
+    "cooldownDays": 30
+  },
+  "marketOverrides": {
+    "de": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "legal.cold_outreach_active",
+            "op": ">=",
+            "value": 1
+          },
+          {
+            "metric": "legal.compliant_list",
+            "op": "==",
+            "value": 0
+          }
+        ],
+        "chance": 0.35,
+        "cooldownDays": 30
+      },
+      "effects": [
+        {
+          "target": "cash.balance",
+          "op": "add",
+          "value": -3000,
+          "durationDays": 0
+        },
+        {
+          "target": "reputation",
+          "op": "add",
+          "value": -0.1,
+          "durationDays": 30
+        }
+      ]
+    },
+    "us": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "legal.cold_outreach_active",
+            "op": ">=",
+            "value": 1
+          },
+          {
+            "metric": "legal.compliant_list",
+            "op": "==",
+            "value": 0
+          }
+        ],
+        "chance": 0.15,
+        "cooldownDays": 30
+      }
+    },
+    "tr": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "legal.cold_outreach_active",
+            "op": ">=",
+            "value": 1
+          },
+          {
+            "metric": "legal.compliant_list",
+            "op": "==",
+            "value": 0
+          }
+        ],
+        "chance": 0.2,
+        "cooldownDays": 30
+      }
+    }
+  },
+  "effects": [
+    {
+      "target": "reputation",
+      "op": "add",
+      "value": -0.08,
+      "durationDays": 30
+    },
+    {
+      "target": "funnel.emailDeliverabilityMult",
+      "op": "mul",
+      "value": 0.5,
+      "durationDays": 60
+    }
+  ],
+  "symptoms": [
+    "legal.complaints_30d",
+    "funnel.email_deliverability",
+    "reputation",
+    "legal.compliant_list",
+    "funnel.leads_7d"
+  ],
+  "correctResponses": [
+    {
+      "action": "legal.buildPermissionList",
+      "outcome": "case.C14.correct.outcome"
+    },
+    {
+      "action": "legal.addOptOut",
+      "outcome": "case.C14.correct.outcome"
+    },
+    {
+      "action": "legal.checkMarketRules",
+      "outcome": "case.C14.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "legal.scaleColdOutreach",
+      "outcome": "case.C14.wrong.outcome"
+    },
+    {
+      "action": "legal.buyList",
+      "outcome": "case.C14.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C14.hint",
+  "i18n": {
+    "title": "case.C14.title",
+    "summary": "case.C14.summary",
+    "symptoms": "case.C14.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

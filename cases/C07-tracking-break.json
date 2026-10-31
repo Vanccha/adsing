@@ -1,0 +1,96 @@
+{
+  "id": "C07",
+  "slug": "tracking-break",
+  "stage": "measurement",
+  "markets": [
+    "us",
+    "de",
+    "tr"
+  ],
+  "trigger": {
+    "all": [
+      {
+        "metric": "event.site_update_recent",
+        "op": ">=",
+        "value": 1
+      },
+      {
+        "metric": "gads.smart_bidding_enabled",
+        "op": ">=",
+        "value": 1
+      }
+    ],
+    "chance": 0.35,
+    "cooldownDays": 45
+  },
+  "marketOverrides": {
+    "de": {
+      "trigger": {
+        "all": [
+          {
+            "metric": "event.site_update_recent",
+            "op": ">=",
+            "value": 1
+          },
+          {
+            "metric": "gads.smart_bidding_enabled",
+            "op": ">=",
+            "value": 1
+          }
+        ],
+        "chance": 0.35,
+        "cooldownDays": 45
+      }
+    }
+  },
+  "effects": [
+    {
+      "target": "measure.trackingHealth",
+      "op": "mul",
+      "value": 0.4,
+      "durationDays": 14
+    }
+  ],
+  "symptoms": [
+    "measure.tracking_health",
+    "measure.observed_conversions_7d",
+    "measure.crm_leads_7d",
+    "gads.smart_state",
+    "gads.clicks_7d"
+  ],
+  "correctResponses": [
+    {
+      "action": "measure.fixTag",
+      "outcome": "case.C07.correct.outcome"
+    },
+    {
+      "action": "measure.importOfflineConversions",
+      "outcome": "case.C07.correct.outcome"
+    },
+    {
+      "action": "measure.setupAlerts",
+      "outcome": "case.C07.correct.outcome"
+    }
+  ],
+  "wrongResponses": [
+    {
+      "action": "gads.editBidsBudgetManually",
+      "outcome": "case.C07.wrong.outcome"
+    },
+    {
+      "action": "gads.pauseCampaign",
+      "outcome": "case.C07.wrong.outcome"
+    }
+  ],
+  "learningHint": "case.C07.hint",
+  "i18n": {
+    "title": "case.C07.title",
+    "summary": "case.C07.summary",
+    "symptoms": "case.C07.symptoms"
+  },
+  "source": {
+    "type": "composite",
+    "note": "Bileşik vaka; belirli bir şirketin verisi değildir.",
+    "refs": []
+  }
+}

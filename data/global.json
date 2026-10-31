@@ -1,0 +1,477 @@
+{
+  "schemaVersion": 1,
+  "market": "global",
+  "params": [
+    {
+      "id": "gads.smart.min_conversions",
+      "value": 30,
+      "unit": "count",
+      "market": "global",
+      "layer": "sourced",
+      "range": {
+        "min": 15,
+        "max": 50
+      },
+      "source": {
+        "url": "https://support.google.com/google-ads/answer/10285843",
+        "name": "Google Ads Help: Smart Bidding / hedef CPA öğrenme dönemi ve dönüşüm önerisi",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Google Ads Help: tutarlı hedef CPA/ROAS performansı için reklam grubu başına ayda en az 30 dönüşüm önerilir. Alt sınır (15) ve 50+ rahat bölge ikincil kaynaklardan; aralık olarak tutuldu. Plan varsayımı (30) birincil kaynakla örtüştü.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.smart.window_days",
+      "value": 30,
+      "unit": "days",
+      "market": "global",
+      "layer": "sourced",
+      "source": {
+        "url": "https://support.google.com/google-ads/answer/10285843",
+        "name": "Google Ads Help: Smart Bidding / hedef CPA öğrenme dönemi ve dönüşüm önerisi",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Dönüşüm penceresi: son 30 gün (Google Ads Help: ayda 30 dönüşüm).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.smart.learning_days",
+      "value": 14,
+      "unit": "days",
+      "market": "global",
+      "layer": "sourced",
+      "range": {
+        "min": 7,
+        "max": 42
+      },
+      "source": {
+        "url": "https://support.google.com/google-ads/answer/10285843",
+        "name": "Google Ads Help: Smart Bidding / hedef CPA öğrenme dönemi ve dönüşüm önerisi",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "Google Ads Help: ilk öğrenme dönemi için değişiklik yapmadan en az 2 hafta bekleyin; performans bu sürede oynak olabilir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.smart.learn_reset_frac",
+      "value": 0.5,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.3,
+        "max": 1
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Büyük teklif/bütçe/hedef değişikliğinde öğrenme ilerlemesinin kaybedilen payı (kısmi sıfırlama). Kaynak yok; oyun dengesi için varsayım.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.match.broad.leak",
+      "value": 0.4,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.25,
+        "max": 0.6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Geniş eşlemede harcamanın alakasız/bilgi niyetli sorgulara giden payı. Birincil/ikincil sayısal kaynak bulunamadı; Google Ads arama terimi raporu deneyimine dayalı varsayım.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.match.phrase.leak",
+      "value": 0.15,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.08,
+        "max": 0.25
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Kelime öbeği eşlemesinde sızıntı payı. Varsayım.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.match.exact.leak",
+      "value": 0.04,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.01,
+        "max": 0.08
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Tam eşlemede (yakın varyantlar dahil) sızıntı payı. Varsayım.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "gads.rank.alpha",
+      "value": 1,
+      "unit": "multiplier",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.7,
+        "max": 1.5
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "AdRank = bid × QS^alpha. Model parametresi; gerçek Google formülü açıklanmamıştır.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.learn.events",
+      "value": 50,
+      "unit": "count",
+      "market": "global",
+      "layer": "sourced",
+      "range": {
+        "min": 30,
+        "max": 50
+      },
+      "source": {
+        "url": "https://www.facebook.com/business/help/269269737396981",
+        "name": "Meta Business Help Center: About learning limited",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "Meta Business Help Center: reklam seti son önemli düzenlemeden sonraki haftada yaklaşık 50 optimizasyon olayı alamayacaksa 'Learning limited'. Resmî sayfa gövdesi WebFetch ile çekilemedi (yalnızca başlık geldi); ifade, facebook.com/business/help sayfalarına ait arama çıktısından teyit edildi, bu yüzden güven orta.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.learn.window_days",
+      "value": 7,
+      "unit": "days",
+      "market": "global",
+      "layer": "sourced",
+      "source": {
+        "url": "https://www.facebook.com/business/help/942374239243867",
+        "name": "Meta Business Help Center: Last Significant Edit",
+        "published": null,
+        "accessed": "2026-10-31"
+      },
+      "confidence": "medium",
+      "note": "Meta Help Center: son önemli düzenlemeden sonraki 7 gün ('the week after your last significant edit'). Aynı doğrulama sınırı geçerli.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.learn.reset_frac",
+      "value": 0.7,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.5,
+        "max": 1
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Önemli düzenlemede (bütçe sıçraması, kitle/yaratıcı/hedef değişimi) öğrenme ilerlemesinin kaybı. Meta önemli düzenleme tanımını verir; oran varsayım.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.fatigue.f0",
+      "value": 3,
+      "unit": "count",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 2,
+        "max": 4
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Yaratıcı yorgunluğunun başladığı kişi başı frekans eşiği. Sektör blog deneyimi 2-4 aralığı; birincil kaynak yok.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "meta.fatigue.lambda",
+      "value": 0.15,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.08,
+        "max": 0.3
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "CTR_eff = CTR0 × exp(−λ·max(0, f−f0)); frekans başına katsayı. Varsayım.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "consent.recovery",
+      "value": 0.65,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "sourced",
+      "range": {
+        "min": 0.3,
+        "max": 0.7
+      },
+      "source": {
+        "url": "https://statistiken-aktuell.de/cookieless-consent-statistiken-2026/",
+        "name": "statistiken-aktuell.de (ikincil derleme)",
+        "published": "2026-05-01",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "low",
+      "note": "Consent Mode modellemesinin reddeden kullanıcı dönüşümlerinde geri kazanım payı (ikincil iddia ~%65; birincil Google kaynağı bu turda doğrulanamadı). Küçük hesaplarda (günlük <20 tıklama) modelleme eşiği sağlanmayabilir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "measure.small_account_model_threshold_clicks",
+      "value": 20,
+      "unit": "count",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 10,
+        "max": 50
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Günlük tıklama bu değerin altındaysa Consent Mode modellemesi devreye girmez (DE planı varsayımı).",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "pmax.brand_cannibalization",
+      "value": 0.35,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.15,
+        "max": 0.6
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "PMax'in marka aramalarına yazdığı atıf payı. Varsayım; geo/holdout testiyle keşfedilir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "funnel.lead_decay_tau_hours",
+      "value": 24,
+      "unit": "hours",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 6,
+        "max": 72
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "p_contact = p0·exp(−Δt/τ). Yanıt süresi etkisi için ikincil literatür var (ilk saat belirgin); bu turda doğrulanmadı. Pazar bazlı ince ayar motorda kanal çarpanı ile.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "sat.hill_h",
+      "value": 0.7,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.4,
+        "max": 1
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Hill doygunluk eğrisi üssü (h ≤ 1). Model parametresi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "prior.strength",
+      "value": 10,
+      "unit": "count",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 4,
+        "max": 30
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Beta önsel gücü (a0+b0): oyuncunun sektör ortalamasından bildiği sanal örnek sayısı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "ci.level",
+      "value": 0.9,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.8,
+        "max": 0.95
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "UI güvenilir aralık düzeyi.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "stats.min_n_clicks",
+      "value": 100,
+      "unit": "count",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 50,
+        "max": 300
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "'Yeterli veri yok' etiketi için asgari tıklama/denemeli örnek.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "geo.lag_days",
+      "value": 60,
+      "unit": "days",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 21,
+        "max": 120
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "GEO yatırımının etkiye dönüşme gecikmesi (gamma çekirdeği ortalaması). Belirsiz/gecikmeli kanal.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "founder.hours_per_week",
+      "value": 50,
+      "unit": "hours",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 40,
+        "max": 60
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Kurucunun haftalık kullanılabilir saati (tek kurucu, tam zamanlı). Zorluk ile ölçeklenir.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "founder.overtime_efficiency_loss",
+      "value": 0.1,
+      "unit": "ratio",
+      "market": "global",
+      "layer": "assumption",
+      "range": {
+        "min": 0.05,
+        "max": 0.2
+      },
+      "source": null,
+      "confidence": "low",
+      "note": "Ardışık fazla mesai günü başına verimlilik kaybı.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "fx.tcmb.usdtry",
+      "value": 49.8196,
+      "unit": "TRY",
+      "market": "global",
+      "layer": "sourced",
+      "range": {
+        "min": 49.7747,
+        "max": 49.8644
+      },
+      "source": {
+        "url": "https://www.tcmb.gov.tr/kurlar/today.xml",
+        "name": "TCMB günlük döviz kurları (bülten 2026/204)",
+        "published": "2026-10-30",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "TCMB 30.10.2026 bülten 2026/204: USD alış 49,7747 / satış 49,8644; ortalama alınmıştır. (Plan dosyasındaki serbest piyasa 49,785 ile uyumlu.)",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "fx.tcmb.eurtry",
+      "value": 55.7651,
+      "unit": "TRY",
+      "market": "global",
+      "layer": "sourced",
+      "range": {
+        "min": 55.7149,
+        "max": 55.8153
+      },
+      "source": {
+        "url": "https://www.tcmb.gov.tr/kurlar/today.xml",
+        "name": "TCMB günlük döviz kurları (bülten 2026/204)",
+        "published": "2026-10-30",
+        "accessed": "2026-10-31"
+      },
+      "confidence": "high",
+      "note": "TCMB 30.10.2026: EUR alış 55,7149 / satış 55,8153; ortalama.",
+      "formula": null,
+      "inputs": []
+    },
+    {
+      "id": "fx.eurusd",
+      "value": 1.1193,
+      "unit": "USD",
+      "market": "global",
+      "layer": "derived",
+      "source": null,
+      "confidence": "high",
+      "note": "EUR/USD çapraz kur = EURTRY / USDTRY (TCMB).",
+      "formula": "fx.tcmb.eurtry / fx.tcmb.usdtry",
+      "inputs": [
+        "fx.tcmb.eurtry",
+        "fx.tcmb.usdtry"
+      ]
+    }
+  ],
+  "meta": {
+    "description": "Pazardan bağımsız parametreler. Pazar dosyaları aynı kimliği tanımlarsa pazar değeri önceliklidir; senaryo dosyası ikisini de geçersiz kılabilir.",
+    "notes": [
+      "gads.match.*.leak, funnel.lead_decay_tau_hours, meta.fatigue.* ve founder.hours_per_week bilinçli olarak global bırakıldı (pazar ayrımı için güvenilir veri yok).",
+      "Doğrulama turu (2026-10-31) sonuçları data/README.md tablosunda."
+    ],
+    "verificationRound": "2026-10-31"
+  }
+}
