@@ -6,6 +6,8 @@ const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
+  build: { chunkSizeWarningLimit: 1200 },
+  worker: { format: 'es' },
   resolve: {
     alias: {
       '@engine': r('./engine'),
@@ -13,7 +15,7 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['engine/**/*.test.ts', 'scripts/**/*.test.ts'],
+    include: ['engine/**/*.test.ts', 'scripts/**/*.test.ts', 'ui/**/*.test.{ts,tsx}'],
     environment: 'node',
     testTimeout: 60000,
   },

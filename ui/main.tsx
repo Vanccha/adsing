@@ -1,4 +1,12 @@
-// Geçici yer tutucu: arayüzü başka bir ajan yazacak.
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { App } from './App';
+import { initI18n } from './i18n';
+import './styles.css';
 
-createRoot(document.getElementById('root')!).render(<p>Küresel Büyüme Yönetimi Oyunu - arayüz yer tutucusu</p>);
+initI18n();
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
