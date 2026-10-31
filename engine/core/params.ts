@@ -66,3 +66,8 @@ export const REQUIRED_PARAM_IDS: readonly string[] = [
   'market.salon_count',
   'founder.hours_per_week',
 ];
+
+/** Aylık fiyatın katı olarak parasal motor varsayılanı (pazar para biriminden bağımsız). */
+export function priceCost(s: P, mult: number): number {
+  return mult * pn(s, 'price.monthly');
+}

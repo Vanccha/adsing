@@ -164,7 +164,7 @@ export interface MetaState {
 export interface LocalState {
   gbp: { claimed: boolean; score: number; reviews: number; rating: number; pending: Array<{ day: number; n: number }> };
   referral: { active: boolean; reward: number };
-  content: { social: number; seo: number };
+  content: { social: number; seo: number; seoEff: number };
   outreach: { domainHealth: number; sent30: number };
 }
 export interface GeoState {
@@ -178,6 +178,7 @@ export interface AccountState {
   health: number; // 0-1
   suspendedUntil: number | null;
   permanent: boolean;
+  strikes: number;
 }
 export interface TrackingState {
   health: number; // etiket sağlığı 0-1 (gerçek)
@@ -196,6 +197,9 @@ export interface LeadBatch {
   offerId: string;
   nonIncr: number; // artımsal olmayan (zaten gelecek) lead sayısı
   assisted: boolean;
+  preQualified: boolean; // saha satışı: nitelik aşaması atlanır
+  trialP: number | null; // deneme başlatma olasılığı üzerine yazma
+  tauMult: number;
 }
 export interface TrialBatch {
   startDay: number;
@@ -330,6 +334,7 @@ export interface Ledger {
   cogs: number;
   payFees: number;
   adSpend: number;
+  adTax: number;
   fixed: number;
   reps: number;
   tools: number;
@@ -349,6 +354,8 @@ export interface Founder {
   queue: QueuedAction[];
   capacityToday: number;
   usedToday: number;
+  overtimeToday: number;
+  overtimeYesterday: number;
   reserved: { sales: number; onboarding: number }; // sabit günlük tahsis (saat)
   docsStock: number; // dokümantasyon/onboarding birikimi
 }
@@ -372,6 +379,7 @@ export interface DecisionEntry {
   action: Action;
   status: 'applied' | 'queued' | 'rejected' | 'executed_from_queue';
   reason?: string;
+  fromQueue?: boolean;
 }
 
 export interface GameState {
@@ -389,7 +397,9 @@ export interface GameState {
   horizon: number;
   currency: string;
   fxToUSD: number;
-  holidays: string[];
+  holidays: HolidayFx[];
+  seasonality: Seasonality;
+  channelRel: Record<string, { access: string; relative: number }>;
   params: Record<string, ParamValue>;
   paramInfo: Record<string, ParamInfo>;
   goals: Goals;
@@ -420,6 +430,19 @@ export interface GameState {
   decisions: DecisionEntry[];
   events: GameEvent[]; // son olaylar (kırpılır)
   outcome: Outcome | null;
+}
+
+export interface HolidayFx {
+  date: string;
+  endDate: string;
+  salonDemand: number;
+  saasBuying: number;
+  closed: boolean;
+}
+export interface Seasonality {
+  adCost: Record<string, number>;
+  salonDemand: Record<string, number>;
+  saasBuying: Record<string, number>;
 }
 
 // ---- Aksiyonlar ----

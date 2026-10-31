@@ -19,6 +19,18 @@ export interface ClickBatch {
   tauMult: number;
 }
 
+/** Tık/ziyaret aşaması olmayan doğrudan lead (yerel, referans, saha, soğuk temas, GEO). */
+export interface DirectLead {
+  channel: LeadChannel;
+  n: number;
+  qual: number;
+  assisted: boolean;
+  preQualified: boolean;
+  trialP: number | null;
+  offerId: string;
+  tauMult: number;
+}
+
 export interface DayAcc {
   stages: StageCounts;
   spend: Record<string, number>;
@@ -26,6 +38,7 @@ export interface DayAcc {
   incrLeads: Record<string, number>;
   newCustomers: Record<string, number>;
   leadsByRef: Record<string, number>; // kampanya/reklam seti -> gerçek lead
+  leadsByRefCls: Record<string, number>; // 'ref|sınıf' -> gerçek lead
   displaced: number; // organik tabandan yer değiştiren
   organicBase: number;
   cashIn: number;
@@ -46,6 +59,7 @@ export interface DayCtx {
   actionResults: ActionResult[];
   cashLimit: number; // bugün reklama harcanabilecek kalan nakit
   batches: ClickBatch[];
+  direct: DirectLead[];
   acc: DayAcc;
 }
 
@@ -59,6 +73,7 @@ export function newAcc(): DayAcc {
     incrLeads: {},
     newCustomers: {},
     leadsByRef: {},
+    leadsByRefCls: {},
     displaced: 0,
     organicBase: 0,
     cashIn: 0,
