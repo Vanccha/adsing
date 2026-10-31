@@ -4,7 +4,7 @@
 import { K } from '../core/constants';
 import type { DayCtx } from '../core/ctx';
 import { pn } from '../core/params';
-import type { Cohort, GameState } from '../core/types';
+import type { Cohort, GameState, Segment } from '../core/types';
 import { clamp, clamp01, modAdd, modMult } from '../core/util';
 
 export function grossMargin(s: GameState): number {
@@ -19,12 +19,12 @@ export function effectiveTaxRate(s: GameState): number {
 }
 
 /** Kohortun aylık churn tehlikesi (yaş: ay). */
-export function monthlyHazard(s: GameState, onb: number, ageMonths: number): number {
+export function monthlyHazard(s: GameState, onb: number, ageMonths: number, seg: Segment = 'solo'): number {
   const base = pn(s, 'churn.monthly_base');
   const g = K.onbChurnA - K.onbChurnB * onb;
   const early = pn(s, 'scn.churn_early_mult', 1 + K.earlyChurnBoost);
   const decay = pn(s, 'scn.churn_decay_months', K.earlyChurnTauMonths);
-  const h = base * g * (1 + (early - 1) * Math.exp(-ageMonths / decay)) * modMult(s, 'churn') + modAdd(s, 'churn_add');
+  const h = base * g * (1 + (early - 1) * Math.exp(-ageMonths / decay)) * K.segment[seg].churn * modMult(s, 'churn') + modAdd(s, 'churn_add');
   return clamp(h, 0, 0.95);
 }
 
@@ -45,7 +45,7 @@ export function runBilling(s: GameState, ctx: DayCtx): void {
     // Ödeme hatası: dunning ile bir kısmı geri kazanılır, kalanı istem dışı churn olur.
     if (age > 0) {
       const failed = r.binomial(c.alive, failRate);
-      const lost = r.binomial(failed, 1 - K.dunningRecover);
+      const lost = r.binomial(failed, 1 - pn(s, 'pay.dunning_recover', K.dunningRecover));
       c.alive -= lost;
       c.churned += lost;
       ctx.acc.churned += lost;
@@ -75,7 +75,7 @@ export function runChurn(s: GameState, ctx: DayCtx): void {
     if (c.alive <= 0) continue;
     const age = s.day - c.startDay;
     if (age >= 1) {
-      const p = dailyFromMonthly(monthlyHazard(s, c.onb, age / 30));
+      const p = dailyFromMonthly(monthlyHazard(s, c.onb, age / 30, c.seg ?? 'solo'));
       const ch = rng.fork(`c${c.id}`).binomial(c.alive, p);
       c.alive -= ch;
       c.churned += ch;

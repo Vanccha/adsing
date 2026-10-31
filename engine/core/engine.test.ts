@@ -161,7 +161,7 @@ describe('uçtan uca koşular (fixture)', () => {
     expect(avg(carefulPolicy)).toBeGreaterThan(avg(naivePolicy));
   });
   it('tohum aynı, kanallar eklenince olay akışı kaymaz (alt akış izolasyonu)', () => {
-    const evs = (s: GameState) => s.events.filter((e) => e.id !== 'game_over').map((e) => `${e.day}:${e.id}`);
+    const evs = (s: GameState) => s.events.filter((e) => e.id !== 'game_over' && e.id !== 'finance_offer').map((e) => `${e.day}:${e.id}`);
     const a = fx('iso');
     days(a, 80);
     const b = fx('iso');

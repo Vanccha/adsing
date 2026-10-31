@@ -53,6 +53,13 @@ export interface DayAcc {
   platformConv: Record<string, number>;
   analyticsConv: number;
   trackedFraction: Record<string, number>;
+  gClicks: number;
+  gImpr: number;
+  gCls: Record<string, number>;
+  gMatchCost: Record<string, number>;
+  respHoursSum: number;
+  respN: number;
+  unreachable: number;
 }
 
 export interface DayCtx {
@@ -90,6 +97,13 @@ export function newAcc(): DayAcc {
     platformConv: {},
     analyticsConv: 0,
     trackedFraction: {},
+    gClicks: 0,
+    gImpr: 0,
+    gCls: {},
+    gMatchCost: {},
+    respHoursSum: 0,
+    respN: 0,
+    unreachable: 0,
   };
 }
 

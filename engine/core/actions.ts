@@ -1,9 +1,11 @@
 // Aksiyon kaydı + doğrulama. Her modül kendi tanımlarını verir; burada birleştirilir.
+import { caseActions } from '../cases/actions';
 import { geoActions } from '../channels/geo';
 import { googleActions } from '../channels/google.actions';
 import { localActions } from '../channels/local';
 import { metaActions } from '../channels/meta.actions';
 import { opsActions } from '../funnel/actions';
+import { financeActions } from '../funnel/financing';
 import { measurementActions } from '../measurement/actions';
 import { qualityActions } from '../quality/actions';
 import type { ActionDef, ActionDefs } from './actiondef';
@@ -17,6 +19,8 @@ export const ACTION_DEFS: ActionDefs = {
   ...opsActions,
   ...localActions,
   ...geoActions,
+  ...financeActions,
+  ...caseActions,
 } as ActionDefs;
 
 export const ACTION_TYPES = Object.keys(ACTION_DEFS) as ActionType[];

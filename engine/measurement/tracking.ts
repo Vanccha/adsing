@@ -3,14 +3,14 @@
 // Sunucu tarafı takip, onay/ATT kaybının bir kısmını geri kazanır. CRM geri bildirimi sinyal kalitesini artırır.
 import { K } from '../core/constants';
 import { pn } from '../core/params';
-import { clamp01 } from '../core/util';
+import { clamp01, modAdd, modMult } from '../core/util';
 import type { GameState } from '../core/types';
 
 export type TrackChannel = 'google' | 'meta' | 'analytics';
 
 /** Onaylı/modellenmiş izlenebilir ziyaretçi oranı (consent mode ile kısmi telafi). */
 export function consentEff(s: GameState): number {
-  const c = clamp01(pn(s, 'measure.consent_rate'));
+  const c = clamp01(pn(s, 'measure.consent_rate') - modAdd(s, 'consent_loss'));
   const rec = clamp01(pn(s, 'consent.recovery', K.consentRecoveryDefault));
   return c + (1 - c) * (s.tracking.consentMode ? rec : 0);
 }
@@ -26,7 +26,7 @@ export function trackedFraction(s: GameState, ch: TrackChannel): number {
   let loss = consentEff(s) * (ch === 'meta' ? attFactor(s) : 1);
   if (s.tracking.serverSide) loss = 1 - (1 - loss) * (1 - K.serverSideRecovery);
   const offline = clamp01(pn(s, 'measure.offline_share', 0));
-  return clamp01(s.tracking.health * loss * (1 - offline));
+  return clamp01(s.tracking.health * modMult(s, 'tracking') * loss * (1 - offline));
 }
 
 /** Akıllı teklif/öğrenme algoritmasının gördüğü sinyal kalitesi. */

@@ -218,6 +218,7 @@ export interface Cohort {
   onb: number;
   byChannel: Partial<Record<LeadChannel, number>>;
   churned: number;
+  seg?: Segment; // kohortun segmenti (yoksa 'solo')
 }
 export interface ChannelCum {
   leads: number;
@@ -327,6 +328,15 @@ export interface DayRecord {
   hoursUsed: number;
   hoursCapacity: number;
   queueLen: number;
+  // Aşama 2 eklemeleri (isteğe bağlı: eski kayıtlarla uyumlu)
+  gClicks?: number; // Google tıklama
+  gImpr?: number; // Google gösterim
+  gCls?: Record<string, number>; // Google tıklama, sorgu sınıfına göre
+  gMatchCost?: Record<string, number>; // Google harcama, eşleme türüne göre (broad/phrase/exact/brand)
+  gBudget?: number; // aktif Google kampanyalarının günlük bütçe toplamı
+  respHoursSum?: number; // yanıtlanan lead'ler için yanıt süresi toplamı (saat x lead)
+  respN?: number; // yanıtlanan lead sayısı
+  unreachable?: number; // ulaşılamayan (iletişim kurulamayan + süresi dolan) lead
 }
 
 export interface Ledger {
@@ -344,6 +354,9 @@ export interface Ledger {
   referralRewards: number;
   incomeTax: number;
   fines: number;
+  financingIn: number; // kredi + melek yatırımı girişi
+  principalPaid: number; // kredi anapara geri ödemesi
+  interestPaid: number; // kredi faizi
 }
 
 export interface QueuedAction {
@@ -367,6 +380,9 @@ export interface Goals {
   ltvCac: number;
   paybackMonths: number;
   reputationFloor: number;
+  customers?: number; // scn.goal.*.target_customers (yoksa koşul uygulanmaz)
+  minRunwayMonths?: number; // 12 ay modu: kazanmak için asgari runway (scn.goal.12m.min_runway_months)
+  minCashRatio?: number; // 90 gün modu: bitişte nakit / başlangıç nakdi asgari oranı (scn.goal.90d.min_cash_ratio)
 }
 
 export interface Outcome {
@@ -382,6 +398,7 @@ export interface DecisionEntry {
   status: 'applied' | 'queued' | 'rejected' | 'executed_from_queue';
   reason?: string;
   fromQueue?: boolean;
+  tags?: string[]; // karşıladığı vaka aksiyon kimlikleri (cases/actionmap)
 }
 
 export interface GameState {
@@ -411,7 +428,7 @@ export interface GameState {
   founder: Founder;
   reps: number;
   autoReply: boolean;
-  product: { price: number; onboarding: number };
+  product: { price: number; onboarding: number; segment: Segment; pivotDay: number | null };
   reputation: number;
   accounts: { google: AccountState; meta: AccountState };
   tracking: TrackingState;
@@ -432,11 +449,69 @@ export interface GameState {
   decisions: DecisionEntry[];
   events: GameEvent[]; // son olaylar (kırpılır)
   outcome: Outcome | null;
+  cases: CaseState; // vaka/olay motoru durumu (enabled=false ise pasif)
+  finance: FinanceState; // finansman teklifleri, krediler, hisse
+}
+
+export type Segment = 'solo' | 'team' | 'budget';
+
+// ---- Vaka / olay motoru ----
+export type CaseResponse = 'pending' | 'correct' | 'wrong' | 'ignored';
+export interface CaseActive {
+  id: string; // 'C01'
+  triggerDay: number;
+  windowEnd: number; // tepki penceresi sonu (gün, hariç)
+  effectEnd: number; // etkilerin sona erdiği gün
+  response: CaseResponse;
+  respondedDay: number | null;
+  respondedAction: string | null; // vaka aksiyon kimliği (örn. 'gads.addNegativeKeywords')
+}
+export interface CaseState {
+  enabled: boolean;
+  active: CaseActive[]; // tepki penceresi veya etkisi sürenler
+  history: CaseActive[]; // çözülmüş vakalar
+  lastTrigger: Record<string, number>; // vaka/olay kimliği -> son tetiklenme günü
+  flags: Record<string, { value: number; until: number }>; // olay bayrakları (event.*)
+  complaints: number[]; // şikâyet günleri (son 30 gün için)
+  compIdx: number[]; // son 8 günün rakip endeksi
+  recoveries: Array<{ day: number; rep: number }>; // geçici itibar kayıplarının geri dönüşü
+  eventLog: Array<{ day: number; id: string }>; // JSON olay havuzundan tetiklenenler
+}
+
+// ---- Finansman ----
+export interface FinanceOffer {
+  id: string;
+  kind: 'loan' | 'angel';
+  amount: number;
+  rateMonthly: number; // kredi: aylık faiz
+  termMonths: number; // kredi vadesi
+  equity: number; // melek: satılan hisse oranı
+  expires: number; // teklifin son günü (hariç)
+  taken: boolean;
+}
+export interface Loan {
+  id: string;
+  principal: number;
+  remaining: number;
+  rateMonthly: number;
+  paymentMonthly: number;
+  nextPaymentDay: number;
+  paymentsLeft: number;
+}
+export interface FinanceState {
+  offers: FinanceOffer[];
+  loans: Loan[];
+  equitySold: number; // satılan toplam hisse (0-1)
+  raised: number; // toplam toplanan nakit (kredi + melek)
+  interestPaid: number;
+  nextOfferId: number;
 }
 
 export interface HolidayFx {
   date: string;
   endDate: string;
+  kind?: string;
+  name?: string;
   salonDemand: number;
   saasBuying: number;
   closed: boolean;
@@ -486,6 +561,10 @@ export interface ActionParamsMap {
   'local.cold_outreach': { kind: 'email' | 'call' | 'sms'; volume: number };
   'local.content': { kind: 'social' | 'seo'; hours: number };
   'geo.invest': { hours: number };
+  'ops.pivot': { segment: Segment };
+  'fin.take_loan': { offerId: string };
+  'fin.accept_investment': { offerId: string };
+  'case.respond': { response: string };
 }
 export type ActionType = keyof ActionParamsMap;
 export type Action = { [K in ActionType]: { type: K; params: ActionParamsMap[K]; hours?: number } }[ActionType];

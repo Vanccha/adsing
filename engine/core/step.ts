@@ -13,6 +13,9 @@ import { applyScheduled } from '../measurement/actions';
 import { accumulateHoldouts } from '../measurement/holdout';
 import { observeDay } from '../measurement/observe';
 import { findCreative } from '../quality/assets';
+import { caseTags } from '../cases/actionmap';
+import { runCases, trackCaseResponses } from '../cases/runtime';
+import { runFinancing } from '../funnel/financing';
 import { ACTION_DEFS, validateAction } from './actions';
 import type { ActionDef } from './actiondef';
 import { K } from './constants';
@@ -25,8 +28,8 @@ import { pn } from './params';
 import type { Action, ActionResult, DayRecord, GameEvent, GameState, StepResult } from './types';
 import { clamp, clamp01, sum } from './util';
 
-function record(s: GameState, a: Action, status: 'applied' | 'queued' | 'rejected' | 'executed_from_queue', reason?: string, fromQueue = false): void {
-  s.decisions.push({ day: s.day, action: a, status, ...(reason ? { reason } : {}), ...(fromQueue ? { fromQueue: true } : {}) });
+function record(s: GameState, a: Action, status: 'applied' | 'queued' | 'rejected' | 'executed_from_queue', reason?: string, fromQueue = false, tags?: string[]): void {
+  s.decisions.push({ day: s.day, action: a, status, ...(reason ? { reason } : {}), ...(fromQueue ? { fromQueue: true } : {}), ...(tags && tags.length ? { tags } : {}) });
 }
 
 /** Aşama 2: kuyruk + yeni aksiyonlar. Yetmeyen kurucu saati => kuyruğa; yetmeyen nakit/geçersiz => reddedilir. */
@@ -56,9 +59,10 @@ function processActions(s: GameState, ctx: DayCtx, actions: Action[]): void {
       s.founder.usedToday += v.hours;
       s.cash -= v.cash;
       s.ledger.actionCosts += v.cash;
+      const tags = s.cases.enabled ? caseTags(s, a) : undefined; // uygulanmadan ÖNCEKİ durumdan (bütçe artışı vb.)
       (ACTION_DEFS[a.type] as ActionDef<typeof a.type>).apply(a.params as never, s, ctx);
       results.push({ action: a, status: 'applied' });
-      record(s, a, fromQueue ? 'executed_from_queue' : 'applied');
+      record(s, a, fromQueue ? 'executed_from_queue' : 'applied', undefined, false, tags);
       return;
     }
     if (v.hours > cap + otCap) {
@@ -123,9 +127,11 @@ export function stepInPlace(s: GameState, actions: Action[]): StepResult {
 
   // 1 olaylar
   runEvents(s, ctx);
+  runCases(s, ctx); // vaka tetikleyicileri + JSON olay havuzu
   // 2 aksiyonlar
   applyScheduled(s);
   processActions(s, ctx, actions);
+  trackCaseResponses(s);
   // 3 rakipler: ortalamaya dönen rassal yürüyüş
   const cr = ctx.root.fork('market.competitors');
   s.competitorIndex = clamp(s.competitorIndex + 0.05 * (1 - s.competitorIndex) + 0.02 * cr.normal(), 0.7, 1.6);
@@ -144,6 +150,7 @@ export function stepInPlace(s: GameState, actions: Action[]): StepResult {
   runChurn(s, ctx);
   updateOnboarding(s);
   runCash(s, ctx);
+  runFinancing(s, ctx);
   // 11 ölçüm / raporlama
   const rngObs = ctx.root.fork('measure');
   observeDay(s, ctx, rngObs);
@@ -154,7 +161,7 @@ export function stepInPlace(s: GameState, actions: Action[]): StepResult {
   updateResources(s, ctx);
 
   const out = ledgerOut(s.ledger) - ledgerOut(ledgerBefore);
-  const inc = s.ledger.revenue + s.ledger.vatCollected - ledgerBefore.revenue - ledgerBefore.vatCollected;
+  const inc = s.ledger.revenue + s.ledger.vatCollected + s.ledger.financingIn - ledgerBefore.revenue - ledgerBefore.vatCollected - ledgerBefore.financingIn;
   const acc = ctx.acc;
   const rec: DayRecord = {
     day: s.day,
@@ -182,6 +189,14 @@ export function stepInPlace(s: GameState, actions: Action[]): StepResult {
     hoursUsed: s.founder.usedToday,
     hoursCapacity: capacity,
     queueLen: s.founder.queue.length,
+    gClicks: acc.gClicks,
+    gImpr: acc.gImpr,
+    gCls: acc.gCls,
+    gMatchCost: acc.gMatchCost,
+    gBudget: s.google.campaigns.reduce((a, c) => a + (c.status === 'active' ? c.dailyBudget : 0), 0),
+    respHoursSum: acc.respHoursSum,
+    respN: acc.respN,
+    unreachable: acc.unreachable,
   };
   void cashBefore;
   s.history.push(rec);

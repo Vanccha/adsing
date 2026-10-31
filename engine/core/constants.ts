@@ -169,6 +169,44 @@ export const K = {
   },
   difficultyBadMult: { easy: 0.6, normal: 1, hard: 1.4 },
 
+  // Vaka / olay motoru (Aşama 2) — hepsi motor varsayımı
+  caseResponseWindow: 14, // vaka tetiklenince doğru/yanlış tepki için gün sayısı
+  caseCorrectShorten: 0.5, // doğru tepki: kalan etki süresinin kalanı çarpanı
+  caseWrongExtend: 1.25, // yanlış tepki: kalan etki süresi çarpanı
+  negativesPerClass: 6, // bir sınıf-düzeyi negatif ~ bu kadar negatif kelime sayılır (metrik: gads.negative_keywords_count)
+  taxSurpriseFrac: 0.2, // derived.tax_due_estimate = bekleyen KDV borcunun bu oranı (tahmin sapması)
+  siteUpdateRate: 0.02, // günlük site/LP güncellemesi olasılığı (event.site_update_recent bayrağı)
+  siteUpdateDays: 7,
+  consentBannerRate: 0.004, // günlük onay bandı değişikliği olasılığı
+  consentBannerDays: 14,
+  taxHeavyCashFrac: 0.12, // bekleyen KDV nakdin bu oranını aşarsa vergi ödemesi 'sürpriz' sayılır
+  taxDueSoonDays: 8, // KDV ödemesine bu kadar gün kala 'yakın vergi' bayrağı
+
+  // Segment (pivot): fiyat, nitelik, dönüşüm, churn çarpanları
+  segment: {
+    solo: { price: 1, qual: 1, paid: 1, churn: 1, leads: 1 },
+    team: { price: 1.8, qual: 0.85, paid: 0.9, churn: 0.75, leads: 0.6 },
+    budget: { price: 0.6, qual: 1.1, paid: 1.25, churn: 1.3, leads: 1.4 },
+  },
+  pivotHours: 8,
+  pivotTransitionDays: 14,
+  pivotTransitionConv: 0.8,
+  pivotMinGapDays: 30,
+
+  // Finansman (assumption; parametre kimliğiyle ezilebilir: fin.*)
+  fin: {
+    loanRunwayTrigger: 4, // runway (ay) bunun altındaysa ve MRR > 0 ise kredi teklifi
+    loanMrrMult: 4, // kredi tutarı = MRR x bu kadar (en az 6 x aylık yakım)
+    loanRateMonthly: 0.018,
+    loanTermMonths: 12,
+    angelMrrFrac: 0.4, // MRR hedefin bu oranına ulaşınca melek teklifi
+    angelCashMonths: 18, // melek tutarı = aylık sabit gider x bu kadar
+    angelEquity: 0.15,
+    offerDays: 20,
+    minDayOffer: 45,
+    offerGapDays: 60,
+  },
+
   // Ölçüm
   platformCrmMissRate: 0.05,
   crmDelayDays: 2,

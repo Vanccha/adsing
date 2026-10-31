@@ -86,7 +86,27 @@ const buildDocs: ActionDef<'ops.build_docs'> = {
   },
 };
 
+const pivot: ActionDef<'ops.pivot'> = {
+  minHours: 4,
+  hours: () => K.pivotHours,
+  cash: (_p, s) => priceCost(s, 2),
+  check: (p, s) => {
+    if (!(p.segment in K.segment)) return 'err.bad_segment';
+    if (p.segment === s.product.segment) return 'err.same_segment';
+    if (s.product.pivotDay !== null && s.day - s.product.pivotDay < K.pivotMinGapDays) return 'err.pivot_cooldown';
+    return null;
+  },
+  apply: (p, s) => {
+    s.product.segment = p.segment;
+    s.product.price = pn(s, 'price.monthly') * K.segment[p.segment].price;
+    s.product.pivotDay = s.day;
+    // Geçiş dönemi: konumlandırma oturana kadar dönüşüm düşer
+    s.modifiers.push({ id: `pivot.${s.day}`, target: 'conv_paid', kind: 'mult', value: K.pivotTransitionConv, from: s.day, until: s.day + K.pivotTransitionDays, source: 'pivot' });
+  },
+};
+
 export const opsActions: PartialDefs = {
+  'ops.pivot': pivot,
   'ops.set_alloc': setAlloc,
   'ops.hire_rep': hireRep,
   'ops.fire_rep': fireRep,

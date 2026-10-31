@@ -126,13 +126,16 @@ const coldOutreach: ActionDef<'local.cold_outreach'> = {
     const status = legalOf(s, p.kind);
     const rel = channelRelative(s, p.kind === 'sms' ? 'sms' : `cold_${p.kind}`, 1);
     const r: Rng = ctx.root.fork(`local.outreach.${s.day}.${p.kind}`);
-    const y = K.outreachYield[status] * rel * s.local.outreach.domainHealth;
+    const compliant = (s.cases.flags.compliant_list?.until ?? 0) > s.day; // izinli liste: verim düşer, riskler azalır
+    const y = K.outreachYield[status] * rel * s.local.outreach.domainHealth * (compliant ? 0.6 : 1) * (p.kind === 'email' ? modMult(s, 'email_deliv') : 1);
     push(ctx, s, { channel: 'outreach', n: r.binomial(Math.floor(p.volume), clamp01(y)) });
-    s.reputation = clamp01(s.reputation - (p.volume * K.outreachRepHit[status]) / 100);
+    s.reputation = clamp01(s.reputation - (compliant ? 0 : (p.volume * K.outreachRepHit[status]) / 100));
     s.local.outreach.domainHealth = clamp01(s.local.outreach.domainHealth - (p.volume * 0.0005 * (status === 'allowed' ? 1 : 3)));
     s.local.outreach.sent30 += p.volume;
     const fineP = p.kind === 'email' && status !== 'allowed' ? pn(s, 'market.abmahnung_prob_per_cold_email_batch', K.outreachFineProb[status]) : K.outreachFineProb[status];
-    if (r.bernoulli(fineP)) {
+    const optOut = (s.cases.flags.opt_out?.until ?? 0) > s.day;
+    if (r.bernoulli(compliant ? 0 : fineP * (optOut ? 0.5 : 1))) {
+      s.cases.complaints.push(s.day);
       const fine = priceCost(s, 50);
       s.cash -= fine;
       s.ledger.fines += fine;

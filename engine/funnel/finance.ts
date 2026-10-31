@@ -8,9 +8,9 @@ import type { GameState, Ledger } from '../core/types';
 import { grossMargin } from './customers';
 
 export function ledgerOut(l: Ledger): number {
-  return l.vatRemitted + l.cogs + l.payFees + l.adSpend + l.adTax + l.fixed + l.reps + l.tools + l.actionCosts + l.referralRewards + l.incomeTax + l.fines;
+  return l.vatRemitted + l.cogs + l.payFees + l.adSpend + l.adTax + l.fixed + l.reps + l.tools + l.actionCosts + l.referralRewards + l.incomeTax + l.fines + l.principalPaid + l.interestPaid;
 }
-export const ledgerIn = (l: Ledger): number => l.revenue + l.vatCollected;
+export const ledgerIn = (l: Ledger): number => l.revenue + l.vatCollected + l.financingIn;
 export const ledgerCash = (s: GameState): number => s.startCash + ledgerIn(s.ledger) - ledgerOut(s.ledger);
 
 export const fixedMonthly = (s: GameState): number => pn(s, 'scn.fixed_costs_monthly', priceCost(s, K.fixedMonthlyPriceMult));

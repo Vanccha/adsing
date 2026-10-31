@@ -67,7 +67,10 @@ export function applyScheduled(s: GameState): void {
       rest.push(x);
       continue;
     }
-    if (x.level === 'basic') s.tracking.health = 1;
+    if (x.level === 'basic') {
+      s.tracking.health = 1;
+      s.modifiers = s.modifiers.filter((m) => m.target !== 'tracking'); // geçici ölçüm kayıpları (vaka/olay) da onarılır
+    }
     else if (x.level === 'consent_mode') s.tracking.consentMode = true;
     else if (x.level === 'server_side') s.tracking.serverSide = true;
     else s.tracking.crmFeedback = true;

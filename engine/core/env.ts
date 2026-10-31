@@ -46,7 +46,7 @@ export function adCostFactor(s: GameState, day = s.day): number {
 
 /** SaaS satın alma eğilimi (lead -> deneme/ücretli etkisi). */
 export function buyingFactor(s: GameState, day = s.day): number {
-  return seas(s.seasonality.saasBuying, monthKey(dateOf(s, day))) * holidayFx(s, day).saasBuying;
+  return seas(s.seasonality.saasBuying, monthKey(dateOf(s, day))) * holidayFx(s, day).saasBuying * modMult(s, 'buying');
 }
 
 /** Pazar kanal göreli etkinliği (meta.channels[x].relative). Yoksa 1. */
@@ -67,5 +67,5 @@ export function awareness(s: GameState): number {
 export function founderCapacity(s: GameState, day = s.day): number {
   const hpw = typeof s.params['founder.hours_per_week'] === 'number' ? (s.params['founder.hours_per_week'] as number) : 40;
   const d = dowOf(s, day);
-  return d === 0 || d === 6 ? hpw / 12 : hpw / 6;
+  return (d === 0 || d === 6 ? hpw / 12 : hpw / 6) * modMult(s, 'founder_cap');
 }

@@ -29,7 +29,7 @@ export function visitToLead(leadRateClick: number): number {
 
 /** Fiyat esnekliği etkisi (deneme -> ücretli). */
 export function priceFactor(s: GameState): number {
-  const base = pn(s, 'price.monthly');
+  const base = pn(s, 'price.monthly') * K.segment[s.product.segment].price;
   const el = pn(s, 'price.elasticity', 0.8);
   return clamp(Math.pow(s.product.price / base, -el), 0.3, 2);
 }

@@ -136,6 +136,15 @@ export function planCampaign(s: GameState, c: GCampaign, o: { noise?: number; bu
     units.push({ kw: null, V: brandV * capture, mix: { brand: 1 }, reach: 1, creativeQ: q, relQ: 0.5, kwBid: null, brand: true, pmax: true });
   }
 
+  // Aynı temadaki anahtar kelimeler (eşleme kapsamları) aynı arama havuzunu paylaşır: toplam kapsama 1'i aşamaz
+  // (aksi halde kopya kelime eklemek hacmi sahte biçimde katlar). exact(.35)+phrase(.65)=1 değişmez.
+  const reachByTheme = new Map<string, number>();
+  for (const u of units) if (u.kw) reachByTheme.set(u.kw.theme, (reachByTheme.get(u.kw.theme) ?? 0) + u.reach);
+  for (const u of units) {
+    const tot = u.kw ? (reachByTheme.get(u.kw.theme) ?? 0) : 0;
+    if (tot > 1) u.reach /= tot;
+  }
+
   const rows: Row[] = [];
   for (const u of units) {
     const classes = (Object.keys(u.mix) as ClassKey[]).filter((k) => (u.mix[k] ?? 0) > 1e-9);
@@ -315,6 +324,8 @@ export function runGoogleDay(s: GameState, ctx: DayCtx): void {
         cr.stats.ctr.k += clicks;
         cr.stats.ctr.kObs += clicks;
       }
+      addTo(ctx.acc.gCls, r.cls, clicks);
+      addTo(ctx.acc.gMatchCost, kw ? (kw.theme === 'brand' ? 'brand' : kw.match) : 'pmax', cost);
       const row = (c.termAcc[r.cls] ??= { cls: r.cls as QueryClass, impressions: 0, clicks: 0, cost: 0, conv: 0 });
       row.impressions += impr;
       row.clicks += clicks;
@@ -337,6 +348,8 @@ export function runGoogleDay(s: GameState, ctx: DayCtx): void {
       } satisfies ClickBatch);
     });
     chargeAds(s, ctx, 'google', costTot);
+    ctx.acc.gClicks += clTot;
+    ctx.acc.gImpr += impTot;
     c.stats.impressions += impTot;
     c.stats.clicks += clTot;
     c.stats.cost += costTot;

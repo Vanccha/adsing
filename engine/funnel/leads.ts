@@ -52,7 +52,7 @@ export function generateLeads(s: GameState, ctx: DayCtx): void {
     for (const arm of arms) {
       const lp = findLp(s, arm.lpId);
       const visits = r.binomial(arm.clicks, loadRate(lp));
-      const lr = leadRate(s, base, b.cls, lp, offer, b.cvrMult * buying);
+      const lr = leadRate(s, base, b.cls, lp, offer, b.cvrMult * buying * K.segment[s.product.segment].leads);
       const leads = r.binomial(visits, visitToLead(lr));
       ctx.acc.stages.visits += visits;
       ctx.acc.lpVisits += visits;
@@ -141,7 +141,10 @@ export function processSales(s: GameState, ctx: DayCtx): void {
   s.funnel.queue.sort((a, b) => a.day - b.day);
   let idx = 0;
   for (const b of s.funnel.queue) {
-    if (s.day - b.day > K.maxLeadWaitDays) continue; // süresi dolan lead kaybolur
+    if (s.day - b.day > K.maxLeadWaitDays) {
+      ctx.acc.unreachable += b.n; // süresi dolan lead kaybolur
+      continue;
+    }
     if (cap <= 0) {
       keep.push(b);
       continue;
@@ -152,9 +155,12 @@ export function processSales(s: GameState, ctx: DayCtx): void {
     const dt = (s.day - b.day) * 24 + h0;
     const pContact = K.contactP0 * Math.exp(-dt / (tau * b.tauMult));
     const contacted = r.binomial(take, pContact);
-    const qualified = b.preQualified ? contacted : r.binomial(contacted, clamp01(qBase * b.qual));
+    ctx.acc.unreachable += take - contacted;
+    ctx.acc.respHoursSum += dt * take;
+    ctx.acc.respN += take;
+    const qualified = b.preQualified ? contacted : r.binomial(contacted, clamp01(qBase * b.qual * K.segment[s.product.segment].qual));
     const offer = findOffer(s, b.offerId);
-    const pTrial = clamp01((b.trialP ?? tBase * Math.pow(offer ? offer.q : 1, 0.5)) * buying);
+    const pTrial = clamp01((b.trialP ?? tBase * Math.pow(offer ? offer.q : 1, 0.5)) * buying * modMult(s, 'trial_start'));
     const trials = r.binomial(qualified, pTrial);
     const frac = b.n > 0 ? take / b.n : 0;
     const nonIncrT = r.binomial(trials, b.n > 0 ? b.nonIncr / b.n : 0);
@@ -194,7 +200,7 @@ export function processTrials(s: GameState, ctx: DayCtx): void {
     const r = rng.fork(`t${i++}`);
     const assistedBoost = t.assisted ? K.fieldAssistedBoost : 1;
     const activated = r.binomial(t.n, clamp01(pAct * (t.assisted ? Math.min(1.2, assistedBoost) : 1)));
-    const paid = r.binomial(activated, pPaidGivenAct * modMultConv(s));
+    const paid = r.binomial(activated, clamp01(pPaidGivenAct * modMultConv(s) * K.segment[s.product.segment].paid));
     ctx.acc.stages.activated += activated;
     ctx.acc.stages.paid += paid;
     if (paid > 0) {
@@ -212,7 +218,7 @@ export function processTrials(s: GameState, ctx: DayCtx): void {
   }
   s.funnel.trials = rest;
   if (paidTotal > 0) {
-    const c: Cohort = { id: s.nextCohortId++, startDay: s.day, n0: paidTotal, alive: paidTotal, arpa: s.product.price, onb: s.product.onboarding, byChannel, churned: 0 };
+    const c: Cohort = { id: s.nextCohortId++, startDay: s.day, n0: paidTotal, alive: paidTotal, arpa: s.product.price, onb: s.product.onboarding, byChannel, churned: 0, seg: s.product.segment };
     s.cohorts.push(c);
     ctx.acc.mrrMove.new += paidTotal * c.arpa;
   }

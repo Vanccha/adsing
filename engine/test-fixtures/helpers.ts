@@ -14,7 +14,7 @@ export const REPO = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 
 /** Varsayılan başlangıç: Pazartesi (tam kurucu kapasitesi). Cumartesi için startDate: '2026-10-31'. */
 export function fx(seed = 't1', opts: InitOpts = {}, market: 'us' | 'tr' = 'us'): GameState {
-  return initState(fixtureBundle(market), seed, { startDate: '2026-11-02', ...opts });
+  return initState(fixtureBundle(market), seed, { startDate: '2026-11-02', cases: false, ...opts });
 }
 
 export const realDataExists = (): boolean => existsSync(join(REPO, 'markets', 'us.json')) && existsSync(join(REPO, 'data', 'global.json')) && existsSync(join(REPO, 'scenarios', 'salon-saas.json'));

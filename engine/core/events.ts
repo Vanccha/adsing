@@ -50,6 +50,7 @@ const DEFS: EventDef[] = [
     rate: () => K.ev.priceCut,
     run: (s) => {
       mod(s, 'competitor_price_cut', 'conv_paid', 'mult', 0.9, 45);
+      s.cases.flags.competitor_price_cut = { value: 1, until: s.day + 45 };
       return ev(s, 'competitor_price_cut', 'bad', { days: 45 });
     },
   },
@@ -124,11 +125,15 @@ const DEFS: EventDef[] = [
   },
 ];
 
+/** cases/events.json olaylarıyla örtüşen yerleşik olaylar: vaka motoru açıkken JSON sürümü kullanılır. */
+const JSON_COVERED = new Set(['tracking_break', 'bid_surge', 'platform_policy_review', 'viral_mention']);
+
 /** Aşama 1: olay çekilişleri + süresi dolan modifier temizliği + hesap sağlığı toparlanması. */
 export function runEvents(s: GameState, ctx: DayCtx): void {
   s.modifiers = s.modifiers.filter((m) => m.until > s.day);
   const diff = K.difficultyBadMult[s.difficulty];
   for (const d of DEFS) {
+    if (s.cases.enabled && JSON_COVERED.has(d.id)) continue; // cases/events.json'da karşılığı var (çifte sayım olmasın)
     const r = ctx.root.fork(`event.${d.id}`);
     const p = d.rate(s) * (d.bad ? diff : 1);
     if (r.bernoulli(Math.min(1, p))) {

@@ -7,7 +7,7 @@ import { Rng } from '../rng';
 import { makeCreative, makeLp, makeOffer } from '../quality/assets';
 import { geoLen } from '../channels/geo';
 import { K, ENGINE_VERSION } from './constants';
-import { pn, priceCost, REQUIRED_PARAM_IDS } from './params';
+import { hasParam, pn, priceCost, REQUIRED_PARAM_IDS } from './params';
 import type { Difficulty, GameState, HolidayFx, Mode, Seasonality } from './types';
 
 export interface InitOpts {
@@ -19,6 +19,8 @@ export interface InitOpts {
   startDate?: string; // oyun takvimi başlangıcı; varsayılan refDate
   drawRanges?: boolean; // range -> tohumdan çekim (varsayılan true)
   extraRequired?: readonly string[];
+  /** Vaka/olay motoru (cases/*.json); varsayılan açık. false => yalnızca motorun yerleşik olayları. */
+  cases?: boolean;
 }
 
 function parseHolidays(meta: MarketMeta): HolidayFx[] {
@@ -34,6 +36,8 @@ function parseHolidays(meta: MarketMeta): HolidayFx[] {
     out.push({
       date: o.date,
       endDate: typeof o.endDate === 'string' ? o.endDate : o.date,
+      ...(typeof o.kind === 'string' ? { kind: o.kind } : {}),
+      ...(typeof o.name === 'string' ? { name: o.name } : {}),
       salonDemand: typeof fx.salonDemand === 'number' ? fx.salonDemand : 1,
       saasBuying: typeof fx.saasBuying === 'number' ? fx.saasBuying : 1,
       closed: o.closed === true,
@@ -90,11 +94,11 @@ export function initState(bundle: DataBundle, seed: string, opts: InitOpts = {})
     goals: { mrr: 0, ltvCac: 3, paybackMonths: 12, reputationFloor: 0.1 },
     cash: 0,
     startCash: 0,
-    ledger: { revenue: 0, vatCollected: 0, vatRemitted: 0, cogs: 0, payFees: 0, adSpend: 0, adTax: 0, fixed: 0, reps: 0, tools: 0, actionCosts: 0, referralRewards: 0, incomeTax: 0, fines: 0 },
+    ledger: { revenue: 0, vatCollected: 0, vatRemitted: 0, cogs: 0, payFees: 0, adSpend: 0, adTax: 0, fixed: 0, reps: 0, tools: 0, actionCosts: 0, referralRewards: 0, incomeTax: 0, fines: 0, financingIn: 0, principalPaid: 0, interestPaid: 0 },
     founder: { burnout: 0, queue: [], capacityToday: 0, usedToday: 0, overtimeToday: 0, overtimeYesterday: 0, reserved: { sales: 2, onboarding: 1 }, docsStock: 0 },
     reps: 0,
     autoReply: false,
-    product: { price: 0, onboarding: K.onbStart },
+    product: { price: 0, onboarding: K.onbStart, segment: 'solo', pivotDay: null },
     reputation: 0.6,
     accounts: { google: { health: 1, suspendedUntil: null, permanent: false, strikes: 0 }, meta: { health: 1, suspendedUntil: null, permanent: false, strikes: 0 } },
     tracking: { health: 0.7, consentMode: false, serverSide: false, crmFeedback: false },
@@ -120,7 +124,10 @@ export function initState(bundle: DataBundle, seed: string, opts: InitOpts = {})
     decisions: [],
     events: [],
     outcome: null,
+    cases: { enabled: false, active: [], history: [], lastTrigger: {}, flags: {}, complaints: [], compIdx: [], recoveries: [], eventLog: [] },
+    finance: { offers: [], loans: [], equitySold: 0, raised: 0, interestPaid: 0, nextOfferId: 1 },
   };
+  base.cases.enabled = opts.cases !== false;
   // Pazar kanal göreli etkinliği (meta.channels)
   for (const [k, v] of Object.entries(meta.channels ?? {})) {
     const o = v as Record<string, unknown>;
@@ -136,6 +143,9 @@ export function initState(bundle: DataBundle, seed: string, opts: InitOpts = {})
     ltvCac: pn(base, `${g}.ltv_cac_min`, 3),
     paybackMonths: pn(base, `${g}.payback_months_max`, mode === 'quick' ? 9 : 12),
     reputationFloor: pn(base, 'scn.lose.reputation', 0.1),
+    ...(hasParam(base, `${g}.target_customers`) ? { customers: pn(base, `${g}.target_customers`) } : {}),
+    ...(mode === 'full' && hasParam(base, 'scn.goal.12m.min_runway_months') ? { minRunwayMonths: pn(base, 'scn.goal.12m.min_runway_months') } : {}),
+    ...(mode === 'quick' && hasParam(base, 'scn.goal.90d.min_cash_ratio') ? { minCashRatio: pn(base, 'scn.goal.90d.min_cash_ratio') } : {}),
   };
   // Başlangıç varlıkları (gizli kalite tohumdan)
   base.assets.offers.push(makeOffer(base, 'trial', 'Varsayılan deneme'));
