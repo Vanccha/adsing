@@ -164,8 +164,10 @@ export function planCampaign(s: GameState, c: GCampaign, o: { noise?: number; bu
         if (c.strategy === 'maxClicks') bid = base;
         else if (c.strategy === 'maxConversions') bid = base * clamp(1 - iota + iota * (lr / avgLr), 0.2, 2.5);
         else {
-          const v = (c.tcpaTarget ?? clsCpc * 10) * lr * signal;
-          bid = clamp(iota * v + (1 - iota) * base, 0.3 * clsCpc, 3 * clsCpc) * noise;
+          // Değer/tık = hedef CPA x gözlenen dönüşüm olasılığı. Sinyal (takip) bozulunca gözlenen oran düşer => teklifler düşer.
+          // iota yalnızca sınıflar arası ayrımı belirler (düşükse ortalama değere yakınsar).
+          const v = (c.tcpaTarget ?? clsCpc * 10) * (iota * lr + (1 - iota) * avgLr) * signal;
+          bid = clamp(v, 0.3 * clsCpc, 3 * clsCpc) * noise;
         }
       }
       const ar = bid * qsFactor;

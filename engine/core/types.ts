@@ -313,6 +313,8 @@ export interface DayRecord {
   crmLeads: number;
   crmCustomers: number;
   organicBase: number;
+  lpVisits: number; // yalnızca reklam LP trafiği (doğrudan lead'ler hariç)
+  lpLeads: number;
   revenueNet: number;
   cashIn: number;
   cashOut: number;

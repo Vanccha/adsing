@@ -62,3 +62,10 @@ export function awareness(s: GameState): number {
   const mass = s.funnel.cum.impressions + 50 * customers + 20 * s.local.gbp.reviews;
   return 1 - Math.exp(-mass / (salons * K.awarenessScale));
 }
+
+/** O günkü kurucu kapasitesi (saat): hafta içi hpw/6, hafta sonu hpw/12 (haftalık toplam = hpw). */
+export function founderCapacity(s: GameState, day = s.day): number {
+  const hpw = typeof s.params['founder.hours_per_week'] === 'number' ? (s.params['founder.hours_per_week'] as number) : 40;
+  const d = dowOf(s, day);
+  return d === 0 || d === 6 ? hpw / 12 : hpw / 6;
+}

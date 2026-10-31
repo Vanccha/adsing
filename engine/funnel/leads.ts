@@ -55,6 +55,7 @@ export function generateLeads(s: GameState, ctx: DayCtx): void {
       const lr = leadRate(s, base, b.cls, lp, offer, b.cvrMult * buying);
       const leads = r.binomial(visits, visitToLead(lr));
       ctx.acc.stages.visits += visits;
+      ctx.acc.lpVisits += visits;
       const obsLeads = r.binomial(leads, tfA);
       if (lp) {
         lp.stats.cvr.n += visits;
@@ -68,6 +69,7 @@ export function generateLeads(s: GameState, ctx: DayCtx): void {
         c.kObs += obsLeads;
       }
       leadsTot += leads;
+      ctx.acc.lpLeads += leads;
     }
     const nonIncrTot = r.binomial(leadsTot, b.nonIncr);
     paidNonIncr += nonIncrTot;

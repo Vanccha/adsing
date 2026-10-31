@@ -41,6 +41,8 @@ export interface DayAcc {
   leadsByRefCls: Record<string, number>; // 'ref|sınıf' -> gerçek lead
   displaced: number; // organik tabandan yer değiştiren
   organicBase: number;
+  lpVisits: number;
+  lpLeads: number;
   cashIn: number;
   cashOut: number;
   revenueNet: number;
@@ -76,6 +78,8 @@ export function newAcc(): DayAcc {
     leadsByRefCls: {},
     displaced: 0,
     organicBase: 0,
+    lpVisits: 0,
+    lpLeads: 0,
     cashIn: 0,
     cashOut: 0,
     revenueNet: 0,

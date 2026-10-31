@@ -8,8 +8,8 @@ import type { GameState, Scheduled } from '../core/types';
 const FIX: Record<Scheduled['level'], { hours: number; delay: number }> = {
   basic: { hours: 3, delay: 1 },
   consent_mode: { hours: 4, delay: 2 },
-  server_side: { hours: 8, delay: 5 },
-  crm_feedback: { hours: 6, delay: 4 },
+  server_side: { hours: 6, delay: 5 },
+  crm_feedback: { hours: 5, delay: 4 },
 };
 
 const alreadyDone = (s: GameState, level: Scheduled['level']): boolean => {

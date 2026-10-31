@@ -4,6 +4,7 @@
 import { ACTION_DEFS, ACTION_TYPES } from '../core/actions';
 import type { ActionDef } from '../core/actiondef';
 import { K } from '../core/constants';
+import { founderCapacity } from '../core/env';
 import { pn } from '../core/params';
 import type { ActionType, DayRecord, GameState, LeadChannel, PaidChannel, StageCounts } from '../core/types';
 import { STAGES } from '../core/types';
@@ -184,10 +185,23 @@ function funnelAnalysis(s: GameState, window = 30): FunnelView {
     const b = STAGES[i] as keyof StageCounts;
     rates[`${a}>${b}`] = counts[a] > 0 ? counts[b] / counts[a] : null;
   }
+  // Deneme -> ücretli gecikmelidir: ücretliler, deneme süresi kadar önceki pencerenin denemeleriyle kıyaslanır.
+  const trialDays = Math.round(pn(s, 'scn.trial_days', K.trialDaysDefault));
+  const end = Math.max(0, s.history.length - trialDays);
+  let lpV = 0;
+  let lpL = 0;
+  for (const r of h) {
+    lpV += r.lpVisits;
+    lpL += r.lpLeads;
+  }
+  let trialsLag = 0;
+  for (const r of s.history.slice(Math.max(0, end - window), end)) trialsLag += r.stages.trials;
   let bn: { stage: string; ratio: number } | null = null;
   for (const p of PAIRS) {
-    if (counts[p.den] < 30) continue; // yeterli hacim yok
-    const ratio = counts[p.num] / counts[p.den] / Math.max(p.bench(s), 1e-9);
+    const den = p.stage === 'paid' ? trialsLag : p.stage === 'lp' ? lpV : counts[p.den];
+    const num = p.stage === 'lp' ? lpL : counts[p.num];
+    if (den < 30) continue; // yeterli hacim yok
+    const ratio = num / den / Math.max(p.bench(s), 1e-9);
     if (!bn || ratio < bn.ratio) bn = { stage: p.stage, ratio };
   }
   const hintKeys: string[] = [];
@@ -311,7 +325,8 @@ export interface AvailableAction {
 /** Hangi aksiyon tipleri şu an denenebilir (oyun bitmedi, hesap askıda değil, vb.). Parametre doğrulaması aksiyon anında yapılır. */
 export function availableActions(s: GameState): AvailableAction[] {
   const out: AvailableAction[] = [];
-  const free = Math.max(0, s.founder.capacityToday - s.founder.usedToday);
+  const cap = s.founder.capacityToday > 0 ? s.founder.capacityToday : founderCapacity(s);
+  const free = Math.max(0, cap - s.founder.usedToday);
   for (const type of ACTION_TYPES) {
     const def = ACTION_DEFS[type] as ActionDef<typeof type>;
     let reasonKey: string | undefined;
@@ -320,7 +335,7 @@ export function availableActions(s: GameState): AvailableAction[] {
     else if (type.startsWith('meta.create') && s.accounts.meta.permanent) reasonKey = 'err.account_suspended';
     else if (type === 'ops.hire_rep' && s.reps >= 5) reasonKey = 'err.max_reps';
     else if (type === 'ops.fire_rep' && s.reps === 0) reasonKey = 'err.no_rep';
-    else if (def.minHours > s.founder.capacityToday * 1.25) reasonKey = 'err.too_many_hours';
+    else if (def.minHours > cap * 1.25) reasonKey = 'err.too_many_hours';
     const hint = free < def.minHours && !reasonKey ? 'err.no_hours' : undefined;
     out.push({ type, enabled: !reasonKey, ...(reasonKey || hint ? { reasonKey: reasonKey ?? hint } : {}), minHours: def.minHours });
   }

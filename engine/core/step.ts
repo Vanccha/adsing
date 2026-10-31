@@ -18,7 +18,7 @@ import type { ActionDef } from './actiondef';
 import { K } from './constants';
 import type { DayCtx } from './ctx';
 import { newAcc } from './ctx';
-import { dowOf } from './env';
+import { founderCapacity } from './env';
 import { runEvents } from './events';
 import { checkLoss, evaluateEnd } from './outcome';
 import { pn } from './params';
@@ -89,8 +89,13 @@ function emptyReport(s: GameState): DayRecord {
   if (last) return last;
   return {
     day: s.day, stages: { impressions: 0, clicks: 0, visits: 0, leads: 0, qualified: 0, trials: 0, activated: 0, paid: 0 }, spend: {}, leads: {}, incrLeads: {}, newCustomers: {}, platformConv: {}, analyticsConv: 0,
-    crmLeads: 0, crmCustomers: 0, organicBase: 0, revenueNet: 0, cashIn: 0, cashOut: 0, cash: s.cash, mrr: s.mrr, mrrMove: { new: 0, expansion: 0, contraction: 0, churn: 0 }, customers: 0, churned: 0, trackedFraction: {}, hoursUsed: 0, hoursCapacity: 0, queueLen: 0,
+    crmLeads: 0, crmCustomers: 0, organicBase: 0, revenueNet: 0, cashIn: 0, cashOut: 0, cash: s.cash, mrr: s.mrr, mrrMove: { new: 0, expansion: 0, contraction: 0, churn: 0 }, customers: 0, churned: 0, lpVisits: 0, lpLeads: 0, trackedFraction: {}, hoursUsed: 0, hoursCapacity: 0, queueLen: 0,
   };
+}
+
+/** Test/analiz yardımcısı: o günün boş bağlamı. */
+export function newDayCtx(s: GameState): DayCtx {
+  return { root: new Rng(`seed:${s.seed}`).fork(`d${s.day}`), events: [], actionResults: [], cashLimit: 0, batches: [], direct: [], acc: newAcc() };
 }
 
 /** Durumu yerinde değiştirir (runDays için). Dışarıya step() ile saf arayüz verilir. */
@@ -109,9 +114,8 @@ export function stepInPlace(s: GameState, actions: Action[]): StepResult {
   const cashBefore = s.cash;
 
   // Kurucu saati: hafta içi hpw/6, hafta sonu hpw/12 (toplam hpw); sabit tahsisler önce düşer.
-  const hpw = pn(s, 'founder.hours_per_week');
-  const weekend = dowOf(s) === 0 || dowOf(s) === 6;
-  const capacity = weekend ? hpw / 12 : hpw / 6;
+  pn(s, 'founder.hours_per_week'); // zorunlu parametre kontrolü
+  const capacity = founderCapacity(s);
   s.founder.capacityToday = capacity;
   s.founder.overtimeToday = 0;
   const reservedEff = Math.min(s.founder.reserved.sales + s.founder.reserved.onboarding, capacity);
@@ -164,6 +168,8 @@ export function stepInPlace(s: GameState, actions: Action[]): StepResult {
     crmLeads: acc.crmLeads,
     crmCustomers: acc.crmCustomers,
     organicBase: acc.organicBase,
+    lpVisits: acc.lpVisits,
+    lpLeads: acc.lpLeads,
     revenueNet: acc.revenueNet,
     cashIn: inc,
     cashOut: out,
@@ -239,7 +245,9 @@ function updateCumulative(s: GameState, ctx: DayCtx): void {
 /** İtibar, tükenme, GEO gözlemi. */
 function updateResources(s: GameState, ctx: DayCtx): void {
   s.reputation = clamp01(s.reputation + K.repRecover * (s.product.onboarding - 0.45));
-  const util = s.founder.capacityToday > 0 ? s.founder.usedToday / s.founder.capacityToday : 0;
+  // Tükenme: sabit tahsisler yarım, aksiyon saatleri tam sayılır.
+  const reservedEff = Math.min(s.founder.reserved.sales + s.founder.reserved.onboarding, s.founder.capacityToday);
+  const util = s.founder.capacityToday > 0 ? (s.founder.usedToday - 0.5 * reservedEff) / s.founder.capacityToday : 0;
   if (util > K.burnoutHigh) s.founder.burnout = clamp01(s.founder.burnout + K.burnoutGain * (1 + (util - K.burnoutHigh) * 5));
   else if (util < K.burnoutLow) s.founder.burnout = clamp01(s.founder.burnout - K.burnoutRecover);
   s.founder.overtimeYesterday = s.founder.overtimeToday;

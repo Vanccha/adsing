@@ -36,8 +36,9 @@ export interface MetaPlan {
 /** Frekans: benzersiz erişime göre kişi başına gösterim. */
 export function frequency(impr7: number, pool: number): number {
   if (impr7 <= 0 || pool <= 0) return 1;
-  const reach = pool * (1 - Math.exp(-impr7 / pool));
-  return reach > 0 ? Math.max(1, impr7 / reach) : 1;
+  const x = impr7 / pool;
+  if (x < 1e-9) return 1 + x / 2; // küçük x için seri açılımı (sayısal kararlılık)
+  return Math.max(1, x / -Math.expm1(-x));
 }
 
 /** Yorgunluk uygulanmış CTR. */

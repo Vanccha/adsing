@@ -72,13 +72,17 @@ export function betaQuantile(p: number, a: number, b: number): number {
   return (lo + hi) / 2;
 }
 
-/** P(X>Y), X~Beta(a1,b1), Y~Beta(a2,b2): sayısal integral (orta nokta kuralı). */
-export function probBetaGreater(a1: number, b1: number, a2: number, b2: number, steps = 400): number {
+/** P(X>Y), X~Beta(a1,b1), Y~Beta(a2,b2): X'in taşıyıcısı üzerinde sayısal integral (orta nokta kuralı). */
+export function probBetaGreater(a1: number, b1: number, a2: number, b2: number, steps = 1500): number {
+  const lo = betaQuantile(1e-8, a1, b1);
+  const hi = betaQuantile(1 - 1e-8, a1, b1);
+  // x = lo + (hi-lo) * u^2 değişkeni: sıfıra yakın tekilliklerde hassasiyeti artırır
   let sum = 0;
   for (let i = 0; i < steps; i++) {
-    const x = (i + 0.5) / steps;
-    sum += betaPdf(x, a1, b1) * betaCdf(x, a2, b2);
+    const u = (i + 0.5) / steps;
+    const x = lo + (hi - lo) * u * u;
+    const dx = (hi - lo) * 2 * u;
+    sum += betaPdf(x, a1, b1) * betaCdf(x, a2, b2) * dx;
   }
-  const r = sum / steps;
-  return Math.min(1, Math.max(0, r));
+  return Math.min(1, Math.max(0, sum / steps));
 }
