@@ -31,6 +31,10 @@ export interface StatCounter {
   kObs: number; // oyuncunun gördüğü (takip kaybıyla) başarı
 }
 
+// ---- İçerik kararları ----
+export type AdMessage = 'time' | 'revenue' | 'price' | 'trust';
+export type ContentTopic = 'howto' | 'comparison' | 'local' | 'story';
+
 // ---- Gizli kaliteli nesneler ----
 export interface Offer {
   id: string;
@@ -45,6 +49,7 @@ export interface Creative {
   channel: PaidChannel;
   angle: string;
   bold: boolean; // abartılı iddia: CTR↑ ama hesap riski
+  message?: AdMessage; // ana mesaj (yoksa genel)
   q: number; // gizli latent
   stats: { ctr: StatCounter }; // gösterim -> tık
   availableDay: number;
@@ -52,6 +57,7 @@ export interface Creative {
 export interface LandingPage {
   id: string;
   style: string;
+  message?: AdMessage; // ana mesaj (yoksa genel)
   q: number; // gizli dönüşüm latent'i
   speed: number; // gizli (0-1) hız/mobil uyumu
   stats: { cvr: StatCounter }; // ziyaret -> lead
@@ -164,7 +170,7 @@ export interface MetaState {
 export interface LocalState {
   gbp: { claimed: boolean; score: number; reviews: number; rating: number; pending: Array<{ day: number; n: number }> };
   referral: { active: boolean; reward: number };
-  content: { social: number; seo: number; seoEff: number };
+  content: { social: number; seo: number; seoEff: number; recent?: Partial<Record<ContentTopic, number>> };
   outreach: { domainHealth: number; sent30: number };
 }
 export interface GeoState {
@@ -330,6 +336,8 @@ export interface DayRecord {
   queueLen: number;
   // Aşama 2 eklemeleri (isteğe bağlı: eski kayıtlarla uyumlu)
   gClicks?: number; // Google tıklama
+  mClicks?: number; // Meta tıklama
+  mImpr?: number; // Meta gösterim
   gImpr?: number; // Google gösterim
   gCls?: Record<string, number>; // Google tıklama, sorgu sınıfına göre
   gMatchCost?: Record<string, number>; // Google harcama, eşleme türüne göre (broad/phrase/exact/brand)
@@ -541,8 +549,8 @@ export interface ActionParamsMap {
   'meta.remove_creative': { adSetId: string; creativeId: string };
   'meta.set_status': { adSetId: string; status: 'active' | 'paused' };
   'asset.create_offer': { kind: Offer['kind']; name?: string };
-  'asset.create_creative': { channel: PaidChannel; angle?: string; bold?: boolean };
-  'asset.create_lp': { style?: string };
+  'asset.create_creative': { channel: PaidChannel; angle?: string; bold?: boolean; message?: AdMessage };
+  'asset.create_lp': { style?: string; message?: AdMessage };
   'asset.start_ab_test': { a: string; b: string; days: number; split: number };
   'asset.stop_ab_test': { testId: string };
   'track.fix': { level: 'basic' | 'consent_mode' | 'server_side' | 'crm_feedback' };
@@ -559,7 +567,7 @@ export interface ActionParamsMap {
   'local.set_referral': { on: boolean; reward?: number };
   'local.field_sales': { hours: number };
   'local.cold_outreach': { kind: 'email' | 'call' | 'sms'; volume: number };
-  'local.content': { kind: 'social' | 'seo'; hours: number };
+  'local.content': { kind: 'social' | 'seo'; hours: number; topic?: ContentTopic };
   'geo.invest': { hours: number };
   'ops.pivot': { segment: Segment };
   'fin.take_loan': { offerId: string };

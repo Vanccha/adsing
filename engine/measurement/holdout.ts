@@ -1,6 +1,6 @@
 // Basit holdout / geo testi: bölgelerin bir kısmında kanal kapatılır; artımsal lead tahmini + güven aralığı.
 // Gerçek model: kontrol bölgesi (1-σ) beklenen = (1-σ)·O + I_c, holdout bölgesi σ·O·(1+ε)  (O: organik taban, I_c: artımsal reklam leadi).
-// Tahmin gürültülüdür (Poisson + bölge benzerliği ε); yetersiz güçte "belirsiz" döner. Aşama 2'de derinleşecek.
+// Tahmin gürültülüdür (Poisson + bölge benzerliği ε); yetersiz güçte "belirsiz" döner.
 import type { Rng } from '../rng';
 import type { DayCtx } from '../core/ctx';
 import type { GameState, Holdout, HoldoutResult, PaidChannel } from '../core/types';

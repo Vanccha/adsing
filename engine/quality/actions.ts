@@ -20,7 +20,7 @@ const createCreative: ActionDef<'asset.create_creative'> = {
   cash: (_p, s) => priceCost(s, K.creativePriceMult),
   check: () => null,
   apply: (p, s) => {
-    s.assets.creatives.push(makeCreative(s, p.channel, p.angle ?? 'default', p.bold ?? false, 1));
+    s.assets.creatives.push(makeCreative(s, p.channel, p.angle ?? 'default', p.bold ?? false, 1, p.message));
   },
 };
 
@@ -30,7 +30,7 @@ const createLp: ActionDef<'asset.create_lp'> = {
   cash: (_p, s) => priceCost(s, K.lpPriceMult),
   check: () => null,
   apply: (p, s) => {
-    s.assets.lps.push(makeLp(s, p.style ?? 'default', 2));
+    s.assets.lps.push(makeLp(s, p.style ?? 'default', 2, p.message));
   },
 };
 

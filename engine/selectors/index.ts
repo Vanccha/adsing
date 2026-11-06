@@ -247,8 +247,21 @@ export function cac(s: GameState, o: { marginal?: boolean; window?: number; delt
       const f = ch === 'google' ? expectedGoogle : expectedMeta;
       const a = f(s, { budgetScale: 1 });
       const b = f(s, { budgetScale: 1 + d });
-      const dc = (b.leads - a.leads) * leadToCustomerYield(s, ch);
-      m[ch] = dc > 1e-9 ? (b.spend - a.spend) / dc : null;
+      const y = leadToCustomerYield(s, ch);
+      const dc = (b.leads - a.leads) * y;
+      if (dc > 1e-9) {
+        m[ch] = (b.spend - a.spend) / dc;
+        continue;
+      }
+      // Bütçe bağlayıcı değil (pazar doydu): son harcanan dilimin maliyetine bak; tanımsız bırakmak aşırı ölçeklemeyi gizler
+      const budget = ch === 'google' ? s.google.campaigns.filter((c) => c.status === 'active').reduce((x, c) => x + c.dailyBudget, 0) : s.meta.adSets.filter((x) => x.status === 'active').reduce((x, c) => x + c.dailyBudget, 0);
+      if (a.spend <= 0 || budget <= 0) {
+        m[ch] = null;
+        continue;
+      }
+      const low = f(s, { budgetScale: a.spend / budget / (1 + d) });
+      const dl = (a.leads - low.leads) * y;
+      m[ch] = dl > 1e-9 ? (a.spend - low.spend) / dl : null;
     }
     out.marginal = m;
   }
@@ -282,10 +295,12 @@ export function runway(s: GameState): number {
 
 export function founderHours(s: GameState) {
   const f = s.founder;
+  // Bugün = sıradaki gün: durumdaki sayaçlar önceki adımdan kalır (ilk gün 0), kapasite takvimden hesaplanır
+  const capacityToday = founderCapacity(s);
   return {
-    capacityToday: f.capacityToday,
+    capacityToday,
     used: f.usedToday,
-    free: Math.max(0, f.capacityToday - f.usedToday),
+    free: Math.max(0, capacityToday - f.reserved.sales - f.reserved.onboarding),
     reserved: f.reserved,
     queued: f.queue.length,
     burnout: f.burnout,

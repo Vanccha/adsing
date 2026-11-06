@@ -18,7 +18,9 @@ engine/
   measurement/  tracking (izlenen oran), observe (platform/analitik/CRM), holdout, actions (takip düzeltme, holdout)
   quality/      assets (gizli latent), bayes (Beta-Binomial), saturation (Hill), actions (varlık, A/B)
   selectors/    observed/true metrikler, funnel+darboğaz, cac(+marjinal), mrr, runway, founderHours, freshness, availableActions
-  bots/         referans politikalar (test/MC yardımcısı; nihai botlar sonraki aşama)
+  cases/        vaka/olay motoru (tetikleyici, etki, tepki izleme), metrik eşlemesi, case.respond aksiyonları
+  analysis/     sonuç analizi: karşı-olgusal koşular, beceri vs şans, aynı tohumda iyi bot kıyası
+  bots/         kötü/orta/iyi referans politikalar (yalnız oyuncunun görebildiği bilgiyi kullanır), kabul testleri
   test-fixtures sahte (TEST FIXTURE) pazar/senaryo + test yardımcıları
 ```
 Bağımlılık yönü ui → engine → veri. `engine/` React/DOM/`Math.random`/`Date.now` kullanmaz (ESLint kuralı). Motor metin üretmez:
@@ -78,8 +80,8 @@ sunucu tarafı takip 4x, CRM geri bildirimi 2x, yaratıcı 1x, LP 3x, kurucu saa
    Kötü olay oranı zorluk çarpanıyla (0,6/1/1,4). Etki = `Modifier{target,kind,value,from,until}` (cpc, cpm, demand, churn, churn_add, conv_paid, organic).
    Hesap sağlığı +0,002/gün toparlanır; <0,2 => 10 gün askı, 3. ihlal => kalıcı.
 2. **Aksiyonlar**: zamanlanmış takip düzeltmeleri uygulanır; kuyruk (FIFO) + yeni aksiyonlar. Kapasite: hafta içi `hpw/6`, hafta sonu `hpw/12` (haftalık
-   toplam = `hpw`); sabit tahsisler (satış, onboarding) önce düşer. Saat yetmezse **kuyruğa** (en çok 7 gün; kapasite+%25 fazla mesai içinde olanlar anında),
-   hiç sığmayan/yetersiz nakitli/geçersiz olan **reddedilir** (`actionResults`). Karar günlüğü `decisions`.
+   toplam = `hpw`); sabit tahsisler (satış, onboarding) önce düşer. Saat yetmezse **kuyruğa** (en çok 7 gün; kapasite+%25 fazla mesai içinde olanlar anında). Kuyruk katı FIFO'dur: önünde iş bekleyen aksiyon sırası gelmeden
+   doğrulanmaz (bekleyen işe bağlı zincirler reddedilmez). Hiç sığmayan/yetersiz nakitli/geçersiz olan **reddedilir** (`actionResults`). Karar günlüğü `decisions`.
 3. **Rakipler**: `compIdx <- clamp(compIdx + 0,05(1-compIdx) + 0,02 N(0,1), 0,7, 1,6)`. CPC/CPM çarpanı.
 4. **Kanal teslimatı**: yerel/GEO doğrudan lead'ler, Google, Meta (bölüm 5-7), harcama nakitten (reklam vergisiyle) düşer. Günlük reklam nakit sınırı:
    `nakit - sabit_gider/30` (hiçbir gün reklam harcaması önceki nakdi aşmaz).
@@ -151,15 +153,15 @@ Hedef (lead|mesaj) > reklam seti > reklam. Kitle havuzu `N = salon_count x {inte
 ## 7. Ücretsiz / yerel kanallar, GEO (`channels/local.ts`, `geo.ts`)
 
 Aşama 1 düzeyi: basit ama yasal rejim ve pazar etkinliğine (`channels.<k>.relative`) bağlı.
-- **Organik taban** `μ = salon_count x 1,5e-5 x (1 + 3·bilinirlik) x (0,6 + 0,8 itibar) x modifier x (0,5 + 0,5 talep)`; bilinirlik = `1 - exp(-(Σgösterim + 50 müşteri + 20 yorum)/(salon_count x 20))`.
-- **GBP**: `μ_gbp = μ x local.gbp_effect x skor x relative(gbp) x (1 + 0,2 yorum/60)`; `optimize_gbp(saat)`: skor `+= 0,08·saat·(1-skor)`, günlük çürüme %0,1. Yorum isteme: `Binomial(n, 0,45)` yorum, 1-10 gün içinde; sosyal kanıt `1 + 0,1 min(1, yorum/60)` dönüşümü artırır.
+- **Organik taban** `μ = salon_count x 1,5e-6 x (1 + 3·bilinirlik) x (0,6 + 0,8 itibar) x modifier x (0,5 + 0,5 talep)`; bilinirlik = `1 - exp(-(Σgösterim + 50 müşteri + 20 yorum)/(salon_count x 20))`.
+- **GBP**: yerel keşif potansiyeli `μ_yerel = salon_count x 1e-5 x` aynı çarpanlar (organikten ayrı); `μ_gbp = μ_yerel x local.gbp_effect x skor x relative(gbp) x (1 + 0,2 yorum/60)`; `optimize_gbp(saat)`: skor `+= 0,08·saat·(1-skor)`, günlük çürüme %0,1. Yorum isteme: `Binomial(n, 0,45)` yorum, 1-10 gün içinde; sosyal kanıt `1 + 0,1 min(1, yorum/60)` dönüşümü artırır.
 - **Referans**: `μ = müşteri x local.referral_rate x relative(referral) x (program ? 1 : 0,4) x (0,6 + 0,8 itibar) / 30`; program açıkken ücretli referansta ödül nakdi.
 - **Saha satışı**: `Poisson(saat x 0,5 x relative(field_sales))` ziyaret, nitelendirme atlanır, deneme olasılığı `local.field_sales_close`, destekli (aktivasyon x1,2).
 - **Soğuk temas** (e-posta/arama/SMS): hukuki durum `legal.*`: verim `{allowed 0,02; restricted 0,008; banned 0,003} x relative x alan sağlığı`; itibar kaybı `hacim x {0; 0,01; 0,04}/100`;
   ihtar/ceza olasılığı `{0; 0,003; 0,02}` (e-postada `market.abmahnung_prob_per_cold_email_batch`), tutar `50 x fiyat`.
-- **İçerik**: sosyal ve SEO stokları (SEO gecikmeli, 0,97 yumuşatma), `lead = 0,5 x (sosyal x relative + seoEff)/gün`, günlük çürüme.
+- **İçerik**: sosyal ve SEO stokları (SEO gecikmeli, 0,97 yumuşatma), `lead = 0,07 x (sosyal x relative + seoEff)/gün`; stok artışı konu uyumu ve tekrar cezasıyla çarpılır (bölüm 9), günlük çürüme.
 - **GEO (çekirdek)**: `v(t+1) = v + 0,01·(gecikmeli_yatırım) - 0,004·v`, gamma(2, lag/2) çekirdeği (`geo.lag_days`), günlük Bernoulli(v) bahsedilme => Poisson(1,2) lead.
-  Gözlenen skor gürültülü (`v + N(0;0,05)`). Aşama 2'de derinleşir.
+  Gözlenen skor gürültülü (`v + N(0;0,05)`).
 
 ## 8. Huni, satış, deneme (`funnel/`)
 
@@ -188,6 +190,9 @@ Aşama 1 düzeyi: basit ama yasal rejim ve pazar etkinliğine (`channels.<k>.rel
 - Oyuncunun gördüğü sayaçlar: yaratıcı `gösterim -> tık`; LP `ziyaret -> lead` (gözlenen lead = Binomial(lead, tracked_analytics): takip kaybı oranı **aşağı** yanlılaştırır); teklif `nitelikli -> deneme`.
 - Posterior: önsel ortalama sektör ortalaması (`gads.search.ctr`/`meta.ctr`, `funnel.lp_to_lead`, `funnel.trial_start`), gücü `prior.strength`: `Beta(a0 + k, b0 + n - k)`;
   %`ci.level` güvenilir aralık (Beta kuantili), `P(A>B)` sayısal integral. **"Yeterli veri yok"**: `n < stats.min_n_clicks` veya `(hi-lo)/ortalama > 0,8`.
+- **İçerik kararları**: yaratıcı ve LP için ana mesaj (`time|revenue|price|trust`): gizli `q` çarpanı `K.messageFit[pazar][mesaj] x exp(0,08 N)` (tohuma bağlı; yön pazar ipucundan, kesin cevap testten).
+  Reklam ve sayfa aynı mesajı veriyorsa lead oranı x1,15. İçerik konusu (`howto|comparison|local|story`): `K.topicFit` x `1/(1 + 0,15 x son dönem saat)`; konu hafızası günlük x0,97.
+  Tek reklam grubunda birden çok tema: alaka x0,7 (QS ve CTR düşer). Hepsi motor varsayımı.
 - **Doygunluk**: `quality/saturation.ts` Hill `C(s) = Cmax s^h/(s^h + K^h)` ve `marjinal = 1/C'(s)`; kanal teslimat modeli kendiliğinden içbükey (bütçe sınırı verimli satırları önce doldurur; Meta frekans/yorgunluk).
   `selectors.cac(state,{marginal:true})` ve `responseAt` motorun beklenen-değer teslimat fonksiyonunu farklı bütçelerde çağırır (ilişki 3).
 
@@ -200,8 +205,8 @@ Aşama 1 düzeyi: basit ama yasal rejim ve pazar etkinliğine (`channels.<k>.rel
 
 - Kayıp (her gün): nakit < 0; iki reklam hesabı da kalıcı askıda; itibar < eşik; tükenme ≥ 1.
 - Süre sonu (365 veya 90 gün) hedefleri senaryodan (`scn.goal.12m|90d`): **won** = MRR ≥ hedef ve LTV:CAC ≥ eşik ve payback ≤ eşik;
-  **healthy** = MRR ≥ %50 hedef ve (LTV:CAC veya payback tutuyor veya runway ≥ 6 ay); **stagnant** = hayatta ama MRR 90 günde ≥ %5 büyümedi; **survived** = diğer.
-  (`scn.goal.*.target_customers`, `min_runway_months`, `min_cash_ratio` şimdilik okunmuyor.)
+  **healthy** = MRR ≥ %50 hedef ve (LTV:CAC veya payback tutuyor veya runway ≥ 6 ay); **stagnant** = hayatta ama MRR 90 günde ≥ %5 büyümedi (MRR 0 dahil); **survived** = diğer.
+  `won` ayrıca `scn.goal.*.target_customers`, `min_runway_months`, `min_cash_ratio` hedeflerini de ister. 90 günlük hedefler ilk çeyreğin kurulum yükü nedeniyle 12 aylıktan gevşektir (LTV:CAC ≥ 1,2; payback ≤ 15 ay).
 
 ## 12. Seçiciler
 
@@ -216,6 +221,40 @@ determinizm/yeniden oynatma/saflık, kurucu saati-kuyruk-nakit, kazanma/kaybetme
 3 pazar x 3 politika x 90 gün + 365 gün koşuları çökmeden, nakit kimliği tutar). Özellik testi: rastgele aksiyon dizileri => sonlu sayılar, olasılıklar/sağlıklar [0,1], stoklar ≥ 0,
 günlük harcama ≤ bütçe ve ≤ önceki nakit.
 
-## 14. Bilinen varsayımlar / sınırlamalar
+## 14. Vaka motoru, finansman, pivot
 
-Bkz. rapor: GEO, yerel kanallar ve holdout Aşama 2'de derinleşir; bayi/ajans/finansman yok; rakip ajanları tek bir `compIdx` rassal yürüyüşü; denge (LTV:CAC, bot sıralaması) Monte Carlo ile sonra ayarlanacak.
+- **Vakalar** (`cases/C01-C16`, `engine/cases/`): tetikleyici koşullar `metrics.ts` üzerinden GERÇEK durumdan okunur; etki `Modifier` olarak uygulanır. Tepki penceresi 14 gün: doğru tepki kalan etki süresini ×0,5,
+  yanlış tepki ×1,25 yapar; pencere biterse `ignored`. Tepki iki yoldan gelir: motor aksiyonunun etiketi (`actionmap.ts`) ya da `case.respond` (motorda karşılığı olmayanlar). Eşlemeler `docs/engine-api.md`.
+- **Olaylar**: `cases/events.json` havuzu (E01-E12) + takvim olayları; günlük Bernoulli, `events.{legal,macro}_rate_mult` ile pazara ölçeklenir.
+- **Finansman** (`funnel/financing.ts`): koşullu kredi/melek teklifleri, anüite geri ödeme, hisse maliyeti (`K.fin`, `fin.*` parametreleri ezer). **Pivot** (`ops.pivot`): segment değişimi, fiyat çarpanı, geçiş döneminde dönüşüm düşüşü, bekleme süresi.
+
+## 15. Botlar ve denge
+
+Politikalar: `naivePolicy` (geniş eşleme + akıllı teklif, takip yok, sık bütçe değişimi), `balancedPolicy` (iyi botun beceri anahtarları kısılmış hali), `carefulPolicy` (takip önce, exact/phrase, negatif, A/B + kazanan seçimi,
+marjinal CAC'ye göre bütçe, vaka tepkileri). Kapsam dışı: botlar Meta/GEO/holdout kullanmaz; oyuncu için daha geniş strateji alanı vardır. Pazar ipucu olarak oyuncunun gördüğü mesaj eğilimini kullanırlar.
+
+Hedef **dengeli kanal karışımı**: iyi oyuncunun müşterilerinin yaklaşık yarısı ücretli reklamdan, kalanı içerik ve yerel kanallardan gelir; pazarlama yapmayan oyuncu büyüyemez.
+
+Nihai Monte Carlo (`npm run mc -- --runs=50`, 365 gün, normal, salon-saas):
+
+| Pazar | Pazarlamasız: kazanılan müşteri | Orta MRR | İyi MRR | İyi: reklam payı | İyi: reklam CAC | İyi: kazandı / sağlıklı / battı | P(orta > iyi) |
+|---|---|---|---|---|---|---|---|
+| US | 5 | 1.626 USD | 2.237 USD | %50 | 502 USD | 9 / 20 / 1 | 0,12 |
+| DE | 3 | 855 EUR | 1.345 EUR | %47 | 456 EUR | 6 / 15 / 4 | 0,06 |
+| TR | 3 | 14.193 TRY | 26.360 TRY | %39 | 2.608 TRY | 2 / 22 / 0 | 0,06 |
+
+Denge kararları:
+- Organik ve içerik hacmi düşürüldü; GBP organikten ayrıldı. Önceki ekonomide hiçbir şey yapmayan oyuncu yılda ~54 müşteri kazanıyor, reklam müşterilerin ~%5'ini getiriyordu.
+- Reklam hunisi beyan edilen veri aralıkları içinde iyileştirildi (`gads.search.cpc`, `gads.search.cvr_lead`, `funnel.lead_qualified`, `funnel.trial_to_paid`); önceki değerlerle reklam CAC'ı LTV'nin üstündeydi.
+- İlk yıl hedefleri: 70 müşteri, tam yüklü LTV:CAC ≥ 1,5, payback ≤ 18 ay. 90 gün: 14 müşteri, ≥ 0,8, ≤ 24 ay. Olgun SaaS'ın 3 kuralı burada uygulanmaz: CAC kurucu saatini de taşır, ilk yıl ölçek yoktur.
+- TR başlangıç nakdi USD eşitliği yerine 200/400/800 bin TRY.
+- İyi bot bütçeyi gözlenen kanal CAC'ı ve 15 aylık geri ödeme kuralıyla yönetir. Erken churn LTV'yi düşük gösterdiği için kanal kararında LTV kullanılmaz.
+- Hızlı kipte iyi-orta farkı dardır: 90 gün, becerinin ve deneme sonuçlarının birikmesi için kısadır.
+
+Kabul testleri: `engine/bots/acceptance.test.ts` (sıralama, batış, kazanma tavanı, yayılım, zorluk, hızlı kip, karar isabeti, yeniden oynatma, pazarlamasız taban, reklam payı, içerik kararlarının CAC etkisi), `engine/cases/cases.test.ts` (tanım tutarlılığı, her vaka üç pazarda gerçek aksiyonlarla tetiklenir,
+doğru tepki yanlıştan iyi), `ui/game/plan.test.ts` (başlangıç kuyruğu eksiksiz kurulur), `engine/quality/content.test.ts` (mesaj, konu, reklam grubu odağı).
+
+## 16. Bilinen varsayımlar / sınırlamalar
+
+GEO, yerel kanallar ve holdout bilinçli olarak basit tutuldu; bayi/ajans kanalı yok; rakip ajanları tek bir `compIdx` rassal yürüyüşü. 153 parametre kaynaksız varsayımdır (`npm run data:audit`); reklam benchmark'ları çoğunlukla ikincil kaynaktır.
+İskelet senaryolar (`b2b-accounting-saas`, `subscription-box`) çalışır ama dengeleri ayarlanmamıştır.

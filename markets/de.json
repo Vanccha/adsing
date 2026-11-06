@@ -4,7 +4,7 @@
   "params": [
     {
       "id": "gads.search.cpc",
-      "value": 4,
+      "value": 3.0,
       "unit": "EUR",
       "market": "de",
       "layer": "assumption",
@@ -14,7 +14,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "B2B salon yazılımı arama TBM. Plan varsayımı 2,50-6,00 €. Kaynaklı yerel Friseur müşteri kelimeleri 0,40-1,20 € (selbststaendigkeit.de, 13.08.2026, orta) B2B kelimeler için geçerli değil.",
+      "note": "B2B salon yazılımı arama TBM. Plan varsayımı 2,50-6,00 €. Kaynaklı yerel Friseur müşteri kelimeleri 0,40-1,20 € (selbststaendigkeit.de, 13.08.2026, orta) B2B kelimeler için geçerli değil. Dengeli denge ayarı: dar, yerel B2B aramalar tüm sektör ortalamasının altında varsayıldı; beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },
@@ -36,7 +36,7 @@
     },
     {
       "id": "gads.search.cvr_lead",
-      "value": 0.07,
+      "value": 0.088,
       "unit": "ratio",
       "market": "de",
       "layer": "assumption",
@@ -46,7 +46,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "LP deneme formu dönüşümü %3-8 (varsayım).",
+      "note": "LP deneme formu dönüşümü %3-8 (varsayım). Dengeli denge ayarı: beyan edilen aralık içinde üst bölge (niyeti yüksek çekirdek aramalar).",
       "formula": null,
       "inputs": []
     },
@@ -225,7 +225,7 @@
     },
     {
       "id": "funnel.lead_qualified",
-      "value": 0.6,
+      "value": 0.648,
       "unit": "ratio",
       "market": "de",
       "layer": "assumption",
@@ -235,7 +235,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "Niteliksiz lead payı %30-50 (çalışan, öğrenci, rakip araştırması) → nitelikli ~%60.",
+      "note": "Niteliksiz lead payı %30-50 (çalışan, öğrenci, rakip araştırması) → nitelikli ~%60. Dengeli denge ayarı: beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },
@@ -257,7 +257,7 @@
     },
     {
       "id": "funnel.trial_to_paid",
-      "value": 0.16,
+      "value": 0.208,
       "unit": "ratio",
       "market": "de",
       "layer": "assumption",
@@ -267,7 +267,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "Deneme→ücretli. B2B SaaS medyan %18,5 (ikincil, ABD/global) ve DE kasa/TSE geçiş sürtünmesi nedeniyle biraz düşük.",
+      "note": "Deneme→ücretli. B2B SaaS medyan %18,5 (ikincil, ABD/global) ve DE kasa/TSE geçiş sürtünmesi nedeniyle biraz düşük. Dengeli denge ayarı: bu huni her lead'e insan temasıyla ulaşır (kurucu/satış), bu yüzden kendi kendine deneme medyanının üstünde, beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },

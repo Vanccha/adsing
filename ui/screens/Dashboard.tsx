@@ -2,12 +2,15 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { selectors } from '@engine/index';
 import type { GameState } from '@engine/core';
-import { Bar, CIBar, LineChart } from '../components/Charts';
+import { Bar, CIBar, HBars, LineChart } from '../components/Charts';
 import { QueuePanel } from '../components/Actions';
 import { DerivedBadge, FactBadge } from '../components/FactBadge';
 import { CasesPanel } from '../components/CasesPanel';
 import { Hint } from '../components/Hint';
 import { Metric } from '../components/Metric';
+import { lastOf, Performance, sumOf } from '../components/Performance';
+import type { PerfMetric } from '../components/Performance';
+import { Tutorial } from '../components/Tutorial';
 import { cacSeries, observedFunnel } from '../game/funnel';
 import { useGame } from '../game/GameContext';
 import { go } from '../router';
@@ -40,32 +43,34 @@ export function Dashboard() {
   const runwayTxt = Number.isFinite(sel.runway) ? t('metric.months', { n: fmt.num(sel.runway, 1) }) : '∞';
   const accHealth = (a: GameState['accounts']['google']) => (a.permanent ? 'bad' : a.suspendedUntil !== null && a.suspendedUntil > s.day ? 'bad' : accountBand(a.health));
   const stageName = (k: string) => t(`stage.${k}`);
+  const money = (v: number) => fmt.money(v, 0);
+  const count = (v: number) => fmt.num(v, 0);
+  const series = (f: (o: (typeof g.obs)[number]) => number) => g.obs.map((o) => ({ x: o.day, y: f(o) }));
+  const overview: PerfMetric[] = [
+    { key: 'mrr', label: 'MRR', points: series((o) => o.mrr), total: (p) => money(lastOf(p)), fmt: money },
+    { key: 'cash', label: t('metric.cash'), points: series((o) => o.cash), total: (p) => money(lastOf(p)), fmt: money },
+    { key: 'leads', label: t('funnel.crm_leads'), points: series((o) => o.crmLeads), total: (p) => count(sumOf(p)), fmt: count },
+    { key: 'spend', label: t('perf.ad_spend'), points: series((o) => o.spend), total: (p) => money(sumOf(p)), fmt: money },
+  ];
+  const channelBars = Object.entries(s.funnel.byChannel).filter(([, b]) => (b?.leads ?? 0) > 0).map(([k, b]) => ({ key: k, label: t(`leadch.${k}`), value: b!.leads }));
 
   return (
     <div className="stack">
       <div className="row between">
         <h1>{t('nav.dashboard')}</h1>
-        <div className="timebar" role="group" aria-label={t('time.controls')}>
-          {done ? (
-            <button type="button" className="primary" onClick={() => go('outcome')}>{t('time.see_outcome')}</button>
-          ) : (
-            <>
-              <button type="button" className="primary" disabled={g.busy} onClick={() => g.advance(1)}>{t('time.day')}</button>
-              <button type="button" className="primary" disabled={g.busy} onClick={() => g.advance(7)}>{t('time.week')}</button>
-            </>
-          )}
-          {g.busy ? <span role="status">{t('time.computing')}</span> : null}
-        </div>
+        {done ? <button type="button" className="primary" onClick={() => go('outcome')}>{t('time.see_outcome')}</button> : null}
       </div>
       {done ? <div className="notice good" role="status">{t(s.outcome!.reason, s.outcome!.detail)} <button type="button" className="link" onClick={() => go('outcome')}>{t('time.see_outcome')}</button></div> : null}
       {queueHours === 0 && s.day === 0 ? <Hint k="hint.first_day" /> : null}
+
+      <Performance title={t('perf.business')} xLabel={t('unit.day')} metrics={overview} />
 
       <div className="grid cols-4">
         <Metric label={t('metric.cash')} value={fmt.money(s.cash)} tone={s.cash < 0 ? 'bad' : undefined} badge={<DerivedBadge k="cash" />} sub={t('metric.start_cash', { v: fmt.money(s.startCash) })} />
         <Metric label={t('metric.runway')} value={runwayTxt} badge={<DerivedBadge k="runway" />} />
         <Metric label="MRR" value={fmt.money(s.mrr)} badge={<DerivedBadge k="mrr" />} sub={<>{t('metric.goal')}: {fmt.money(s.goals.mrr)} <FactBadge id={`scn.goal.${s.mode === 'quick' ? '90d' : '12m'}.target_mrr`} /></>} />
         <Metric label={t('metric.customers')} value={fmt.num(sel.mrr.customers, 0)} sub={`ARR ${fmt.money(sel.mrr.arr)}`} />
-        <Metric label={t('metric.hours_week')} value={`${fmt.num(wh.remaining, 1)} / ${fmt.num(wh.capacity, 0)} ${t('unit.h')}`} badge={<FactBadge id="founder.hours_per_week" />} sub={t('metric.hours_today', { free: fmt.num(sel.fh.free, 1), burnout: fmt.pct(sel.fh.burnout, 0) })} />
+        <Metric label={t('metric.hours_week')} value={`${fmt.num(wh.remaining, 1)} / ${fmt.num(wh.capacity, 1)} ${t('unit.h')}`} badge={<FactBadge id="founder.hours_per_week" />} sub={t('metric.hours_today', { free: fmt.num(sel.fh.free, 1), burnout: fmt.pct(sel.fh.burnout, 0) })} />
         <Metric label={t('metric.reputation')} value={fmt.pct(s.reputation, 0)} tone={s.reputation < 0.3 ? 'bad' : undefined} badge={<DerivedBadge k="reputation" />} />
         <Metric
           label={t('metric.accounts')}
@@ -81,9 +86,19 @@ export function Dashboard() {
         <Metric label={t('metric.ltvcac')} value={sel.cac.ltvCac === null ? '—' : fmt.num(sel.cac.ltvCac, 2)} sub={`${t('metric.goal')}: ${fmt.num(s.goals.ltvCac, 1)}`} badge={<DerivedBadge k="ltvcac" />} />
       </div>
 
+      <Tutorial />
+
       <QueuePanel />
 
       <CasesPanel />
+
+      {channelBars.length ? (
+        <section className="card" aria-labelledby="ch-h">
+          <h2 id="ch-h">{t('perf.by_channel')}</h2>
+          <p className="small muted">{t('perf.by_channel_note')}</p>
+          <HBars label={t('perf.by_channel')} items={channelBars} fmt={(v) => fmt.num(v, 0)} />
+        </section>
+      ) : null}
 
       <section className="card" aria-labelledby="funnel-h">
         <h2 id="funnel-h">{t('funnel.title')}</h2>
@@ -169,10 +184,8 @@ export function Dashboard() {
       <section className="card" aria-labelledby="charts-h">
         <h2 id="charts-h">{t('charts.title')}</h2>
         <div className="grid cols-2">
-          <LineChart title={t('metric.cash')} fmtY={(v) => fmt.money(v, 0)} series={[{ name: t('metric.cash'), color: 'var(--c1)', points: g.obs.map((o) => ({ x: o.day, y: o.cash })) }]} xLabel={t('unit.day')} />
-          <LineChart title="MRR" fmtY={(v) => fmt.money(v, 0)} series={[{ name: 'MRR', color: 'var(--c3)', points: g.obs.map((o) => ({ x: o.day, y: o.mrr })) }]} xLabel={t('unit.day')} />
-          <LineChart title={t('charts.cac')} fmtY={(v) => fmt.money(v, 0)} series={[{ name: t('charts.cac_obs'), color: 'var(--c2)', points: cacS }]} xLabel={t('unit.day')} />
-          <LineChart title={t('charts.leads')} fmtY={(v) => fmt.num(v, 0)} series={[{ name: t('funnel.analytics'), color: 'var(--c1)', points: g.obs.map((o) => ({ x: o.day, y: o.analyticsConv })) }, { name: t('funnel.crm_leads'), color: 'var(--c4)', points: g.obs.map((o) => ({ x: o.day, y: o.crmLeads })) }]} xLabel={t('unit.day')} />
+          <LineChart title={t('charts.cac')} fmtY={(v) => fmt.money(v, 0)} series={[{ name: t('charts.cac_obs'), color: 'var(--c1)', points: cacS }]} xLabel={t('unit.day')} />
+          <LineChart title={t('charts.leads')} fmtY={(v) => fmt.num(v, 0)} series={[{ name: t('funnel.analytics'), color: 'var(--c1)', points: g.obs.map((o) => ({ x: o.day, y: o.analyticsConv })) }, { name: t('funnel.crm_leads'), color: 'var(--c2)', points: g.obs.map((o) => ({ x: o.day, y: o.crmLeads })) }]} xLabel={t('unit.day')} />
         </div>
       </section>
     </div>

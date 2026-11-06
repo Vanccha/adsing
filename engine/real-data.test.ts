@@ -81,7 +81,7 @@ describe.skipIf(!exists)('3 pazarda başlat + çökmeden koş', () => {
     expect(normal.startCash).toBeLessThanOrEqual(28000);
     expect(hard.startCash).toBeLessThan(normal.startCash);
     expect(initState(realBundle('us'), 's', { difficulty: 'normal', drawRanges: false }).startCash).toBe(20000);
-    expect(initState(realBundle('us'), 's', { drawRanges: false }).goals.mrr).toBe(7500);
-    expect(initState(realBundle('us'), 's', { mode: 'quick', drawRanges: false }).goals.mrr).toBe(1250);
+    expect(initState(realBundle('us'), 's', { drawRanges: false }).goals.mrr).toBe(3500);
+    expect(initState(realBundle('us'), 's', { mode: 'quick', drawRanges: false }).goals.mrr).toBe(700);
   });
 });

@@ -3,7 +3,7 @@
 Motor ajanı bunları uygulayacak. Oranlar 0-1 (ratio). `derived.*` başvuruları motorun türettiği değerlerdir (ör. `derived.max_marginal_cac` = LTV eşiğine karşılık gelen CAC, `derived.tax_due_estimate` = yaklaşan vergi tutarı tahmini). `{param: "..."}` değerleri data/markets parametre kimliğidir.
 
 ## Metrikler (71) - trigger ve symptoms'ta kullanılır
-- `account.health`: Reklam hesabı sağlığı, 0-1.
+- `account.health`: En düşük reklam hesabı sağlığı (Google, Meta), 0-1.
 - `cash.avg_cac`: Ortalama CAC (pazar para birimi).
 - `cash.balance`: Nakit bakiyesi.
 - `cash.collection_vs_mrr`: Tahsilat / MRR oranı.
@@ -28,7 +28,7 @@ Motor ajanı bunları uygulayacak. Oranlar 0-1 (ratio). `derived.*` başvurular�
 - `funnel.trial_start_rate`: Deneme başlangıç oranı.
 - `funnel.trial_to_paid`: Deneme → ücretli oranı.
 - `funnel.unreachable_leads_7d`: Son 7 gün ulaşılamayan lead sayısı.
-- `gads.brand_query_share`: Kampanyadaki marka sorgusu payı, 0-1.
+- `gads.brand_query_share`: Google dönüşümlerindeki marka sorgusu payı (dönüşüm ağırlıklı), 0-1.
 - `gads.budget_jump_ratio_7d`: Son 7g bütçe / önceki 7g bütçe.
 - `gads.clicks_7d`: Son 7g tıklama.
 - `gads.cpa_observed`: Google Ads gözlenen CPA.
@@ -56,7 +56,7 @@ Motor ajanı bunları uygulayacak. Oranlar 0-1 (ratio). `derived.*` başvurular�
 - `measure.modeling_enabled`: Onay modellemesi/sunucu tarafı kurulu mu (0/1).
 - `measure.observed_conversions_7d`: Platformda gözlenen 7g dönüşüm.
 - `measure.paid_customers_30d`: Gerçek 30g ücretli müşteri.
-- `measure.platform_vs_crm_ratio`: Platformların raporladığı dönüşüm toplamı / CRM.
+- `measure.platform_vs_crm_ratio`: Platformların raporladığı dönüşüm toplamı / CRM'deki nitelikli ücretli-kanal lead'i (kümülatif).
 - `measure.tracking_health`: Takip sağlığı, 0-1.
 - `meta.adset_count`: Aktif reklam seti sayısı.
 - `meta.adsets_learning_limited_share`: Öğrenme sınırlı setlerin payı.

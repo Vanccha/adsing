@@ -1,4 +1,4 @@
-// GEO (üretken arama / yanıt motoru görünürlüğü): YALNIZCA ÇEKİRDEK (Aşama 2'de derinleşir).
+// GEO (üretken arama / yanıt motoru görünürlüğü).
 // v(t+1) = v + gain * (gecikmeli yatırım) - decay * v; yatırım gamma çekirdeğiyle ileri tarihe yayılır.
 // Etki aralıklı: günlük "bahsedilme" ~ Bernoulli(v). Gözlenen görünürlük skoru gürültülü (bkz. selectors).
 import type { ActionDef, PartialDefs } from '../core/actiondef';

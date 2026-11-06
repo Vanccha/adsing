@@ -42,7 +42,8 @@ export const RESPONSES: Record<string, Resp> = {
   },
   'core.overhire': { hours: 4, cash: (s) => priceCost(s, 5), apply: (s) => { if (s.reps < 5) s.reps += 1; } },
   'finance.cashForecast': { hours: 1.5, apply: (s) => flag(s, 'cash_forecast', 60) },
-  'finance.reserveTax': { hours: 1, apply: (s) => flag(s, 'tax_reserve', 35, Math.max(1, (s.ledger.vatCollected - s.ledger.vatRemitted) * 1.2 + taxDueEstimate(s))) },
+  // Karşılık vaka bekleme süresinden (45 gün) uzun tutulur: aksi halde bir sonraki sürprizi hiçbir zaman engelleyemez
+  'finance.reserveTax': { hours: 1, apply: (s) => flag(s, 'tax_reserve', 120, Math.max(1, (s.ledger.vatCollected - s.ledger.vatRemitted) * 1.2 + taxDueEstimate(s))) },
   'finance.setupDunning': { hours: 2, apply: (s) => { s.params['pay.dunning_recover'] = 0.85; } },
   'finance.trackMarginalCac': { hours: 1, apply: (s) => flag(s, 'marginal_cac_tracking', 90) },
   'gads.resubmitSameAd': { hours: 0.5, apply: (s) => { s.accounts.google.health = clamp01(s.accounts.google.health - 0.1); } },
@@ -109,7 +110,7 @@ export const RESPONSES: Record<string, Resp> = {
   },
   'account.prepareBackupChannel': { hours: 1.5, apply: (s) => flag(s, 'backup_channel', 120) },
   'funnel.scheduleResponseSlots': { hours: 1, apply: (s) => { s.autoReply = true; } },
-  'funnel.prioritizeLeads': { hours: 1, apply: (s) => flag(s, 'lead_priority', 60) },
+  'funnel.prioritizeLeads': { hours: 1, apply: (s) => flag(s, 'lead_priority', 1000) },
   'product.retainExistingCustomers': { hours: 2, apply: (s) => mod(s, 'retain', 'churn', 'mult', 0.9, 30) },
   'product.differentiatePositioning': { hours: 3, apply: (s) => mod(s, 'position', 'conv_paid', 'mult', 1.05, 45) },
   'retention.focusOnRetentionInLowSeason': { hours: 2, apply: (s) => mod(s, 'lowseason', 'churn', 'mult', 0.92, 30) },

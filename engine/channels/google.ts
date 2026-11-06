@@ -121,11 +121,13 @@ export function planCampaign(s: GameState, c: GCampaign, o: { noise?: number; bu
   if (c.type === 'search') {
     for (const ag of c.adGroups) {
       const cr = findCreative(s, ag.creativeId);
+      const themes = new Set(ag.keywords.filter((k) => k.status === 'active').map((k) => k.theme));
+      const focus = themes.size > 1 ? K.mixedThemeRelMult : 1; // karışık tema: reklam metni aramaya daha az uyar
       for (const kw of ag.keywords) {
         if (kw.status !== 'active') continue;
         const V = kw.theme === 'core' ? coreV : kw.theme === 'adjacent' ? adjV : brandV;
         const mix: Mix = kw.theme === 'brand' ? { brand: 1 } : applyNegatives(classMix(s, kw.match), c.negatives, reviewed);
-        units.push({ kw, V, mix, reach: K.matchReach[kw.match], creativeQ: cr ? cr.q : 1, relQ: kw.relQ, kwBid: kw.bid, brand: kw.theme === 'brand', pmax: false });
+        units.push({ kw, V, mix, reach: K.matchReach[kw.match], creativeQ: cr ? cr.q : 1, relQ: kw.relQ * focus, kwBid: kw.bid, brand: kw.theme === 'brand', pmax: false });
       }
     }
   } else {
@@ -341,6 +343,7 @@ export function runGoogleDay(s: GameState, ctx: DayCtx): void {
         lpId: c.lpId,
         offerId: c.offerId,
         mode: 'lp',
+        ...(cr?.message ? { message: cr.message } : {}),
         cvrMult: 1,
         qualMult: 1,
         nonIncr: brandShare,

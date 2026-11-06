@@ -117,11 +117,11 @@ export function caseTags(s: GameState, a: Action): string[] {
       if (a.params.on) t.push('funnel.setupAutoReply');
       break;
     case 'ops.set_alloc':
-      if (a.params.sales > s.founder.reserved.sales) t.push('funnel.prioritizeLeads', 'funnel.scheduleResponseSlots');
+      if (a.params.sales > s.founder.reserved.sales) t.push('funnel.scheduleResponseSlots');
       if (a.params.onboarding > s.founder.reserved.onboarding) t.push('onboarding.firstWeekCall', 'product.retainExistingCustomers', 'retention.focusOnRetentionInLowSeason');
       break;
     case 'ops.hire_rep':
-      t.push('funnel.scheduleResponseSlots', 'funnel.prioritizeLeads');
+      t.push('funnel.scheduleResponseSlots');
       break;
     case 'ops.build_docs':
       t.push('onboarding.shortTraining', 'onboarding.defineActivation', 'retention.focusOnRetentionInLowSeason');

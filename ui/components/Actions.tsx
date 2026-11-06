@@ -1,17 +1,27 @@
 import { useTranslation } from 'react-i18next';
+import { selectors } from '@engine/index';
 import { validateAction } from '@engine/core';
 import type { Action } from '@engine/core';
 import { useGame } from '../game/GameContext';
 
+/** Oyuncuya gösterilmeyen teknik alanlar (kimlikler ve serbest ad). */
+const HIDDEN_PARAMS = new Set(['message', 'topic', 'campaignId', 'adGroupId', 'adSetId', 'keywordId', 'lpId', 'offerId', 'creativeId', 'testId', 'holdoutId', 'a', 'b', 'name', 'on']);
+
+/** Aksiyonun okunur özeti: etiket + (varsa) ayrıntılar; değerler çevrilir, kimlikler gizlenir. */
 export function describeAction(a: Action, t: (k: string, o?: Record<string, unknown>) => string): string {
+  const label = t(`act.${a.type}`);
+  if (a.type === 'case.respond') return `${label}: ${t(`resp.${a.params.response}`)}`;
   const p = a.params as Record<string, unknown>;
+  const val = (v: unknown): string => (typeof v === 'number' ? String(Math.round(v * 100) / 100) : t(`val.${String(v)}`, { defaultValue: String(v) }));
   const parts = Object.entries(p)
-    .filter(([, v]) => v !== undefined && typeof v !== 'object')
-    .map(([k, v]) => `${k}=${typeof v === 'number' ? Math.round(v * 100) / 100 : String(v)}`);
-  const kw = Array.isArray(p.keywords) ? ` keywords=${p.keywords.length}` : '';
-  const cls = Array.isArray(p.classes) ? ` classes=${(p.classes as string[]).join('/')}` : '';
-  const ids = Array.isArray(p.creativeIds) ? ` creatives=${(p.creativeIds as string[]).join('/')}` : '';
-  return `${t(`act.${a.type}`)} (${parts.join(', ')}${kw}${cls}${ids})`;
+    .filter(([k, v]) => v !== undefined && v !== false && typeof v !== 'object' && !HIDDEN_PARAMS.has(k))
+    .map(([k, v]) => `${t(`param.${k}`, { defaultValue: k })}: ${val(v)}`);
+  if (typeof p.message === 'string') parts.push(`${t('studio.message')}: ${t(`msg.${p.message}`)}`);
+  if (typeof p.topic === 'string') parts.push(`${t('local.content_topic')}: ${t(`topic.${p.topic}`)}`);
+  if (typeof p.on === 'boolean') parts.push(t(p.on ? 'common.on' : 'common.off'));
+  if (Array.isArray(p.keywords)) parts.push(`${t('param.keywords')}: ${p.keywords.length}`);
+  if (Array.isArray(p.classes)) parts.push((p.classes as string[]).map(val).join(', '));
+  return parts.length ? `${label} (${parts.join(', ')})` : label;
 }
 
 /** Aksiyonu kuyruğa ekleyen düğme; saat/nakit önizlemesi ve motor doğrulama nedeni gösterilir. */
@@ -45,6 +55,13 @@ export function ActBtn({ action, label, primary, disabled }: { action: Action | 
   );
 }
 
+/** Satır içi aç/kapat: işlem kuyruğa girer, gün ilerleyince uygulanır (reklam panelindeki duraklatma düğmesi). */
+export function StatusSwitch({ on, label, action }: { on: boolean; label: string; action: Action }) {
+  const { enqueue, queue, state } = useGame();
+  const pending = queue.some((a) => JSON.stringify(a) === JSON.stringify(action));
+  return <button type="button" className="switch" role="switch" aria-checked={pending ? !on : on} aria-label={label} disabled={pending || !!state?.outcome} onClick={() => enqueue(action)} />;
+}
+
 export function QueuePanel() {
   const { queue, dequeue, clearQueue, state, fmt } = useGame();
   const { t } = useTranslation();
@@ -56,7 +73,7 @@ export function QueuePanel() {
     hours += v.hours;
     cash += v.cash;
   }
-  const cap = state.founder.capacityToday || 0;
+  const cap = selectors.founderHours(state).capacityToday;
   return (
     <section className="card queue" aria-labelledby="queue-h">
       <div className="row between">

@@ -34,6 +34,11 @@ describe('i18n', () => {
     const missing = [...used].filter((k) => !(k in tr));
     expect(missing).toEqual([]);
   });
+  it('oyuncunun her motor aksiyonuna arayüzden erişimi var', async () => {
+    const { ACTION_TYPES } = await import('@engine/core');
+    const src = walk(join(ROOT, 'ui')).map((f) => readFileSync(f, 'utf8')).join('\n');
+    expect(ACTION_TYPES.filter((a) => !src.includes(`'${a}'`))).toEqual([]);
+  });
   it('motor aksiyon tipleri için etiket var', async () => {
     const { ACTION_TYPES } = await import('@engine/core');
     const missing = ACTION_TYPES.filter((t) => !(`act.${t}` in tr));

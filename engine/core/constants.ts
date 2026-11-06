@@ -111,7 +111,8 @@ export const K = {
   minCiRelWidth: 0.8,
 
   // Yerel/ücretsiz
-  organicPerSalon: 1.5e-5,
+  organicPerSalon: 1.5e-6, // yeni ürüne kendiliğinden gelen lead: pazarlamasız oyuncu neredeyse müşteri kazanmaz
+  localDiscoveryPerSalon: 1.0e-5, // yerel keşif (GBP) potansiyeli: organik tabandan ayrı, GBP skoruyla açılır
   organicAwarenessGain: 3,
   awarenessScale: 20,
   gbpScorePerHour: 0.08,
@@ -129,7 +130,23 @@ export const K = {
   contentSeoPerHour: 0.01,
   contentSeoLag: 0.97,
   contentDecay: 0.003,
-  contentLeadsPerPoint: 0.5,
+  contentLeadsPerPoint: 0.07,
+  // İçerik kararları: mesajın pazara uyumu (gizli q çarpanı; oyuncu pazar ipucu + test ile öğrenir), reklam-sayfa mesaj tutarlılığı,
+  // konu uyumu ve tekrar cezası. Hepsi motor varsayımı.
+  messageFit: {
+    us: { time: 1.05, revenue: 1.25, price: 0.85, trust: 1 },
+    de: { time: 1.1, revenue: 0.95, price: 0.85, trust: 1.25 },
+    tr: { time: 0.95, revenue: 1.05, price: 1.25, trust: 1 },
+  },
+  messageFitNoise: 0.08, // tohum sapması (log-normal σ): pazar bilgisi yön verir, kesin cevap testten gelir
+  messageMatchBonus: 1.15, // reklam ve açılış sayfası aynı mesajı veriyorsa lead oranı çarpanı
+  topicFit: {
+    seo: { comparison: 1.5, local: 1.3, howto: 0.8, story: 0.6 }, // satın alma niyetine yakın konular
+    social: { story: 1.3, howto: 1.1, local: 1.1, comparison: 0.7 },
+  },
+  topicRepeatPenalty: 0.15, // son dönemde aynı konuya harcanan saat başına getiri düşüşü
+  topicMemoryDecay: 0.97, // konu hafızası günlük sönümü
+  mixedThemeRelMult: 0.7, // tek reklam grubunda farklı anahtar kelime temaları: alaka düşer
   geoLagDays: 30,
   geoGainPerHour: 0.01,
   geoDecay: 0.004,
@@ -174,6 +191,7 @@ export const K = {
   caseCorrectShorten: 0.5, // doğru tepki: kalan etki süresinin kalanı çarpanı
   caseWrongExtend: 1.25, // yanlış tepki: kalan etki süresi çarpanı
   negativesPerClass: 6, // bir sınıf-düzeyi negatif ~ bu kadar negatif kelime sayılır (metrik: gads.negative_keywords_count)
+  maxMarginalLtvRatio: 2, // derived.max_marginal_cac = LTV / bu oran
   taxSurpriseFrac: 0.2, // derived.tax_due_estimate = bekleyen KDV borcunun bu oranı (tahmin sapması)
   siteUpdateRate: 0.02, // günlük site/LP güncellemesi olasılığı (event.site_update_recent bayrağı)
   siteUpdateDays: 7,

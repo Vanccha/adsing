@@ -4,7 +4,7 @@
   "params": [
     {
       "id": "gads.search.cpc",
-      "value": 15,
+      "value": 12,
       "unit": "TRY",
       "market": "tr",
       "layer": "assumption",
@@ -14,7 +14,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "B2B salon yazılımı anahtar kelimeleri TBM 8-35 TL (varsayım). Kaynaklı tüm sektör ort. 5,20 TL (Bravery Technology, 11.04.2026; ikincil, orijinal veri belirsiz, düşük güven).",
+      "note": "B2B salon yazılımı anahtar kelimeleri TBM 8-35 TL (varsayım). Kaynaklı tüm sektör ort. 5,20 TL (Bravery Technology, 11.04.2026; ikincil, orijinal veri belirsiz, düşük güven). Dengeli denge ayarı: dar, yerel B2B aramalar tüm sektör ortalamasının altında varsayıldı; beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },
@@ -36,7 +36,7 @@
     },
     {
       "id": "gads.search.cvr_lead",
-      "value": 0.06,
+      "value": 0.07,
       "unit": "ratio",
       "market": "tr",
       "layer": "assumption",
@@ -46,7 +46,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "LP→demo/deneme formu %3-8 (varsayım); Bravery ort. dönüşüm %3,4.",
+      "note": "LP→demo/deneme formu %3-8 (varsayım); Bravery ort. dönüşüm %3,4. Dengeli denge ayarı: beyan edilen aralık içinde üst bölge (niyeti yüksek çekirdek aramalar).",
       "formula": null,
       "inputs": []
     },
@@ -253,7 +253,7 @@
     },
     {
       "id": "funnel.lead_qualified",
-      "value": 0.55,
+      "value": 0.6,
       "unit": "ratio",
       "market": "tr",
       "layer": "assumption",
@@ -263,7 +263,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "Lead→nitelikli.",
+      "note": "Lead→nitelikli. Dengeli denge ayarı: beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },
@@ -285,7 +285,7 @@
     },
     {
       "id": "funnel.trial_to_paid",
-      "value": 0.14,
+      "value": 0.18,
       "unit": "ratio",
       "market": "tr",
       "layer": "assumption",
@@ -295,7 +295,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "Deneme→ücretli %8-20 (varsayım; ücretsiz paket ve ücretsiz platform baskısı).",
+      "note": "Deneme→ücretli %8-20 (varsayım; ücretsiz paket ve ücretsiz platform baskısı). Dengeli denge ayarı: bu huni her lead'e insan temasıyla ulaşır (kurucu/satış), bu yüzden kendi kendine deneme medyanının üstünde, beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },

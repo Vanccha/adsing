@@ -63,7 +63,6 @@ export function OutcomeScreen() {
         {err ? <div className="notice bad" role="alert">{err}</div> : null}
         {a ? (
           <div className="stack">
-            <p className="small muted">{a.source === 'engine' ? t('analysis.src_engine') : t('analysis.src_adapter')}</p>
             <div>
               <h3>{t('analysis.top3')}</h3>
               {a.topDecisions.length === 0 ? <p className="muted">{t('analysis.none')}</p> : null}
@@ -98,6 +97,7 @@ export function OutcomeScreen() {
                   <p className="small num">{t('analysis.luck_dist', { p10: fmt.money(a.luck.p10, 0), p50: fmt.money(a.luck.p50, 0), p90: fmt.money(a.luck.p90, 0), you: fmt.money(a.score, 0) })}</p>
                 </>
               ) : null}
+              <p className="small">{t('analysis.bench', { score: fmt.money(a.benchmark.score, 0), mrr: fmt.money(a.benchmark.mrr, 0), status: a.benchmark.status ? t(`outcome.status.${a.benchmark.status}`) : '—', you: fmt.money(a.score, 0) })}</p>
               <p className="small muted">{t('analysis.score_def')}</p>
             </div>
             <div>

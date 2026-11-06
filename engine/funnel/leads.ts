@@ -52,7 +52,8 @@ export function generateLeads(s: GameState, ctx: DayCtx): void {
     for (const arm of arms) {
       const lp = findLp(s, arm.lpId);
       const visits = r.binomial(arm.clicks, loadRate(lp));
-      const lr = leadRate(s, base, b.cls, lp, offer, b.cvrMult * buying * K.segment[s.product.segment].leads);
+      const scent = b.message && lp?.message === b.message ? K.messageMatchBonus : 1; // reklamın vaadi sayfada karşılanıyor
+      const lr = leadRate(s, base, b.cls, lp, offer, b.cvrMult * scent * buying * K.segment[s.product.segment].leads);
       const leads = r.binomial(visits, visitToLead(lr));
       ctx.acc.stages.visits += visits;
       ctx.acc.lpVisits += visits;
@@ -138,7 +139,10 @@ export function processSales(s: GameState, ctx: DayCtx): void {
   const h0 = s.autoReply ? K.autoReplyResponseHours : K.baseResponseHours;
   let cap = Math.floor(salesCapacity(s));
   const keep: LeadBatch[] = [];
-  s.funnel.queue.sort((a, b) => a.day - b.day);
+  // Varsayılan FIFO (en eski önce): yük altında eski lead'ler kapasiteyi yer ve yenileri bekler. 'funnel.prioritizeLeads'
+  // tepkisi (case.respond) en yeniyi öne alır: lead değeri zamanla çürüdüğü için taze lead önce aranır.
+  const prioritized = (s.cases.flags.lead_priority?.until ?? 0) > s.day;
+  s.funnel.queue.sort((a, b) => (prioritized ? b.day - a.day : a.day - b.day));
   let idx = 0;
   for (const b of s.funnel.queue) {
     if (s.day - b.day > K.maxLeadWaitDays) {

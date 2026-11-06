@@ -30,6 +30,6 @@ export function evaluateEnd(s: GameState): Outcome {
   const m90 = s.history.length > 90 ? s.history[s.history.length - 91]?.mrr ?? 0 : 0;
   const growing = mrr > m90 * 1.05;
   if (mrr >= 0.5 * g.mrr && (ltvCac >= g.ltvCac || payback <= g.paybackMonths || runway >= 6)) return { status: 'healthy', reason: 'outcome.healthy', day: s.day, detail };
-  if (!growing && mrr > 0) return { status: 'stagnant', reason: 'outcome.stagnant', day: s.day, detail };
+  if (!growing) return { status: 'stagnant', reason: 'outcome.stagnant', day: s.day, detail };
   return { status: 'survived', reason: 'outcome.survived', day: s.day, detail };
 }

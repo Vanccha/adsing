@@ -21,10 +21,11 @@ import { DataScreen } from './screens/DataScreen';
 import { OutcomeScreen } from './screens/OutcomeScreen';
 import { Glossary } from './screens/Glossary';
 import { History } from './screens/History';
+import { HowTo } from './screens/HowTo';
 import { About } from './screens/About';
 import { WeeklyModal } from './screens/WeeklyModal';
 
-const NAV: Route[] = ['dashboard', 'google', 'meta', 'local', 'geo', 'studio', 'crm', 'ops', 'history', 'data', 'learn', 'about'];
+const NAV: Route[] = ['dashboard', 'guide', 'google', 'meta', 'local', 'geo', 'studio', 'crm', 'ops', 'history', 'data', 'learn', 'about'];
 
 function Shell() {
   const { t, i18n } = useTranslation();
@@ -53,6 +54,7 @@ function Shell() {
       case 'data': return <DataScreen />;
       case 'outcome': return <OutcomeScreen />;
       case 'learn': return <Glossary />;
+      case 'guide': return <HowTo />;
       case 'history': return <History />;
       case 'about': return <About />;
     }
@@ -62,9 +64,22 @@ function Shell() {
     <div className="app">
       <a className="skip" href="#main">{t('a11y.skip')}</a>
       <header className="topbar">
-        <span className="brand">{t('app.title')}</span>
+        <span className="brand">
+          <span className="brand-mark" aria-hidden="true">
+            <i style={{ background: 'var(--c1)' }} /><i style={{ background: 'var(--c2)' }} /><i style={{ background: 'var(--c4)' }} /><i style={{ background: 'var(--c3)' }} />
+          </span>
+          {t('app.title')}
+        </span>
+        {playing && !g.state!.outcome ? (
+          <span className="timebar" role="group" aria-label={t('time.controls')}>
+            <button type="button" className="primary" disabled={g.busy} onClick={() => g.advance(1)}>{t('time.day')}</button>
+            <button type="button" className="primary" disabled={g.busy} onClick={() => g.advance(7)}>{t('time.week')}</button>
+            {g.busy ? <span role="status" className="small muted">{t('time.computing')}</span> : null}
+          </span>
+        ) : null}
+        {playing && g.queue.length > 0 ? <a className="queue-chip" href="#/dashboard">{t('queue.chip', { n: g.queue.length })}</a> : null}
         {playing ? (
-          <span className="small muted" aria-live="polite">
+          <span className="small muted day" aria-live="polite">
             {t('top.day', { day: g.state!.day, total: g.state!.horizon })} · {g.fmt.gameDate(g.state!.startDate, g.state!.day)}
           </span>
         ) : null}
@@ -93,12 +108,12 @@ function Shell() {
       </header>
       <nav className="nav" aria-label={t('a11y.nav')}>
         {!playing ? (
-          <a href="#/start" aria-current={effective === 'start' ? 'page' : undefined}>{t('nav.start')}</a>
+          <a href="#/start" aria-current={effective === 'start' ? 'page' : undefined}><i aria-hidden="true" />{t('nav.start')}</a>
         ) : null}
-        {NAV.filter((r) => playing || r === 'data' || r === 'learn' || r === 'about').map((r) => (
-          <a key={r} href={`#/${r}`} aria-current={effective === r ? 'page' : undefined}>{t(`nav.${r}`)}</a>
+        {NAV.filter((r) => playing || r === 'guide' || r === 'data' || r === 'learn' || r === 'about').map((r) => (
+          <a key={r} href={`#/${r}`} data-ch={r} aria-current={effective === r ? 'page' : undefined}><i aria-hidden="true" />{t(`nav.${r}`)}</a>
         ))}
-        {g.state?.outcome ? <a href="#/outcome" aria-current={effective === 'outcome' ? 'page' : undefined}>{t('nav.outcome')}</a> : null}
+        {g.state?.outcome ? <a href="#/outcome" aria-current={effective === 'outcome' ? 'page' : undefined}><i aria-hidden="true" />{t('nav.outcome')}</a> : null}
       </nav>
       <main id="main" tabIndex={-1}>
         {g.error ? <div className="notice bad" role="alert">{t('error.generic')}: {g.error}</div> : null}

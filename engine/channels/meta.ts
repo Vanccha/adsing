@@ -198,6 +198,7 @@ export function runMetaDay(s: GameState, ctx: DayCtx): void {
         lpId: a.lpId,
         offerId: a.offerId,
         mode: plan.mode,
+        ...(cr?.message ? { message: cr.message } : {}),
         cvrMult: plan.cvrMult,
         qualMult: plan.qualMult,
         nonIncr: K.audienceNonIncr[a.audience],
@@ -205,6 +206,8 @@ export function runMetaDay(s: GameState, ctx: DayCtx): void {
       } satisfies ClickBatch);
     });
     chargeAds(s, ctx, 'meta', costTot);
+    ctx.acc.mClicks += clTot;
+    ctx.acc.mImpr += impTot;
     a.stats.impressions += impTot;
     a.stats.clicks += clTot;
     a.stats.cost += costTot;

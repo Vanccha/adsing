@@ -38,7 +38,7 @@ export function taxDueEstimate(s: GameState): number {
 
 export function maxMarginalCac(s: GameState): number {
   const ue = unitEconomics(s, 90);
-  return ue.ltv / Math.max(s.goals.ltvCac, 1e-9);
+  return ue.ltv / K.maxMarginalLtvRatio; // oyuncunun hedefinden bağımsız kanal güvenlik eşiği
 }
 
 const adSets = (s: GameState) => s.meta.adSets.filter((a) => a.status === 'active');
@@ -67,7 +67,8 @@ function earlyChurn(s: GameState): number {
 export type MetricFn = (s: GameState) => MetricValue;
 
 const M: Record<string, MetricFn> = {
-  'account.health': (s) => s.accounts.google.health,
+  // En kötü hesap: riskli iddia sayısı (gads.policy_risk_claims) Google ve Meta reklamlarını birlikte sayar
+  'account.health': (s) => Math.min(s.accounts.google.health, s.accounts.meta.health),
   'cash.avg_cac': (s) => unitEconomics(s, 90).cacFull,
   'cash.balance': (s) => s.cash,
   'cash.collection_vs_mrr': (s) => (s.mrr > 0 ? sum(lastN(s, 30).map((r) => r.revenueNet)) / s.mrr : null),
@@ -123,15 +124,25 @@ const M: Record<string, MetricFn> = {
     return closed > 5 ? s.funnel.cum.paid / closed : null;
   },
   'funnel.unreachable_leads_7d': (s) => sum(lastN(s, 7).map((r) => r.unreachable ?? 0)),
+  // Dönüşüm ağırlıklı pay: PMax'in CPA'sını güzel gösteren marka dönüşümleridir (tıklama payı düşük kalsa da)
   'gads.brand_query_share': (s) => {
-    const h = lastN(s, 7);
-    const t = sumRec(h.map((r) => r.gCls));
-    return t > 0 ? sumRec(h.map((r) => r.gCls), 'brand') / t : 0;
+    const h = lastN(s, 7).map((r) => r.gCls);
+    let brand = 0;
+    let total = 0;
+    for (const r of h) {
+      if (!r) continue;
+      for (const [k, v] of Object.entries(r)) {
+        const w = v * (K.classCvrMult[k as keyof typeof K.classCvrMult] ?? 0);
+        total += w;
+        if (k === 'brand') brand += w;
+      }
+    }
+    return total > 0 ? brand / total : 0;
   },
   'gads.budget_jump_ratio_7d': (s) => {
-    const a = sum(lastN(s, 7).map((r) => r.gBudget ?? 0));
-    const b = sum(s.history.slice(-14, -7).map((r) => r.gBudget ?? 0));
-    return b > 0 ? a / b : null;
+    const prev = s.history.slice(-14, -7).map((r) => r.gBudget ?? 0);
+    if (prev.length < 7 || prev.some((x) => x <= 0)) return null; // yeni kampanyanın başlangıcı sıçrama sayılmaz
+    return sum(lastN(s, 7).map((r) => r.gBudget ?? 0)) / sum(prev);
   },
   'gads.clicks_7d': (s) => sum(lastN(s, 7).map((r) => r.gClicks ?? 0)),
   'gads.cpa_observed': (s) => {
@@ -189,10 +200,10 @@ const M: Record<string, MetricFn> = {
   'measure.modeling_enabled': (s) => (s.tracking.consentMode || s.tracking.serverSide ? 1 : 0),
   'measure.observed_conversions_7d': (s) => sum(lastN(s, 7).map((r) => sumRec([r.platformConv]))),
   'measure.paid_customers_30d': (s) => sum(lastN(s, 30).map((r) => sumRec([r.newCustomers]))),
+  // Platformların raporladığı dönüşüm / CRM'de gerçekten nitelikli çıkan ücretli-kanal lead'i (kümülatif, organik pay paydayı şişirmesin)
   'measure.platform_vs_crm_ratio': (s) => {
-    const h = lastN(s, 28);
-    const crm = sum(h.map((r) => r.crmLeads));
-    return crm > 10 ? sum(h.map((r) => sumRec([r.platformConv]))) / crm : null;
+    const crm = (s.funnel.byChannel.google?.qualified ?? 0) + (s.funnel.byChannel.meta?.qualified ?? 0);
+    return crm > 10 ? sum(s.history.map((r) => sumRec([r.platformConv]))) / crm : null;
   },
   'measure.tracking_health': (s) => clamp01(s.tracking.health * modMult(s, 'tracking')),
   'meta.adset_count': (s) => adSets(s).length,

@@ -7,6 +7,7 @@ import { FactBadge } from '../components/FactBadge';
 import { NumInput, Select } from '../components/Fields';
 import { Hint } from '../components/Hint';
 import { useGame } from '../game/GameContext';
+import type { ContentTopic } from '@engine/core';
 
 type Legal = { status?: string; rule?: string; maxPenalty?: { value: number; unit: string; per: string } | null };
 
@@ -26,6 +27,7 @@ export function LocalScreen() {
   const [ack, setAck] = useState(false);
   const [cKind, setCKind] = useState<'social' | 'seo'>('seo');
   const [cH, setCH] = useState(3);
+  const [topic, setTopic] = useState<'' | ContentTopic>('');
   const customers = selectors.mrr(s).customers;
   const lg = kind === 'email' ? legal.coldEmail : kind === 'call' ? legal.coldCall : legal.sms;
   const status = lg?.status ?? (s.params[kind === 'sms' ? 'legal.sms' : `legal.cold_${kind}`] as string | undefined) ?? 'allowed';
@@ -98,9 +100,11 @@ export function LocalScreen() {
           <p className="small muted">{t('local.content_state', { social: fmt.num(s.local.content.social, 1), seo: fmt.num(s.local.content.seo, 1) })}</p>
           <div className="form-grid">
             <Select label={t('local.content_kind')} value={cKind} onChange={setCKind} options={[{ value: 'seo', label: 'SEO' }, { value: 'social', label: t('local.social') }]} />
+            <Select label={t('local.content_topic')} value={topic} onChange={setTopic} options={[{ value: '', label: t('topic.none') }, ...(['howto', 'comparison', 'local', 'story'] as const).map((x) => ({ value: x, label: t(`topic.${x}`) }))]} />
             <NumInput label={t('unit.hours')} value={cH} onChange={setCH} step={0.5} />
-            <ActBtn action={{ type: 'local.content', params: { kind: cKind, hours: cH } }} label={t('local.do_content')} />
+            <ActBtn action={{ type: 'local.content', params: { kind: cKind, hours: cH, ...(topic ? { topic } : {}) } }} label={t('local.do_content')} />
           </div>
+          <Hint k="hint.content_topic" />
         </section>
       </div>
 

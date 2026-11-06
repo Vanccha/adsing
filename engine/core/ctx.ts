@@ -1,6 +1,6 @@
 // Günlük bağlam: step sırasında modüller arası taşınan geçici (state'e yazılmayan) veriler.
 import type { Rng } from '../rng';
-import type { ActionResult, GameEvent, LeadChannel, MrrMove, PaidChannel, StageCounts } from './types';
+import type { ActionResult, GameEvent, LeadChannel, MrrMove, PaidChannel, StageCounts, AdMessage } from './types';
 import type { ClassKey } from './constants';
 
 export interface ClickBatch {
@@ -13,6 +13,7 @@ export interface ClickBatch {
   lpId: string;
   offerId: string;
   mode: 'lp' | 'message';
+  message?: AdMessage; // reklamın ana mesajı (sayfa mesajıyla tutarlılık için)
   cvrMult: number; // kanal/kitle/öğrenme dönüşüm çarpanı
   qualMult: number;
   nonIncr: number; // artımsal olmayan pay (0-1)
@@ -54,6 +55,8 @@ export interface DayAcc {
   analyticsConv: number;
   trackedFraction: Record<string, number>;
   gClicks: number;
+  mClicks: number;
+  mImpr: number;
   gImpr: number;
   gCls: Record<string, number>;
   gMatchCost: Record<string, number>;
@@ -98,6 +101,8 @@ export function newAcc(): DayAcc {
     analyticsConv: 0,
     trackedFraction: {},
     gClicks: 0,
+    mClicks: 0,
+    mImpr: 0,
     gImpr: 0,
     gCls: {},
     gMatchCost: {},

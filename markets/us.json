@@ -4,7 +4,7 @@
   "params": [
     {
       "id": "gads.search.cpc",
-      "value": 5.5,
+      "value": 4.0,
       "unit": "USD",
       "market": "us",
       "layer": "assumption",
@@ -14,7 +14,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "B2B salon yazılımı anahtar kelimeleri için merkez. Çıpalar: WordStream tüm sektör ort. TBM $5,42 (orta güven, sayfa 403, arama özeti), Personal Services $7,17 (düşük). Plan varsayımı $3-12.",
+      "note": "B2B salon yazılımı anahtar kelimeleri için merkez. Çıpalar: WordStream tüm sektör ort. TBM $5,42 (orta güven, sayfa 403, arama özeti), Personal Services $7,17 (düşük). Plan varsayımı $3-12. Dengeli denge ayarı: dar, yerel B2B aramalar tüm sektör ortalamasının altında varsayıldı; beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },
@@ -41,7 +41,7 @@
     },
     {
       "id": "gads.search.cvr_lead",
-      "value": 0.08,
+      "value": 0.1,
       "unit": "ratio",
       "market": "us",
       "layer": "assumption",
@@ -51,7 +51,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "Tıklama→lead (deneme/demo talebi). WordStream tüm sektör dönüşüm %8,18 (platform tanımlı) ile uyumlu; SaaS kayıt zorunluluğu nedeniyle aralığın alt-orta kısmı seçildi.",
+      "note": "Tıklama→lead (deneme/demo talebi). WordStream tüm sektör dönüşüm %8,18 (platform tanımlı) ile uyumlu; SaaS kayıt zorunluluğu nedeniyle aralığın alt-orta kısmı seçildi. Dengeli denge ayarı: beyan edilen aralık içinde üst bölge (niyeti yüksek çekirdek aramalar).",
       "formula": null,
       "inputs": []
     },
@@ -209,7 +209,7 @@
     },
     {
       "id": "funnel.lead_qualified",
-      "value": 0.65,
+      "value": 0.7,
       "unit": "ratio",
       "market": "us",
       "layer": "assumption",
@@ -219,7 +219,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "Lead→nitelikli lead (ICP: salon sahibi, uygun boyut).",
+      "note": "Lead→nitelikli lead (ICP: salon sahibi, uygun boyut). Dengeli denge ayarı: beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },
@@ -241,7 +241,7 @@
     },
     {
       "id": "funnel.trial_to_paid",
-      "value": 0.18,
+      "value": 0.24,
       "unit": "ratio",
       "market": "us",
       "layer": "assumption",
@@ -251,7 +251,7 @@
       },
       "source": null,
       "confidence": "low",
-      "note": "Deneme→ücretli. ChartMogul Oca 2026 (ikincil, birincil sayfa açılmadı): serbest deneme medyanı %8, kartsız tipik %10-20; B2B SaaS medyan %18,5 (ikincil). Yerel hizmet SaaS’ında satış destekli deneme ile üst-orta seçildi.",
+      "note": "Deneme→ücretli. ChartMogul Oca 2026 (ikincil, birincil sayfa açılmadı): serbest deneme medyanı %8, kartsız tipik %10-20; B2B SaaS medyan %18,5 (ikincil). Yerel hizmet SaaS’ında satış destekli deneme ile üst-orta seçildi. Dengeli denge ayarı: bu huni her lead'e insan temasıyla ulaşır (kurucu/satış), bu yüzden kendi kendine deneme medyanının üstünde, beyan edilen aralık içinde.",
       "formula": null,
       "inputs": []
     },

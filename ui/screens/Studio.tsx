@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { selectors } from '@engine/index';
-import type { Offer } from '@engine/core';
+import type { AdMessage, Offer } from '@engine/core';
 import { ActBtn, QueuePanel } from '../components/Actions';
 import { CIBar } from '../components/Charts';
 import { FactBadge } from '../components/FactBadge';
@@ -37,6 +37,8 @@ export function Studio() {
   const [angle, setAngle] = useState('default');
   const [ch, setCh] = useState<'google' | 'meta'>('google');
   const [bold, setBold] = useState(false);
+  const [msg, setMsg] = useState<'' | AdMessage>('');
+  const [lpMsg, setLpMsg] = useState<'' | AdMessage>('');
   const [style, setStyle] = useState('default');
   const [kind, setKind] = useState<Offer['kind']>('trial');
   const [oname, setOname] = useState('');
@@ -45,6 +47,7 @@ export function Studio() {
   const [days, setDays] = useState(21);
   const [split, setSplit] = useState(0.5);
   const lpOpts = s.assets.lps.map((l) => ({ value: l.id, label: `${l.id} · ${l.style}${l.availableDay > s.day ? ` (${t('asset.ready_day', { n: l.availableDay })})` : ''}` }));
+  const messageOptions: Array<{ value: '' | AdMessage; label: string }> = [{ value: '', label: t('msg.none') }, ...(['time', 'revenue', 'price', 'trust'] as const).map((x) => ({ value: x, label: t(`msg.${x}`) }))];
   const ready = (d: number) => (d > s.day ? <span className="badge warn">{t('asset.ready_day', { n: d })}</span> : null);
 
   return (
@@ -53,6 +56,7 @@ export function Studio() {
       <p className="muted">{t('studio.intro')}</p>
       <div className="notice">{t('studio.stat_note')}</div>
       <Hint k="hint.studio" />
+      <Hint k={`hint.message.${s.marketId}`} />
 
       <div className="grid cols-3">
         <section className="card">
@@ -60,16 +64,18 @@ export function Studio() {
           <div className="stack">
             <Select label={t('studio.channel')} value={ch} onChange={setCh} options={[{ value: 'google', label: 'Google Ads' }, { value: 'meta', label: 'Meta' }]} />
             <Select label={t('studio.angle')} value={angle} onChange={setAngle} options={ANGLES.map((x) => ({ value: x, label: t(`angle.${x}`) }))} />
+            <Select label={t('studio.message')} value={msg} onChange={setMsg} options={messageOptions} />
             <label className="check"><input type="checkbox" checked={bold} onChange={(e) => setBold(e.target.checked)} />{t('studio.bold')}</label>
             {bold ? <div className="notice warn small">{t('studio.bold_warn')}</div> : null}
-            <ActBtn primary action={{ type: 'asset.create_creative', params: { channel: ch, angle, bold } }} label={t('studio.create')} />
+            <ActBtn primary action={{ type: 'asset.create_creative', params: { channel: ch, angle, bold, ...(msg ? { message: msg } : {}) } }} label={t('studio.create')} />
           </div>
         </section>
         <section className="card">
           <h2>{t('studio.new_lp')}</h2>
           <div className="stack">
             <Select label={t('studio.style')} value={style} onChange={setStyle} options={STYLES.map((x) => ({ value: x, label: t(`style.${x}`) }))} />
-            <ActBtn primary action={{ type: 'asset.create_lp', params: { style } }} label={t('studio.create')} />
+            <Select label={t('studio.message')} value={lpMsg} onChange={setLpMsg} options={messageOptions} />
+            <ActBtn primary action={{ type: 'asset.create_lp', params: { style, ...(lpMsg ? { message: lpMsg } : {}) } }} label={t('studio.create')} />
           </div>
         </section>
         <section className="card">

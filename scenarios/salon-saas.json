@@ -352,49 +352,49 @@
     },
     {
       "id": "scn.start_cash.easy",
-      "value": 2000000,
+      "value": 800000,
       "unit": "TRY",
       "market": "tr",
       "layer": "assumption",
       "range": {
-        "min": 1400000,
-        "max": 2800000
+        "min": 560000,
+        "max": 1120000
       },
       "source": null,
       "confidence": "low",
-      "note": "Önerilen başlangıç nakdi (easy); yaklaşık 40,145 USD karşılığı. Oyun dengesi için öneri, bot Monte Carlo ile ayarlanmalı.",
+      "note": "Önerilen başlangıç nakdi (easy); Bot Monte Carlo ile ayarlandı: USD eşdeğeri alınınca fiyat düşük olduğundan TR'de hiçbir bot batmıyordu. Yerel kurucu sermayesi varsayımı.",
       "formula": null,
       "inputs": []
     },
     {
       "id": "scn.start_cash.normal",
-      "value": 1000000,
+      "value": 400000,
       "unit": "TRY",
       "market": "tr",
       "layer": "assumption",
       "range": {
-        "min": 700000,
-        "max": 1400000
+        "min": 280000,
+        "max": 560000
       },
       "source": null,
       "confidence": "low",
-      "note": "Önerilen başlangıç nakdi (normal); yaklaşık 20,072 USD karşılığı. Oyun dengesi için öneri, bot Monte Carlo ile ayarlanmalı.",
+      "note": "Önerilen başlangıç nakdi (normal); Bot Monte Carlo ile ayarlandı: USD eşdeğeri alınınca fiyat düşük olduğundan TR'de hiçbir bot batmıyordu. Yerel kurucu sermayesi varsayımı.",
       "formula": null,
       "inputs": []
     },
     {
       "id": "scn.start_cash.hard",
-      "value": 500000,
+      "value": 200000,
       "unit": "TRY",
       "market": "tr",
       "layer": "assumption",
       "range": {
-        "min": 350000,
-        "max": 700000
+        "min": 140000,
+        "max": 280000
       },
       "source": null,
       "confidence": "low",
-      "note": "Önerilen başlangıç nakdi (hard); yaklaşık 10,036 USD karşılığı. Oyun dengesi için öneri, bot Monte Carlo ile ayarlanmalı.",
+      "note": "Önerilen başlangıç nakdi (hard); Bot Monte Carlo ile ayarlandı: USD eşdeğeri alınınca fiyat düşük olduğundan TR'de hiçbir bot batmıyordu. Yerel kurucu sermayesi varsayımı.",
       "formula": null,
       "inputs": []
     },
@@ -432,23 +432,23 @@
     },
     {
       "id": "scn.goal.12m.target_customers",
-      "value": 150,
+      "value": 70,
       "unit": "count",
       "market": "global",
       "layer": "assumption",
       "range": {
-        "min": 90,
-        "max": 225
+        "min": 50,
+        "max": 100
       },
       "source": null,
       "confidence": "low",
-      "note": "12 ay sonunda ücretli müşteri hedefi (≈ pazar havuzunun %0,2’si).",
+      "note": "12 ay sonunda ücretli müşteri hedefi. Tek kurucu ve sınırlı nakitle ilk yıl için iddialı ama ulaşılabilir (bot Monte Carlo ile ayarlandı).",
       "formula": null,
       "inputs": []
     },
     {
       "id": "scn.goal.12m.target_mrr",
-      "value": 7500,
+      "value": 3500,
       "unit": "USD",
       "market": "us",
       "layer": "derived",
@@ -463,7 +463,7 @@
     },
     {
       "id": "scn.goal.12m.target_mrr",
-      "value": 6000,
+      "value": 2800,
       "unit": "EUR",
       "market": "de",
       "layer": "derived",
@@ -478,7 +478,7 @@
     },
     {
       "id": "scn.goal.12m.target_mrr",
-      "value": 105000,
+      "value": 49000,
       "unit": "TRY",
       "market": "tr",
       "layer": "derived",
@@ -493,45 +493,45 @@
     },
     {
       "id": "scn.goal.12m.ltv_cac_min",
-      "value": 3,
+      "value": 1.5,
       "unit": "multiplier",
       "market": "global",
       "layer": "assumption",
       "range": {
-        "min": 2,
-        "max": 5
+        "min": 1.2,
+        "max": 2
       },
       "source": null,
       "confidence": "medium",
-      "note": "LTV:CAC ≥ 3 (SaaS sektör temel kuralı; birincil kaynak yok). Not: LTV ÷ CAC oranıdır (0-1 sınırı dışı, birim \"x\").",
+      "note": "İlk yıl tam yüklü LTV:CAC tabanı. Olgun SaaS için bilinen 3 kuralı burada geçerli değil: CAC kurucu saatini de taşır ve ilk yılda ölçek yoktur (bot Monte Carlo ile ayarlandı). Oyun dengesi varsayımı.",
       "formula": null,
       "inputs": []
     },
     {
       "id": "scn.goal.12m.payback_months_max",
-      "value": 12,
+      "value": 18,
       "unit": "count",
       "market": "global",
       "layer": "assumption",
       "range": {
-        "min": 6,
-        "max": 18
+        "min": 12,
+        "max": 24
       },
       "source": null,
       "confidence": "low",
-      "note": "CAC geri ödeme süresi üst sınırı (ay) = CAC / (ARPA × brüt marj).",
+      "note": "CAC geri ödeme süresi üst sınırı (ay) = tam yüklü CAC / (ARPA × brüt marj). İlk yıl için gevşek (bot Monte Carlo ile ayarlandı).",
       "formula": null,
       "inputs": []
     },
     {
       "id": "scn.goal.90d.target_customers",
-      "value": 25,
+      "value": 14,
       "unit": "count",
       "market": "global",
       "layer": "assumption",
       "range": {
-        "min": 15,
-        "max": 37.5
+        "min": 10,
+        "max": 20
       },
       "source": null,
       "confidence": "low",
@@ -541,7 +541,7 @@
     },
     {
       "id": "scn.goal.90d.target_mrr",
-      "value": 1250,
+      "value": 700,
       "unit": "USD",
       "market": "us",
       "layer": "derived",
@@ -556,7 +556,7 @@
     },
     {
       "id": "scn.goal.90d.target_mrr",
-      "value": 1000,
+      "value": 560,
       "unit": "EUR",
       "market": "de",
       "layer": "derived",
@@ -571,7 +571,7 @@
     },
     {
       "id": "scn.goal.90d.target_mrr",
-      "value": 17500,
+      "value": 9800,
       "unit": "TRY",
       "market": "tr",
       "layer": "derived",
@@ -586,33 +586,33 @@
     },
     {
       "id": "scn.goal.90d.ltv_cac_min",
-      "value": 3,
+      "value": 0.8,
       "unit": "multiplier",
       "market": "global",
       "layer": "assumption",
       "range": {
-        "min": 2,
-        "max": 5
+        "min": 0.6,
+        "max": 1.1
       },
       "source": null,
       "confidence": "medium",
-      "note": "LTV:CAC ≥ 3 (SaaS sektör temel kuralı; birincil kaynak yok). Not: LTV ÷ CAC oranıdır (0-1 sınırı dışı, birim \"x\").",
+      "note": "İlk çeyrek LTV:CAC tabanı. 12 aylık 3 kuralı 90 güne uygulanamaz: ilk çeyreğin CAC'ı kurulum saatlerini taşır (bot Monte Carlo: iyi bot p90 ≈ 1,3-2,3). Oyun dengesi varsayımı.",
       "formula": null,
       "inputs": []
     },
     {
       "id": "scn.goal.90d.payback_months_max",
-      "value": 9,
+      "value": 24,
       "unit": "count",
       "market": "global",
       "layer": "assumption",
       "range": {
-        "min": 6,
-        "max": 18
+        "min": 18,
+        "max": 30
       },
       "source": null,
       "confidence": "low",
-      "note": "CAC geri ödeme süresi üst sınırı (ay) = CAC / (ARPA × brüt marj).",
+      "note": "İlk çeyrek CAC geri ödeme üst sınırı (ay) = CAC / (ARPA × brüt marj). İlk çeyrekte kurulum yükü nedeniyle 12 aylık sınırdan gevşek (bot Monte Carlo ile ayarlandı).",
       "formula": null,
       "inputs": []
     },

@@ -1,4 +1,4 @@
-// Ücretsiz / yerel kanallar (Aşama 1'de basit, Aşama 2'de derinleşir): organik taban, GBP, yorum isteme, referans,
+// Ücretsiz / yerel kanallar: organik taban, GBP, yorum isteme, referans,
 // saha satışı, soğuk temas (yasal rejime göre), içerik (sosyal/SEO). GEO için bkz. geo.ts.
 import { Rng } from '../rng';
 import { K } from '../core/constants';
@@ -7,16 +7,25 @@ import type { ActionDef, PartialDefs } from '../core/actiondef';
 import { posNum } from '../core/actiondef';
 import { awareness, channelRelative, demandFactor } from '../core/env';
 import { pn, priceCost, ps } from '../core/params';
-import type { GameState } from '../core/types';
+import type { ContentTopic, GameState } from '../core/types';
 import { clamp, clamp01, modMult } from '../core/util';
 
 export const defaultOfferId = (s: GameState): string => s.assets.offers[0]!.id;
 
+/** Bilinirlik, itibar, olay ve talebin ortak çarpanı: kendiliğinden gelen ilgi bunlarla ölçeklenir. */
+function discoveryFactor(s: GameState): number {
+  const rep = 0.6 + 0.8 * s.reputation;
+  return (1 + K.organicAwarenessGain * awareness(s)) * rep * modMult(s, 'organic') * (0.5 + 0.5 * demandFactor(s));
+}
+
 /** Beklenen organik/doğrudan lead/gün (reklamsız taban). */
 export function organicExpected(s: GameState): number {
-  const salons = pn(s, 'market.salon_count');
-  const rep = 0.6 + 0.8 * s.reputation;
-  return salons * K.organicPerSalon * (1 + K.organicAwarenessGain * awareness(s)) * rep * modMult(s, 'organic') * (0.5 + 0.5 * demandFactor(s));
+  return pn(s, 'market.salon_count') * K.organicPerSalon * discoveryFactor(s);
+}
+
+/** Tam optimize GBP'nin ulaşabileceği yerel keşif potansiyeli (lead/gün). */
+function localDiscovery(s: GameState): number {
+  return pn(s, 'market.salon_count') * K.localDiscoveryPerSalon * discoveryFactor(s);
 }
 
 function activeCustomers(s: GameState): number {
@@ -32,7 +41,6 @@ function push(ctx: DayCtx, s: GameState, d: Partial<DirectLead> & { channel: Dir
 
 /** Gün başı yerel kanallar: GBP, referans, içerik, GEO lead'leri + stok güncellemeleri. */
 export function runLocalDay(s: GameState, ctx: DayCtx): void {
-  const org = organicExpected(s);
   const l = s.local;
   // Bekleyen yorumlar
   const still: typeof l.gbp.pending = [];
@@ -43,7 +51,7 @@ export function runLocalDay(s: GameState, ctx: DayCtx): void {
   l.gbp.pending = still;
   l.gbp.score = clamp01(l.gbp.score * (1 - K.gbpDecay));
   // GBP
-  const gbpMu = org * pn(s, 'local.gbp_effect') * l.gbp.score * channelRelative(s, 'gbp') * (1 + 0.2 * Math.min(1, l.gbp.reviews / K.reviewMax));
+  const gbpMu = localDiscovery(s) * pn(s, 'local.gbp_effect') * l.gbp.score * channelRelative(s, 'gbp') * (1 + 0.2 * Math.min(1, l.gbp.reviews / K.reviewMax));
   push(ctx, s, { channel: 'gbp', n: ctx.root.fork('local.gbp').poisson(gbpMu) });
   // Referans
   const refMu = (activeCustomers(s) * pn(s, 'local.referral_rate') * channelRelative(s, 'referral') * (l.referral.active ? 1 : K.referralBaseline) * (0.6 + 0.8 * s.reputation)) / 30;
@@ -52,6 +60,7 @@ export function runLocalDay(s: GameState, ctx: DayCtx): void {
   l.content.seoEff += (l.content.seo - l.content.seoEff) * (1 - K.contentSeoLag);
   const cMu = K.contentLeadsPerPoint * (l.content.social * channelRelative(s, 'organic_social') + l.content.seoEff);
   push(ctx, s, { channel: 'content', n: ctx.root.fork('local.content').poisson(cMu) });
+  for (const k of Object.keys(l.content.recent ?? {}) as ContentTopic[]) l.content.recent![k]! *= K.topicMemoryDecay;
   l.content.social *= 1 - K.contentDecay;
   l.content.seo *= 1 - K.contentDecay / 2;
   // GEO
@@ -151,8 +160,15 @@ const content: ActionDef<'local.content'> = {
   cash: () => 0,
   check: (p) => (posNum(p.hours) ? null : 'err.bad_hours'),
   apply: (p, s) => {
-    if (p.kind === 'social') s.local.content.social = clamp(s.local.content.social + p.hours * K.contentSocialPerHour * 20, 0, 40);
-    else s.local.content.seo = clamp(s.local.content.seo + p.hours * K.contentSeoPerHour * 20, 0, 40);
+    const c = s.local.content;
+    let f = 1;
+    if (p.topic) {
+      const recent = (c.recent ??= {});
+      f = K.topicFit[p.kind][p.topic] / (1 + K.topicRepeatPenalty * (recent[p.topic] ?? 0));
+      recent[p.topic] = (recent[p.topic] ?? 0) + p.hours;
+    }
+    if (p.kind === 'social') c.social = clamp(c.social + f * p.hours * K.contentSocialPerHour * 20, 0, 40);
+    else c.seo = clamp(c.seo + f * p.hours * K.contentSeoPerHour * 20, 0, 40);
   },
 };
 

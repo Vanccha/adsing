@@ -39,6 +39,16 @@ function processActions(s: GameState, ctx: DayCtx, actions: Action[]): void {
   const results: ActionResult[] = ctx.actionResults;
 
   const tryApply = (a: Action, fromQueue: boolean, queuedDay: number): void => {
+    // FIFO: önünde bekleyen iş varsa sırası gelmeden doğrulanmaz (aksi halde bekleyen işe bağlı aksiyon reddedilir:
+    // kuyruktaki reklam grubuna anahtar kelime eklemek gibi).
+    if (s.founder.queue.length > 0 && !(fromQueue && s.day - queuedDay >= K.queueMaxDays)) {
+      s.founder.queue.push({ action: a, queuedDay });
+      if (!fromQueue) {
+        results.push({ action: a, status: 'queued', reason: { key: 'err.no_hours', params: { need: validateAction(s, a).hours, free: 0 } } });
+        record(s, a, 'queued', 'err.no_hours');
+      }
+      return;
+    }
     const v = validateAction(s, a);
     if (!v.ok) {
       results.push({ action: a, status: 'rejected', reason: v.reason });
@@ -190,6 +200,8 @@ export function stepInPlace(s: GameState, actions: Action[]): StepResult {
     hoursCapacity: capacity,
     queueLen: s.founder.queue.length,
     gClicks: acc.gClicks,
+    mClicks: acc.mClicks,
+    mImpr: acc.mImpr,
     gImpr: acc.gImpr,
     gCls: acc.gCls,
     gMatchCost: acc.gMatchCost,
